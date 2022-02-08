@@ -35,10 +35,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {
           "packageLocation": "./",
           "packageDependencies": [
+            ["@types/axios", "npm:0.14.0"],
             ["@types/jest", "npm:27.0.3"],
             ["@types/node", "npm:17.0.2"],
             ["@types/react", "npm:17.0.37"],
             ["@types/react-dom", "npm:17.0.11"],
+            ["axios", "npm:0.25.0"],
             ["eslint", "npm:8.5.0"],
             ["eslint-config-next", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:12.0.7"],
             ["next", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:12.0.4"],
@@ -514,6 +516,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@tootallnate-once-npm-1.1.2-0517220057-e1fb1bbbc1.zip/node_modules/@tootallnate/once/",
           "packageDependencies": [
             ["@tootallnate/once", "npm:1.1.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/axios", [
+        ["npm:0.14.0", {
+          "packageLocation": "./.yarn/cache/@types-axios-npm-0.14.0-42f41917ea-12a230b940.zip/node_modules/@types/axios/",
+          "packageDependencies": [
+            ["@types/axios", "npm:0.14.0"],
+            ["axios", "npm:0.25.0"]
           ],
           "linkType": "HARD",
         }]
@@ -1017,6 +1029,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/axe-core-npm-4.3.5-ce6cf74293-973c6a80f0.zip/node_modules/axe-core/",
           "packageDependencies": [
             ["axe-core", "npm:4.3.5"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["axios", [
+        ["npm:0.25.0", {
+          "packageLocation": "./.yarn/cache/axios-npm-0.25.0-a1c287d287-2a8a3787c0.zip/node_modules/axios/",
+          "packageDependencies": [
+            ["axios", "npm:0.25.0"],
+            ["follow-redirects", "virtual:a1c287d287cceec925a9c0ff143359f3710be8008f8559da00a15e4d93f76849e9493b8b7760d073ae605ea56d1482d54174c007b28cbf6b38332d152576190f#npm:1.14.7"]
           ],
           "linkType": "HARD",
         }]
@@ -2494,6 +2516,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/flatted-npm-3.2.4-b14c5985c7-7d33846428.zip/node_modules/flatted/",
           "packageDependencies": [
             ["flatted", "npm:3.2.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["follow-redirects", [
+        ["npm:1.14.7", {
+          "packageLocation": "./.yarn/cache/follow-redirects-npm-1.14.7-c87c16ed59-f6d03e5e30.zip/node_modules/follow-redirects/",
+          "packageDependencies": [
+            ["follow-redirects", "npm:1.14.7"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:a1c287d287cceec925a9c0ff143359f3710be8008f8559da00a15e4d93f76849e9493b8b7760d073ae605ea56d1482d54174c007b28cbf6b38332d152576190f#npm:1.14.7", {
+          "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-c5047b1a61/0/cache/follow-redirects-npm-1.14.7-c87c16ed59-f6d03e5e30.zip/node_modules/follow-redirects/",
+          "packageDependencies": [
+            ["follow-redirects", "virtual:a1c287d287cceec925a9c0ff143359f3710be8008f8559da00a15e4d93f76849e9493b8b7760d073ae605ea56d1482d54174c007b28cbf6b38332d152576190f#npm:1.14.7"],
+            ["@types/debug", null],
+            ["debug", null]
+          ],
+          "packagePeers": [
+            "@types/debug",
+            "debug"
           ],
           "linkType": "HARD",
         }]
@@ -5056,10 +5100,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["test16", "workspace:."],
+            ["@types/axios", "npm:0.14.0"],
             ["@types/jest", "npm:27.0.3"],
             ["@types/node", "npm:17.0.2"],
             ["@types/react", "npm:17.0.37"],
             ["@types/react-dom", "npm:17.0.11"],
+            ["axios", "npm:0.25.0"],
             ["eslint", "npm:8.5.0"],
             ["eslint-config-next", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:12.0.7"],
             ["next", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:12.0.4"],
