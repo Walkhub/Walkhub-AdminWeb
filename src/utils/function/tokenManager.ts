@@ -15,7 +15,7 @@ export const setToken = (accessToken: string, refreshToken: string) => {
   });
 
   cookies.save("refrashToken", refreshToken, {
-    path: "",
+    path: "/",
     expires,
     httpOnly: process.env.NEXT_PUBLIC_HTTP_ONLY === "true",
   });
