@@ -20,10 +20,13 @@ type ProvidersType<T> = {
 };
 
 const RootContextProvider: React.FC = ({ children }) => {
-  providers.reduceRight((acc, Comp) => {
-    return <Comp.provider value={Comp.props}>{acc}</Comp.provider>;
-  }, children);
-  return <>{children}</>;
+  return (
+    <>
+      {providers.reduceRight((acc, Comp) => {
+        return <Comp.provider value={Comp.props}>{acc}</Comp.provider>;
+      }, children)}
+    </>
+  );
 };
 
 export default RootContextProvider;
