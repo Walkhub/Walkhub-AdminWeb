@@ -2,9 +2,22 @@ import "../styles/globals.css";
 import type { AppContext, AppProps } from "next/app";
 import cookies from "next-cookies";
 import { setToken } from "../utils/function/tokenManager";
+import RootContextProvider from "../contexts";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <RootContextProvider
+      providers={
+        [
+          /* 사용법 :
+      provider(loginProvider :(context provider), LoginDefaultValue :(context defualt value)),
+*/
+        ]
+      }
+    >
+      <Component {...pageProps} />
+    </RootContextProvider>
+  );
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
