@@ -4785,6 +4785,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"swr@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "swr@npm:1.2.1"
+  peerDependencies:
+    react: ^16.11.0 || ^17.0.0 || ^18.0.0
+  checksum: 87f6093f468dc76f31d7dc7bdd8f925cd9d8a8e8062eecaf6e17ba4ffeb4d5aebe01e73e0cf30ef0e913121f630c33e393eeff8aab6e5479cb3291cd7f2d7dca
+  languageName: node
+  linkType: hard
+
 "tar@npm:^6.0.2, tar@npm:^6.1.2":
   version: 6.1.11
   resolution: "tar@npm:6.1.11"
@@ -4824,6 +4833,7 @@ __metadata:
     react-is: ^17.0.2
     react-smooth: ^2.0.0
     recharts: ^2.0.9
+    swr: ^1.2.1
     typescript: ^4.5.4
   languageName: unknown
   linkType: soft
