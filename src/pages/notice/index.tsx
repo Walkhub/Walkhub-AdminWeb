@@ -34,8 +34,8 @@ const NoticeWrite = () => {
       <textarea
         value={state.content}
         onChange={NoticeContentOnChange}
-        name="password"
-        placeholder="password"
+        name="content"
+        placeholder="content"
       />
       <input
         value={state.scope}
