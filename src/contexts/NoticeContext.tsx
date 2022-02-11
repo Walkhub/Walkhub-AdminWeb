@@ -7,7 +7,7 @@ interface NoticePostType {
 }
 
 type NoticeAction = {
-  type: "POSTNOTICE";
+  type: "NOTICE_INPUT";
   inputInfo: "title" | "content" | "scope";
   value: string;
 };
@@ -43,7 +43,7 @@ export const noticeReducer = (
   action: NoticeAction
 ): NoticePostType => {
   switch (action.type) {
-    case "POSTNOTICE":
+    case "NOTICE_INPUT":
       return {
         ...state,
         [action.inputInfo]: [action.value],
