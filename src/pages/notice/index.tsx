@@ -28,8 +28,8 @@ const NoticeWrite = () => {
       <input
         value={state.title}
         onChange={NoticeInfoOnChange}
-        name="id"
-        placeholder="id"
+        name="title"
+        placeholder="title"
       />
       <textarea
         value={state.content}
