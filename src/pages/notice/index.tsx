@@ -16,7 +16,7 @@ const NoticeWrite = () => {
 
   const NoticeContentOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value, name } = e.target;
-    if (name === "scope")
+    if (name === "content")
       dispatch({ type: "NOTICE_INPUT", inputInfo: name, value: value });
   };
 
