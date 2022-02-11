@@ -6,15 +6,7 @@ import RootContextProvider from "../contexts";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <RootContextProvider
-      providers={
-        [
-          /* 사용법 :
-      provider(loginProvider :(context provider), LoginDefaultValue :(context defualt value)),
-*/
-        ]
-      }
-    >
+    <RootContextProvider providers={[]}>
       <Component {...pageProps} />
     </RootContextProvider>
   );
