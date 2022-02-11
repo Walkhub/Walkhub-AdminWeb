@@ -4,10 +4,6 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import useSWR from "swr";
 const Home: NextPage = () => {
-  const fatcher = (args: string) => fetch(args).then((res) => res.json());
-
-  const testSwr = useSWR("https://api.github.com/users/oajh04", fatcher);
-  console.log(testSwr);
   return (
     <div className={styles.container}>
       <Head>
