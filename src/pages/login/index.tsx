@@ -11,7 +11,7 @@ const Login = () => {
   const loginInfoOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     if (name === "id" || name === "password")
-      dispatch({ type: "Input", inputInfo: name, value: value });
+      dispatch({ type: "LOGIN_INPUT_CHANGE", inputInfo: name, value: value });
   };
 
   return (

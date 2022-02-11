@@ -6,7 +6,7 @@ interface LoginStateType {
 }
 
 type LoginAction = {
-  type: "Input";
+  type: "LOGIN_INPUT_CHANGE";
   inputInfo: "id" | "password";
   value: string;
 };
@@ -41,7 +41,7 @@ export const loginReducer = (
   action: LoginAction
 ): LoginStateType => {
   switch (action.type) {
-    case "Input":
+    case "LOGIN_INPUT_CHANGE":
       return {
         ...state,
         [action.inputInfo]: [action.value],
