@@ -123,7 +123,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.1.2":
+"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.7.2":
   version: 7.17.2
   resolution: "@babel/runtime@npm:7.17.2"
   dependencies:
@@ -794,7 +794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*":
+"@types/prop-types@npm:*, @types/prop-types@npm:^15.7.4":
   version: 15.7.4
   resolution: "@types/prop-types@npm:15.7.4"
   checksum: ef6e1899e59b876c273811b1bd845022fc66d5a3d11cb38a25b6c566b30514ae38fe20a40f67622f362a4f4f7f9224e22d8da101cff3d6e97e11d7b4c307cfc1
@@ -4452,7 +4452,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.10.2, react-is@npm:^16.13.1, react-is@npm:^16.8.1":
+"react-is@npm:^16.10.2, react-is@npm:^16.13.1, react-is@npm:^16.7.0, react-is@npm:^16.8.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
