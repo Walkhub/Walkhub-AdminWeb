@@ -3,8 +3,7 @@ import type { AppContext, AppProps } from "next/app";
 import cookies from "next-cookies";
 import { setToken } from "../utils/function/tokenManager";
 import RootProvider from "../utils/function/RootProvider";
-import { LoginContextProvider } from "../contexts";
-import { NoticeContextProvider } from "../contexts";
+import { LoginContextProvider, NoticeContextProvider } from "../contexts";
 import StyleProvider from "../styles";
 
 function MyApp({ Component, pageProps }: AppProps) {
