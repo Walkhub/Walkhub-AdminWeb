@@ -1,11 +1,9 @@
-import "../styles/globals.css";
 import type { AppContext, AppProps } from "next/app";
 import cookies from "next-cookies";
-import { setToken } from "../utils/function/tokenManager";
-import RootProvider from "../utils/function/RootProvider";
-import { LoginContextProvider } from "../contexts";
-import StyleProvider from "../styles";
-
+import { setToken } from "@src/utils/function/tokenManager";
+import RootProvider from "@src/utils/function/RootProvider";
+import { LoginContextProvider } from "@src/contexts";
+import StyleProvider from "@src/styles";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RootProvider
