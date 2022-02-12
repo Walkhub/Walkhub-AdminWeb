@@ -21,14 +21,14 @@ const Login = () => {
       <input
         value={state.id}
         onChange={loginInfoOnChange}
-        name="id"
-        placeholder="id"
+        name='id'
+        placeholder='id'
       />
       <input
         value={state.password}
         onChange={loginInfoOnChange}
-        name="password"
-        placeholder="password"
+        name='password'
+        placeholder='password'
       />
     </div>
   );
