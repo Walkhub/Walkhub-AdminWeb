@@ -12,16 +12,16 @@ type ClassPostDefaultValueType = Record<ClassPostType, number>;
 
 type ClassDispatch = Dispatch<ClassPostAction>;
 
-const ClassPostContextProvider: FC = () => {
+const ClassPostContextProvider: FC = ({ children }) => {
   const [classState, classDispatch] = useReducer(
     classReducer,
     classDefaultValue
   );
   return (
     <ClassStateContext.Provider value={classState}>
-      <ClassDispatchContext.Provider
-        value={classDispatch}
-      ></ClassDispatchContext.Provider>
+      <ClassDispatchContext.Provider value={classDispatch}>
+        {children}
+      </ClassDispatchContext.Provider>
     </ClassStateContext.Provider>
   );
 };
