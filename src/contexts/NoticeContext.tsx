@@ -12,16 +12,16 @@ type NoticeAction = {
 
 type NoticeDispatch = Dispatch<NoticeAction>;
 
-const NoticeContextProvider: FC = ({}) => {
+const NoticeContextProvider: FC = ({ children }) => {
   const [noticeState, noticeDispatch] = useReducer(
     noticeReducer,
     noticeDefaultValue
   );
   return (
     <NoticeStateContext.Provider value={noticeState}>
-      <NoticeDispatchContext.Provider
-        value={noticeDispatch}
-      ></NoticeDispatchContext.Provider>
+      <NoticeDispatchContext.Provider value={noticeDispatch}>
+        {children}
+      </NoticeDispatchContext.Provider>
     </NoticeStateContext.Provider>
   );
 };
