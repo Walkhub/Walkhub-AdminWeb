@@ -1,4 +1,4 @@
-import { useReducer, Dispatch, FC, createContext, Children } from "react";
+import { useReducer, Dispatch, FC, createContext } from "react";
 
 type NoticePostType = "title" | "content" | "scope";
 
@@ -12,16 +12,16 @@ type NoticeAction = {
 
 type NoticeDispatch = Dispatch<NoticeAction>;
 
-const NoticeContextProvider: FC = ({ children }) => {
+const NoticeContextProvider: FC = ({}) => {
   const [noticeState, noticeDispatch] = useReducer(
     noticeReducer,
     noticeDefaultValue
   );
   return (
     <NoticeStateContext.Provider value={noticeState}>
-      <NoticeDispatchContext.Provider value={noticeDispatch}>
-        {children}
-      </NoticeDispatchContext.Provider>
+      <NoticeDispatchContext.Provider
+        value={noticeDispatch}
+      ></NoticeDispatchContext.Provider>
     </NoticeStateContext.Provider>
   );
 };
