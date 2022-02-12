@@ -2,19 +2,21 @@ import "../styles/globals.css";
 import type { AppContext, AppProps } from "next/app";
 import cookies from "next-cookies";
 import { setToken } from "../utils/function/tokenManager";
-import RootContextProvider from "../contexts";
-import LoginContextProvider from "../contexts/LoginContext";
+import RootProvider from "../utils/function/RootProvider";
+import { LoginContextProvider } from "../contexts";
+import StyleProvider from "../styles";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <RootContextProvider
+    <RootProvider
       providers={[
         // provider 를 jsx tsx 형식으로 받아옵니다 에시로 login context 를 보면서 작성해주세요
+        StyleProvider,
         LoginContextProvider,
       ]}
     >
       <Component {...pageProps} />
-    </RootContextProvider>
+    </RootProvider>
   );
 }
 
