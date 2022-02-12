@@ -15,11 +15,10 @@ const Chart: FC<Props> = ({countList}) => {
             <LineChart width={460} height={230} data={chartData}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="1" vertical={false}/>
-                <XAxis dataKey="date" padding={{left: 20, right: 20}} />
+                <XAxis dataKey="date" padding={{left: 20, right: 20}} interval={chartData.length > 10 ? 2 : 0}/>
                 <YAxis />
                 <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="count" stroke="#4D99F0" />
+                <Line type="monotone" dataKey="count" stroke="#4D99F0" dot={false}/>
             </LineChart>
         }
         </>
