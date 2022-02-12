@@ -4,7 +4,7 @@ type ClassPostType = "grade" | "class";
 
 type ClassPostAction = {
   type: "CLASS_POST_INPUT";
-  inputinfo: ClassPostType;
+  inputInfo: ClassPostType;
   value: number;
 };
 
@@ -43,7 +43,7 @@ export const classReducer = (
     case "CLASS_POST_INPUT":
       return {
         ...state,
-        [action.inputinfo]: [action.value],
+        [action.inputInfo]: [action.value],
       };
     default:
       return state;
