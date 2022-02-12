@@ -1,14 +1,12 @@
 import { useReducer, Dispatch, FC, createContext, Children } from "react";
 
-interface NoticePostType {
-  title: string;
-  content: string;
-  scope: string;
-}
+type NoticePostType = "title" | "content" | "scope";
+
+type NoticePostDefaultValueType = Record<NoticePostType, string>;
 
 type NoticeAction = {
   type: "NOTICE_INPUT";
-  inputInfo: "title" | "content" | "scope";
+  inputInfo: NoticePostType;
   value: string;
 };
 
@@ -28,20 +26,20 @@ const NoticeContextProvider: FC = ({ children }) => {
   );
 };
 
-export const noticeDefaultValue: NoticePostType = {
+export const noticeDefaultValue: NoticePostDefaultValueType = {
   title: "",
   content: "",
   scope: "",
 };
 
 export const NoticeStateContext =
-  createContext<NoticePostType>(noticeDefaultValue);
+  createContext<NoticePostDefaultValueType>(noticeDefaultValue);
 export const NoticeDispatchContext = createContext<NoticeDispatch>(() => null);
 
 export const noticeReducer = (
-  state: NoticePostType,
+  state: NoticePostDefaultValueType,
   action: NoticeAction
-): NoticePostType => {
+): NoticePostDefaultValueType => {
   switch (action.type) {
     case "NOTICE_INPUT":
       return {
