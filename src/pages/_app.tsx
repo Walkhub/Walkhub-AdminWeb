@@ -6,6 +6,7 @@ import {
   LoginContextProvider,
   NoticeContextProvider,
   ClassPostContextProvider,
+  ClassGetContextProvider,
 } from "@src/contexts";
 import StyleProvider from "@src/styles";
 
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         LoginContextProvider,
         NoticeContextProvider,
         ClassPostContextProvider,
+        ClassGetContextProvider,
       ]}
     >
       <Component {...pageProps} />
