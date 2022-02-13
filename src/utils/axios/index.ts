@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import cookies from "react-cookies";
 import { setToken, removeToken, getToken } from "../function/tokenManager";
 const instance = axios.create({
-  baseURL: "",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   timeout: 10000,
 });
 
@@ -19,7 +19,7 @@ instance.interceptors.response.use(
   function (response) {
     return response;
   },
-  async (error) => {
+  async error => {
     const { config, response } = error;
     if (response.status === 401 && getToken().refrashToken) {
       try {
