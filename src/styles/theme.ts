@@ -1,8 +1,12 @@
 const theme = {
   color: {
-    main: "#4D99F0",
-    green: "#5DF04D",
-    red: "#F04D51",
+    main: "#57B4F1",
+    system: "#4D99F0",
+    black: "#212121",
+    white: "#FFFFFF",
+    light_gray: "#E0E0E0",
+    normal_graydu: "#BDBDBD",
+    dark_gray: "#757575",
   },
 };
 

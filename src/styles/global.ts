@@ -8,7 +8,7 @@ const global = css`
     outline: 0;
     box-sizing: border-box;
     border: 0;
-    font-family: "Noto Sans CJK Kr";
+    font-family: "noto-sans-cjk-kr", sans-serif;
   }
 `;
 
