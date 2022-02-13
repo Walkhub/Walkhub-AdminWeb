@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { FC } from "react";
 import {
   Bar,
@@ -7,7 +8,13 @@ import {
   Tooltip,
   BarChart,
   Cell,
+  TooltipProps,
 } from "recharts";
+import {
+  ValueType,
+  NameType,
+} from "recharts/src/component/DefaultTooltipContent";
+
 import useChartData from "../../hooks/useChartData";
 
 interface Props {
@@ -25,11 +32,18 @@ const colors: string[] = [
 const chart: FC<Props> = ({ countList }) => {
   const chartData = useChartData(countList);
 
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
+  const CustomTooltip = ({ payload }: TooltipProps<ValueType, NameType>) => {
+    if (payload && payload.length) {
       return (
-        <div className='custom-tooltip'>
-          <p className='label'>{`${label} : ${payload[0].value}`}</p>
+        <div
+          className='custom-tooltip'
+          style={{
+            backgroundColor: "#ffffff",
+            padding: "4px 12px",
+            borderRadius: "4px",
+          }}
+        >
+          <p className='label'>{payload[0].value}</p>
         </div>
       );
     }
@@ -50,19 +64,16 @@ const chart: FC<Props> = ({ countList }) => {
           <XAxis
             dataKey='date'
             padding={{ left: 20, right: 20 }}
-            interval={chartData.length > 10 ? 2 : 0}
+            interval={chartData.length > 7 ? 2 : 0}
           />
           <YAxis />
-          <Tooltip
-            content={
-              <CustomTooltip
-                active={undefined}
-                payload={undefined}
-                label={undefined}
-              />
-            }
-          />
-          <Bar dataKey='count' fill='#ffffff'>
+          <Tooltip content={<CustomTooltip />} />
+          <Bar
+            dataKey='count'
+            fill='#ffffff'
+            barSize={12}
+            radius={[25, 25, 0, 0]}
+          >
             {chartData.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
