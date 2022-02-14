@@ -5,8 +5,8 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
   width?: number;
 }
 
-const DefaultBtn: FC<Props> = ({ width, children }) => {
-  return <DefaultBtnBox width={width}>{children}</DefaultBtnBox>;
+const DefaultBtn: FC<Props> = props => {
+  return <DefaultBtnBox {...props}>{props.children}</DefaultBtnBox>;
 };
 
 const DefaultBtnBox = styled.button<{ width?: number }>`
