@@ -9,7 +9,7 @@ interface Props {
 const DefaultBtn: FC<Props> = ({ width, children, onClick }) => {
   return (
     <DefaultBtnBox width={width} onClick={onClick}>
-      로그인
+      {children}
     </DefaultBtnBox>
   );
 };
