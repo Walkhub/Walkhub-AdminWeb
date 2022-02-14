@@ -16,7 +16,7 @@ const DefaultBtn: FC<Props> = ({ width, children, onClick }) => {
 
 const DefaultBtnBox = styled.button<{ width?: number }>`
   cursor: pointer;
-  width: ${Props => Props.width}px;
+  width: ${Props => (Props.width ? `${Props.width}px` : `100%`)};
   height: 48px;
   background: ${props => props.theme.color.main};
   border-radius: 8px;
