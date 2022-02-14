@@ -1,11 +1,11 @@
 const theme = {
   color: {
     main: "#57B4F1",
-    system: "#4D99F0",
     black: "#212121",
     white: "#FFFFFF",
-    light_gray: "#E0E0E0",
-    normal_graydu: "#BDBDBD",
+    light_gray: "#F6F6F6",
+    bright_gray: "#E0E0E0",
+    normal_gray: "#BDBDBD",
     dark_gray: "#757575",
   },
 };
