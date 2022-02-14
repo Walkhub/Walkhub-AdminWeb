@@ -16,16 +16,16 @@ const DefaultBtn: FC<Props> = ({ width, children, onClick }) => {
 
 const DefaultBtnBox = styled.button<{ width?: number }>`
   cursor: pointer;
-  width: ${Props => (Props.width ? `${Props.width}px` : `100%`)};
+  width: ${({ width }) => (width ? `${width}px` : `100%`)};
   height: 48px;
-  background: ${props => props.theme.color.main};
+  background: ${({ theme }) => theme.color.main};
   border-radius: 8px;
-  color: ${props => props.theme.color.white};
+  color: ${({ theme }) => theme.color.white};
   transition: all 0.3s;
   :hover {
-    background: ${Props => Props.theme.color.white};
-    border: 1px solid ${Props => Props.theme.color.main};
-    color: ${Props => Props.theme.color.main};
+    background: ${({ theme }) => theme.color.white};
+    border: 1px solid ${({ theme }) => theme.color.main};
+    color: ${({ theme }) => theme.color.main};
   }
 `;
 
