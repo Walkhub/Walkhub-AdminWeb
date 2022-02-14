@@ -3,7 +3,7 @@ const getChartData = (data: number[]) => {
   for (let i in data) {
     const now = new Date();
     const chartDate = new Date(
-      now.setDate(now.getDate() - (data.length - i - 1))
+      now.setDate(now.getDate() - (data.length - parseInt(i) - 1))
     );
 
     chartData.push({
