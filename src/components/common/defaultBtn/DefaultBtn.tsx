@@ -1,17 +1,12 @@
-import React, { FC } from "react";
+import React, { FC, HTMLAttributes } from "react";
 import styled from "@emotion/styled";
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLButtonElement> {
   width?: number;
-  onClick: () => void;
 }
 
-const DefaultBtn: FC<Props> = ({ width, children, onClick }) => {
-  return (
-    <DefaultBtnBox width={width} onClick={onClick}>
-      {children}
-    </DefaultBtnBox>
-  );
+const DefaultBtn: FC<Props> = ({ width, children }) => {
+  return <DefaultBtnBox width={width}>{children}</DefaultBtnBox>;
 };
 
 const DefaultBtnBox = styled.button<{ width?: number }>`
