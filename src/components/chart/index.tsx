@@ -14,8 +14,7 @@ import {
   ValueType,
   NameType,
 } from "recharts/src/component/DefaultTooltipContent";
-
-import useChartData from "../../hooks/useChartData";
+import getChartData from "../../utils/function/getChartData";
 
 interface Props {
   countList: number[];
@@ -30,7 +29,7 @@ const colors: string[] = [
 ];
 
 const chart: FC<Props> = ({ countList }) => {
-  const chartData = useChartData(countList);
+  const chartData = getChartData(countList);
 
   const CustomTooltip = ({ payload }: TooltipProps<ValueType, NameType>) => {
     if (payload && payload.length) {
@@ -77,7 +76,9 @@ const chart: FC<Props> = ({ countList }) => {
             {chartData.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={chartData.length > 8 ? colors[entry.color] : "#57B4F1"}
+                fill={
+                  chartData.length > 8 ? colors[entry.color % 5] : "#57B4F1"
+                }
               />
             ))}
           </Bar>
