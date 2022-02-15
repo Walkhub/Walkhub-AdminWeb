@@ -1,9 +1,9 @@
 const getChartData = (data: number[]) => {
   const chartData: { date: string; count: number; color: number }[] = [];
-  for (let i in data) {
+  data.map((i: number, idx) => {
     const now = new Date();
     const chartDate = new Date(
-      now.setDate(now.getDate() - (data.length - parseInt(i) - 1))
+      now.setDate(now.getDate() - (data.length - idx - 1))
     );
 
     chartData.push({
@@ -11,7 +11,7 @@ const getChartData = (data: number[]) => {
       count: data[i],
       color: getWeek(chartDate),
     });
-  }
+  });
 
   return chartData;
 };
