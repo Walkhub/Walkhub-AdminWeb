@@ -8,7 +8,7 @@ const getChartData = (data: number[]) => {
 
     chartData.push({
       date: `${chartDate.getMonth() + 1}/${chartDate.getDate()}`,
-      count: data[i],
+      count: i,
       color: getWeek(chartDate),
     });
   });
