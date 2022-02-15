@@ -72,6 +72,7 @@ const StudentInfo = styled.div`
 const ReportDiv = styled.div`
   width: 596px;
   display: flex;
+  justify-content: space-between;
   > p {
     font-size: 20px;
     color: ${({ theme }) => theme.color.black};
