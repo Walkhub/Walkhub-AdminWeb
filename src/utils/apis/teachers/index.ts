@@ -2,7 +2,7 @@ import instance from "@src/utils/axios";
 
 export const createTeacherCode = async () => {
   try {
-    return await instance.post("/teachers/verification-codes");
+    return await instance.patch("/teachers/verification-codes");
   } catch (error) {
     throw error;
   }
