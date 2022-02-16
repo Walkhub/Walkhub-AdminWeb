@@ -8,6 +8,7 @@ interface PropsType {
   selectedValue: string;
   setSelectedValue: (value: string) => void;
   optionList: string[];
+  clickable : boolean;
 }
 const Dropdown: React.FC<PropsType> = ({
   width,
@@ -15,6 +16,7 @@ const Dropdown: React.FC<PropsType> = ({
   selectedValue,
   setSelectedValue,
   optionList,
+  clickable,
 }) => {
   const [isFold, setIsFold] = useState(false);
   const reverseDropdownStatus = () => {
@@ -46,7 +48,7 @@ const Dropdown: React.FC<PropsType> = ({
         <Selected isDefaultValue={optionList.includes(selectedValue)}>
           {selectedValue}
         </Selected>
-        <button className='arrowButton' onClick={reverseDropdownStatus}>
+        <button className='arrowButton' onClick={() => clickable && reverseDropdownStatus()}>
           y
         </button>
       </Wrapper>
