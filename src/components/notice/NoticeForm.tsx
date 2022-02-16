@@ -24,6 +24,18 @@ const NoticeForm: FC = () => {
         </div>
       </FormHeadDiv>
       <HR />
+      <TextDiv>
+        <p>
+          보고, 이 가득 옥 헤는 봅니다. 별들을 쉬이 다 당신은 겨울이 것은
+          까닭입니다. 시인의 옥 그리워 지나가는 된 있습니다. 이름을 나의 별에도
+          마리아 별들을 어머니, 된 있습니다. 소학교 아직 하나에 언덕 가을로
+          걱정도 하나에 별이 파란 봅니다. 사랑과 내일 쉬이 까닭입니다. 것은 차
+          나는 위에 무덤 하나에 봄이 이름과, 까닭입니다. 별이 오면 패, 무성할
+          남은 별 거외다. 묻힌 아스라히 했던 까닭입니다. 그러나 이런 잔디가 이
+          하나에 멀듯이, 별 이름과, 이름과, 있습니다. 북간도에 이름과, 별에도
+          하늘에는 노루, 강아지, 쓸쓸함과 속의 오는 계십니다.
+        </p>
+      </TextDiv>
     </Wrapper>
   );
 };
@@ -37,7 +49,7 @@ const Wrapper = styled.div`
 `;
 
 const FormHeadDiv = styled.div`
-  width: 966px;
+  width: 960px;
   display: flex;
   flex-direction: column;
   > div {
@@ -60,7 +72,7 @@ const MoreBtn = styled.button`
 `;
 
 const HR = styled.hr`
-  width: 966px;
+  width: 960px;
   height: 1px;
   border: none;
   margin-bottom: 15px;
@@ -102,6 +114,15 @@ const Kindmsg = styled.p`
 const Datemsg = styled.p`
   font-size: 14px;
   color: ${({ theme }) => theme.color.dark_gray};
+`;
+
+const TextDiv = styled.div`
+  width: 100%;
+  > p {
+    font-size: 16px;
+    font-weight: Regular;
+    color: ${({ theme }) => theme.color.black};
+  }
 `;
 
 export default NoticeForm;
