@@ -1,9 +1,15 @@
-import React, { FC } from "react";
+import React, { Dispatch, FC, SetStateAction } from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn/DefaultBtn";
 
-const MakeNotice = () => {
-  const DeleteClick = () => {};
+interface Props {
+  setMakeState: Dispatch<SetStateAction<boolean>>;
+}
+
+const MakeNotice: FC<Props> = ({ setMakeState }) => {
+  const DeleteClick = () => {
+    setMakeState(true);
+  };
 
   const PostClick = () => {};
 
