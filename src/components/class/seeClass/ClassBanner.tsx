@@ -26,7 +26,13 @@ const ClassBanner: FC = () => {
     <Wrapper>
       <Banner>
         <DetailBtnDiv>
-          <DetailBtn />
+          <DetailBtn>
+            <Moresection>
+              <Option>
+                <p>클래스 폐쇄</p>
+              </Option>
+            </Moresection>
+          </DetailBtn>
         </DetailBtnDiv>
         <BannerDiv1>
           <ClassName>n학년 n반</ClassName>
@@ -84,13 +90,13 @@ const DetailBtn = styled.button`
 `;
 
 const Moresection = styled.section`
-  width: 55px;
+  width: 100px;
   border-radius: 4px;
   border: none;
   box-shadow: 0px 3px 6px #00000029;
   position: absolute;
-  top: 300px;
-  right: 280px;
+  top: 120px;
+  right: 185px;
   background-color: #ffffff;
   z-index: 99;
 `;
