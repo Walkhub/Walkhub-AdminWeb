@@ -2,12 +2,18 @@ import React, { FC, useState } from "react";
 import styled from "@emotion/styled";
 import NoticeForm from "./NoticeForm";
 import MakeNotice from "./MakeNotice";
+import useSWR from "swr";
+import fetcher from "@src/utils/function/fetcher";
 
 const Notice: FC = () => {
   const [makeState, setMakeState] = useState<boolean>(true);
   const MakeOnClick = () => {
     setMakeState(false);
   };
+
+  const { data } = useSWR("/notices/lists", fetcher);
+
+  console.log(data);
 
   return (
     <Wrapper>
