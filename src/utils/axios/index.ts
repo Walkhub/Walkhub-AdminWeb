@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import cookies from "react-cookies";
 import { setToken, removeToken, getToken } from "../function/tokenManager";
 const instance = axios.create({
-  baseURL: "",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   timeout: 10000,
 });
 
