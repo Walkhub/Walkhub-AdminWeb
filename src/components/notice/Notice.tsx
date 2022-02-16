@@ -1,13 +1,25 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "@emotion/styled";
 import NoticeForm from "./NoticeForm";
+import MakeNotice from "./MakeNotice";
 
 const Notice: FC = () => {
+  const [makeState, setMakeState] = useState(true);
+
+  const MakeOnClick = () => {
+    setMakeState(false);
+    console.log(makeState);
+  };
+
   return (
     <Wrapper>
-      <WriteDiv>
-        <em>공지사항 작성하기...</em>
-      </WriteDiv>
+      {makeState ? (
+        <WriteDiv onClick={MakeOnClick}>
+          <em>공지사항 작성하기...</em>
+        </WriteDiv>
+      ) : (
+        <MakeNotice />
+      )}
       <NoticeTitleDiv>
         <p>공지</p>
       </NoticeTitleDiv>
@@ -33,6 +45,7 @@ const WriteDiv = styled.div`
   padding: 27px 820px 27px 27px;
   border-radius: 12px;
   margin-bottom: 36px;
+  cursor: pointer;
   background: ${({ theme }) => theme.color.light_gray};
   color: ${({ theme }) => theme.color.dark_gray};
   > em {
