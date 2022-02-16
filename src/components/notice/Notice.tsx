@@ -4,8 +4,7 @@ import NoticeForm from "./NoticeForm";
 import MakeNotice from "./MakeNotice";
 
 const Notice: FC = () => {
-  const [makeState, setMakeState] = useState(true);
-
+  const [makeState, setMakeState] = useState<boolean>(true);
   const MakeOnClick = () => {
     setMakeState(false);
     console.log(makeState);
@@ -18,7 +17,7 @@ const Notice: FC = () => {
           <em>공지사항 작성하기...</em>
         </WriteDiv>
       ) : (
-        <MakeNotice />
+        <MakeNotice setMakeState={setMakeState} />
       )}
       <NoticeTitleDiv>
         <p>공지</p>
