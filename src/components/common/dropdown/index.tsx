@@ -8,7 +8,7 @@ interface PropsType {
   selectedValue: string;
   setSelectedValue: (value: string) => void;
   optionList: string[];
-  clickable : boolean;
+  clickable: boolean;
 }
 const Dropdown: React.FC<PropsType> = ({
   width,
@@ -48,7 +48,10 @@ const Dropdown: React.FC<PropsType> = ({
         <Selected isDefaultValue={optionList.includes(selectedValue)}>
           {selectedValue}
         </Selected>
-        <button className='arrowButton' onClick={() => clickable && reverseDropdownStatus()}>
+        <button
+          className='arrowButton'
+          onClick={() => clickable && reverseDropdownStatus()}
+        >
           y
         </button>
       </Wrapper>
@@ -77,6 +80,7 @@ const Wrapper = styled.label<{
   font-weight: normal;
   text-align: left;
   position: relative;
+  cursor: pointer;
 
   > .arrowButton {
     width: 16px;
@@ -85,7 +89,6 @@ const Wrapper = styled.label<{
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    cursor: pointer;
   }
 `;
 const Selected = styled.div<{
