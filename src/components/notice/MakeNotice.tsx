@@ -3,6 +3,10 @@ import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn/DefaultBtn";
 
 const MakeNotice = () => {
+  const DeleteClick = () => {};
+
+  const PostClick = () => {};
+
   return (
     <Wrapper>
       <HeadDiv>
@@ -13,7 +17,10 @@ const MakeNotice = () => {
         <ContentInput placeholder='내용을 입력하세요' />
       </ContentDiv>
       <PostDiv>
-        <DefaultBtn width={106} />
+        <DeleteBtn onClick={DeleteClick}>취소</DeleteBtn>
+        <DefaultBtn width={106} onClick={PostClick}>
+          작성
+        </DefaultBtn>
       </PostDiv>
     </Wrapper>
   );
@@ -66,7 +73,24 @@ const ContentInput = styled.textarea`
 
 const PostDiv = styled.div`
   display: flex;
-  justify-content: space-end;
+  justify-content: flex-end;
+`;
+
+const DeleteBtn = styled.button`
+  cursor: pointer;
+  width: 106px;
+  height: 48px;
+  margin-right: 20px;
+  background: ${({ theme }) => theme.color.white};
+  border: 1px solid ${({ theme }) => theme.color.main};
+  border-radius: 8px;
+  color: ${({ theme }) => theme.color.main};
+  transition: all 0.3s;
+  :hover {
+    background: ${({ theme }) => theme.color.main};
+    border: 1px solid ${({ theme }) => theme.color.white};
+    color: ${({ theme }) => theme.color.white};
+  }
 `;
 
 export default MakeNotice;
