@@ -30,7 +30,14 @@ const MakeClass: FC = () => {
       <PostBox>
         <p>반 개설하기</p>
         <InputDiv>
-          <input type='text' onChange={onChange} value={input.grade} />
+          <select value={input.grade}>
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+            <option value='6'>6</option>
+          </select>
           <p style={{ margin: "20px 28px 0 0" }}>학년</p>
           <input type='number' onChange={onChange} value={input.Class} />
           <p style={{ margin: "20px 0 0 0 " }}>반</p>
@@ -72,6 +79,14 @@ const InputDiv = styled.div`
   margin-bottom: 78px;
   display: flex;
   justify-content: center;
+  > select {
+    width: 83px;
+    height: 48px;
+    padding: 0 0 0 20px;
+    margin-right: 12px;
+    border: 1px solid ${({ theme }) => theme.color.normal_gray};
+    border-radius: 12px;
+  }
   > input {
     width: 83px;
     height: 48px;
