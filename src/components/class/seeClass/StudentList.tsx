@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import styled from "@emotion/styled";
-import StudentForm from "./StudentForm";
 
 const StudentList: FC = () => {
   return (
@@ -15,9 +14,7 @@ const StudentList: FC = () => {
         <p>평균 거리(km)</p>
         <p>종합 거리(km)</p>
       </TypeMenuDiv>
-      <UserList>
-        <StudentForm />
-      </UserList>
+      <UserList></UserList>
     </Wrapper>
   );
 };
