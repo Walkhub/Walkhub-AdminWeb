@@ -1,5 +1,7 @@
 import React, { FC } from "react";
 import styled from "@emotion/styled";
+import useSWR from "swr";
+import fetcher from "@src/utils/function/fetcher";
 
 type GetClassCodeType = {
   class_code: string;
@@ -22,6 +24,9 @@ const GetUserList: ClassUserList[] = [
 ];
 
 const ClassBanner: FC = () => {
+  const { data } = useSWR("/classes/{section-id}", fetcher);
+
+  console.log(data);
   return (
     <Wrapper>
       <Banner>
