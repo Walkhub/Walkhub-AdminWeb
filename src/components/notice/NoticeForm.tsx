@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "@emotion/styled";
 
 const NoticeForm: FC = () => {
@@ -7,7 +7,13 @@ const NoticeForm: FC = () => {
       <FormHeadDiv>
         <div>
           <p>대충 공지 제목</p>
-          <MoreBtn />
+          <MoreBtn>
+            <Moresection>
+              <Option>
+                <p>삭제</p>
+              </Option>
+            </Moresection>
+          </MoreBtn>
         </div>
         <div>
           <UserDiv>
@@ -68,7 +74,56 @@ const FormHeadDiv = styled.div`
 const MoreBtn = styled.button`
   width: 24px;
   height: 24px;
+  cursor: pointer;
   background: black;
+`;
+
+const Moresection = styled.section`
+  width: 55px;
+  border-radius: 4px;
+  border: none;
+  box-shadow: 0px 3px 6px #00000029;
+  position: absolute;
+  top: 300px;
+  right: 280px;
+  background-color: #ffffff;
+  z-index: 99;
+`;
+
+const Option = styled.button`
+  width: 100%;
+  height: 36px;
+  font-style: normal;
+  font-weight: Regular;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 8px 12px;
+  color: #000000;
+  border: none;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  > p {
+    font-size: 14px;
+    font-weight: Regular;
+    color: #f04d51;
+  }
+  :after {
+    content: "";
+    width: 131.6px;
+    border-bottom: 1px solid #e0e0e0;
+    position: absolute;
+    margin-top: 31px;
+  }
+  :last-child {
+    :after {
+      width: 0;
+      height: 0;
+    }
+  }
 `;
 
 const HR = styled.hr`
