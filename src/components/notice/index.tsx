@@ -7,7 +7,6 @@ const Notice: FC = () => {
   const [makeState, setMakeState] = useState<boolean>(true);
   const MakeOnClick = () => {
     setMakeState(false);
-    console.log(makeState);
   };
 
   return (
