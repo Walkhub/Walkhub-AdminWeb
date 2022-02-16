@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from "react";
+import React, { useState, Dispatch, FC, SetStateAction } from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn/DefaultBtn";
 
@@ -6,33 +6,72 @@ interface Props {
   setMakeState: Dispatch<SetStateAction<boolean>>;
 }
 
+interface NoticePostType {
+  title: string;
+  content: string;
+  scope: string;
+}
+
 const MakeNotice: FC<Props> = ({ setMakeState }) => {
+  const [noticePost, setNoticePost] = useState<NoticePostType>({
+    title: "",
+    content: "",
+    scope: "all",
+  });
+
+  const NoticeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(noticePost);
+  };
+
+  const NoticeTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setNoticePost({
+      ...noticePost,
+      [name]: value,
+    });
+  };
+  const NoticeContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { value, name } = e.target;
+    setNoticePost({
+      ...noticePost,
+      [name]: value,
+    });
+  };
+
   const DeleteClick = () => {
     setMakeState(true);
   };
 
-  const PostClick = () => {};
-
   return (
-    <Wrapper>
+    <Wrapper onSubmit={NoticeSubmit}>
       <HeadDiv>
         <button>드롭다운</button>
       </HeadDiv>
       <ContentDiv>
-        <TitleInput type='text' placeholder='제목을 입력하세요' />
-        <ContentInput placeholder='내용을 입력하세요' />
+        <TitleInput
+          type='text'
+          name='title'
+          value={noticePost.title}
+          onChange={NoticeTitleChange}
+          placeholder='제목을 입력하세요'
+        />
+        <ContentInput
+          name='content'
+          value={noticePost.content}
+          onChange={NoticeContentChange}
+          placeholder='내용을 입력하세요'
+        />
       </ContentDiv>
       <PostDiv>
         <DeleteBtn onClick={DeleteClick}>취소</DeleteBtn>
-        <DefaultBtn width={106} onClick={PostClick}>
-          작성
-        </DefaultBtn>
+        <DefaultBtn width={106}>작성</DefaultBtn>
       </PostDiv>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
   width: 100%;
   padding: 40px 27px 40px 27px;
   border-radius: 12px;
