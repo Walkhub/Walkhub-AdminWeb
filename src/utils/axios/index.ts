@@ -19,15 +19,15 @@ instance.interceptors.response.use(
   function (response) {
     return response;
   },
-  async (error) => {
+  async error => {
     const { config, response } = error;
-    if (response.status === 401 && getToken().refrashToken) {
+    if (response.status === 401 && getToken().refreshToken) {
       try {
         const res = await axios({
           method: "put",
           url: "",
           data: {
-            refresh_token: getToken().refrashToken,
+            refresh_token: getToken().refreshToken,
           },
         });
         const { access_token, refresh_token } = res.data;
