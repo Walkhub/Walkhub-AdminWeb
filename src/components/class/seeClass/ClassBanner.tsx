@@ -83,6 +83,54 @@ const DetailBtn = styled.button`
   background: #ffffff;
 `;
 
+const Moresection = styled.section`
+  width: 55px;
+  border-radius: 4px;
+  border: none;
+  box-shadow: 0px 3px 6px #00000029;
+  position: absolute;
+  top: 300px;
+  right: 280px;
+  background-color: #ffffff;
+  z-index: 99;
+`;
+
+const Option = styled.button`
+  width: 100%;
+  height: 36px;
+  font-style: normal;
+  font-weight: Regular;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 8px 12px;
+  color: #000000;
+  border: none;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  > p {
+    font-size: 14px;
+    font-weight: Regular;
+    color: #f04d51;
+  }
+  :after {
+    content: "";
+    width: 131.6px;
+    border-bottom: 1px solid #e0e0e0;
+    position: absolute;
+    margin-top: 31px;
+  }
+  :last-child {
+    :after {
+      width: 0;
+      height: 0;
+    }
+  }
+`;
+
 const BannerDiv1 = styled.div`
   display: flex;
   justify-content: space-between;
