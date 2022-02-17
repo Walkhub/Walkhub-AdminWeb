@@ -10,7 +10,7 @@ type inputType = {
 const MakeClass: FC = () => {
   const [input, setInput] = useState<inputType>({
     grade: 0,
-    Class: 0,
+    Class: 1,
   });
 
   const { grade, Class } = input;
@@ -39,7 +39,12 @@ const MakeClass: FC = () => {
             <option value='6'>6</option>
           </select>
           <p style={{ margin: "20px 28px 0 0" }}>학년</p>
-          <input type='number' onChange={onChange} value={input.Class} />
+          <input
+            name='Class'
+            type='number'
+            onChange={onChange}
+            value={input.Class}
+          />
           <p style={{ margin: "20px 0 0 0 " }}>반</p>
         </InputDiv>
         <DefaultBtn>개설</DefaultBtn>
