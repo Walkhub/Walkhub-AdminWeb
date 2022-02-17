@@ -186,6 +186,7 @@ const TextDiv = styled.div`
     color: ${({ theme }) => theme.color.black};
   }
   > button {
+    cursor: pointer;
     background: none;
     font-size: 16px;
     font-weight: 600;
