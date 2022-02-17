@@ -104,29 +104,27 @@ const Moresection = styled.section`
   box-shadow: 0px 3px 6px #00000029;
   background-color: #ffffff;
   margin-top: 30px;
-
+  position: relative;
   z-index: 99;
 `;
 
 const Option = styled.button`
-  width: 100%;
+  width: 100px;
   height: 36px;
-  font-style: normal;
-  font-weight: Regular;
-  font-size: 14px;
   display: flex;
   align-items: center;
   text-align: center;
-  padding: 8px 12px;
-  color: #000000;
+  padding: 6px 10px;
+  border-radius: 4px;
+  box-shadow: 0px 3px 6px #00000029;
+  background: white;
+  position: absolute;
+  right: 88px;
   border: none;
-  background-color: transparent;
-  display: flex;
-  flex-direction: column;
   cursor: pointer;
   > p {
     font-size: 14px;
-    font-weight: Regular;
+    font-weight: normal;
     color: #f04d51;
   }
   :after {
