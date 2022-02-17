@@ -24,9 +24,11 @@ const GetUserList: ClassUserList[] = [
 ];
 
 const ClassBanner: FC = () => {
+  /*
   const { data } = useSWR("/classes/{section-id}", fetcher);
 
   console.log(data);
+  */
   return (
     <Wrapper>
       <Banner>

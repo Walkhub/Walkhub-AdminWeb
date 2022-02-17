@@ -1,8 +1,8 @@
 import React from "react";
-import ClassBanner from "@src/components/class/seeClass/ClassBanner";
+import Class from "@src/components/class/seeClass/Class";
 import { SWRConfig } from "swr";
 import fetcher from "@src/utils/function/fetcher";
-
+/*
 export async function getStaticProps() {
   const Class = await fetcher("/classes/{section-id}");
 
@@ -14,13 +14,13 @@ export async function getStaticProps() {
     },
   };
 }
-
-const SeeClass = ({ fallback }: any) => {
+*/
+const SeeClassPage = ({ fallback }: any) => {
   return (
     <SWRConfig value={{ fallback }}>
-      <ClassBanner />
+      <Class />
     </SWRConfig>
   );
 };
 
-export default SeeClass;
+export default SeeClassPage;
