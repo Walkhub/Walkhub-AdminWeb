@@ -24,8 +24,9 @@ const Dropdown: React.FC<PropsType> = ({
   };
   const OptionList = useMemo(
     () =>
-      optionList.map(item => (
+      optionList.map((item, index) => (
         <li
+          key={index}
           className='eachOption'
           onClick={() => {
             setSelectedValue(item);
