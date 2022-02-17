@@ -11,10 +11,11 @@ const Notice: FC = () => {
     setMakeState(false);
   };
 
+  /*
   const { data } = useSWR("/notices/lists", fetcher);
 
   console.log(data);
-
+*/
   return (
     <Wrapper>
       {makeState ? (

@@ -3,6 +3,7 @@ import fetcher from "@src/utils/function/fetcher";
 import React from "react";
 import { SWRConfig } from "swr";
 
+/*
 export async function getStaticProps() {
   const notices = await fetcher("/notices/lists");
 
@@ -13,7 +14,7 @@ export async function getStaticProps() {
       },
     },
   };
-}
+}*/
 
 const NoticePage = ({ fallback }: any) => {
   return (

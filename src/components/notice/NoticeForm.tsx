@@ -91,8 +91,7 @@ const Moresection = styled.section`
   border: none;
   box-shadow: 0px 3px 6px #00000029;
   position: absolute;
-  top: 300px;
-  right: 280px;
+  margin-top: 20px;
   background-color: #ffffff;
   z-index: 99;
 `;
