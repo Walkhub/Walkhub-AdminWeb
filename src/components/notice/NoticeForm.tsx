@@ -87,30 +87,24 @@ const MoreBtn = styled.button`
 
 const Moresection = styled.section`
   width: 55px;
-  border-radius: 4px;
-  border: none;
-  box-shadow: 0px 3px 6px #00000029;
-  position: absolute;
-  margin-top: 20px;
-  background-color: #ffffff;
+  position: relative;
+  margin-top: 30px;
   z-index: 99;
 `;
 
 const Option = styled.button`
   width: 100%;
   height: 36px;
-  font-style: normal;
-  font-weight: Regular;
-  font-size: 14px;
+  background-color: ${({ theme }) => theme.color.white};
   display: flex;
-  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 8px 12px;
-  color: #000000;
   border: none;
-  background-color: transparent;
-  display: flex;
-  flex-direction: column;
+  border-radius: 4px;
+  box-shadow: 0px 3px 6px #00000029;
+  position: absolute;
+  right: 30px;
   cursor: pointer;
   > p {
     font-size: 14px;
