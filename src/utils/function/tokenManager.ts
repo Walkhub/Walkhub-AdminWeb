@@ -14,7 +14,7 @@ export const setToken = (accessToken: string, refreshToken: string) => {
     httpOnly: process.env.NEXT_PUBLIC_HTTP_ONLY === "true",
   });
 
-  cookies.save("refrashToken", refreshToken, {
+  cookies.save("refreshToken", refreshToken, {
     path: "/",
     expires,
     httpOnly: process.env.NEXT_PUBLIC_HTTP_ONLY === "true",
@@ -23,10 +23,10 @@ export const setToken = (accessToken: string, refreshToken: string) => {
 
 export const removeToken = () => {
   cookies.remove("accessToken");
-  cookies.remove("refrashToken");
+  cookies.remove("refreshToken");
 };
 
 export const getToken = () => {
-  const { accessToken, refrashToken } = cookies.select();
-  return { accessToken, refrashToken };
+  const { accessToken, refreshToken } = cookies.select();
+  return { accessToken, refreshToken };
 };
