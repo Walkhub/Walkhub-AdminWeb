@@ -91,6 +91,7 @@ const DetailBtnDiv = styled.div`
 const DetailBtn = styled.button`
   width: 24px;
   height: 24px;
+  cursor: pointer;
   margin-top: 28px;
   margin-right: 20px;
   background: #ffffff;
@@ -101,10 +102,9 @@ const Moresection = styled.section`
   border-radius: 4px;
   border: none;
   box-shadow: 0px 3px 6px #00000029;
-  position: absolute;
-  top: 120px;
-  right: 185px;
   background-color: #ffffff;
+  margin-top: 30px;
+
   z-index: 99;
 `;
 
