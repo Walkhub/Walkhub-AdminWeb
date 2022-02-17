@@ -23,6 +23,14 @@ const MakeClass: FC = () => {
     });
   };
 
+  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = e.target;
+    setInput({
+      ...input,
+      [name]: value,
+    });
+  };
+
   const data = { grade: grade, class: Class };
 
   return (
@@ -30,7 +38,7 @@ const MakeClass: FC = () => {
       <PostBox>
         <p>반 개설하기</p>
         <InputDiv>
-          <select value={input.grade}>
+          <select name='grade' onChange={onSelectChange} value={input.grade}>
             <option value='1'>1</option>
             <option value='2'>2</option>
             <option value='3'>3</option>
