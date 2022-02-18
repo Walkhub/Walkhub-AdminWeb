@@ -8,7 +8,7 @@ interface PropsType {
   selectedValue: string;
   setSelectedValue: (value: string) => void;
   optionList: string[];
-  clickable: boolean;
+  disable: boolean;
 }
 const Dropdown: React.FC<PropsType> = ({
   width,
@@ -16,7 +16,7 @@ const Dropdown: React.FC<PropsType> = ({
   selectedValue,
   setSelectedValue,
   optionList,
-  clickable,
+  disable,
 }) => {
   const [isFold, setIsFold] = useState(false);
   const reverseDropdownStatus = () => {
@@ -51,7 +51,7 @@ const Dropdown: React.FC<PropsType> = ({
         </Selected>
         <button
           className='arrowButton'
-          onClick={() => clickable && reverseDropdownStatus()}
+          onClick={() => disable && reverseDropdownStatus()}
         >
           y
         </button>
@@ -66,8 +66,8 @@ const Wrapper = styled.label<{
   heigth: number;
   isFold: boolean;
 }>`
-  width: ${props => props.width}px;
-  height: ${props => props.heigth}px;
+  width: ${({ width }) => width}px;
+  height: ${({ heigth }) => heigth}px;
   border: 1px solid ${({ theme }) => theme.color.normal_gray};
   border: 1px solid
     ${props =>
@@ -106,7 +106,7 @@ const Selected = styled.div<{
 const Options = styled.ul<{
   width: string;
 }>`
-  width: ${props => props.width}px;
+  width: ${({ width }) => width}px;
   position: absolute;
   border-radius: 12px;
   border: 1px solid ${({ theme }) => theme.color.normal_gray};
