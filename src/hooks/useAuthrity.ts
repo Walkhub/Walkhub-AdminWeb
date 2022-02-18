@@ -1,8 +1,5 @@
-import { useEffect, useLayoutEffect, useState } from "react";
-
-const ALL_Authrity = ["USER", "TEACHER", "ROOT", "SU"] as const;
-type AuthrityTuple = typeof ALL_Authrity;
-type AuthrityType = AuthrityTuple[number];
+import { ALL_Authrity, AuthrityType } from "@src/utils/interfaces/auth";
+import { useEffect, useState } from "react";
 
 const useAuthrity = () => {
   const [authrityState, setState] = useState<AuthrityType>("USER");
