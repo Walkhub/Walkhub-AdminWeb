@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import ToastError from "../function/errorMessage";
 import { setToken, removeToken, getToken } from "../function/tokenManager";
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -45,7 +46,7 @@ instance.interceptors.response.use(
           return axios(config);
         } catch (err: any) {
           if (err.response.status === 401) {
-            alert("다시 로그인해주세요.");
+            ToastError("다시 로그인해주세요.");
             window.location.href = "/login";
             removeToken();
           }
