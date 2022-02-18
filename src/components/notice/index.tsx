@@ -16,6 +16,7 @@ const Notice: FC = () => {
 
   console.log(data);
 */
+
   return (
     <Wrapper>
       {makeState ? (

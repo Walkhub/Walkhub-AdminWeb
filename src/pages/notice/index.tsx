@@ -14,7 +14,8 @@ export async function getStaticProps() {
       },
     },
   };
-}*/
+}
+*/
 
 const NoticePage = ({ fallback }: any) => {
   return (
