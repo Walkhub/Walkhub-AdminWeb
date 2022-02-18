@@ -13,7 +13,7 @@ const Login = () => {
     account_id: "",
     password: "",
   });
-  const { setAuthrity } = useAuthrity();
+  const { setAuthority } = useAuthrity();
   const router = useRouter();
 
   const loginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,7 +46,7 @@ const Login = () => {
   };
 
   const successHandler = (info: LoginResponseType) => {
-    setAuthrity(info.authority);
+    setAuthority(info.authority);
     setToken(info.access_token, info.refresh_token);
     info.authority === "USER"
       ? router.push("/login/certification")

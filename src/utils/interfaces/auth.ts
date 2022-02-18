@@ -3,11 +3,11 @@ export interface TokenType {
   refresh_token: string;
 }
 
-export const ALL_Authrity = ["USER", "TEACHER", "ROOT", "SU"] as const;
+export const ALL_Authority = ["USER", "TEACHER", "ROOT", "SU"] as const;
 
-type AuthrityTuple = typeof ALL_Authrity;
+type AuthorityTuple = typeof ALL_Authority;
 
-export type AuthrityType = AuthrityTuple[number];
+export type AuthorityType = AuthorityTuple[number];
 
 export interface LoginInfoType {
   account_id: string;
@@ -16,7 +16,7 @@ export interface LoginInfoType {
 
 export interface LoginResponseType extends TokenType {
   expired_at: string;
-  authority: AuthrityType;
+  authority: AuthorityType;
   height: number;
   weight: number;
   sex: "MALE" | "FEMALE" | "X";

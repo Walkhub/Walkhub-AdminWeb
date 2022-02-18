@@ -1,27 +1,27 @@
-import { ALL_Authrity, AuthrityType } from "@src/utils/interfaces/auth";
+import { ALL_Authority, AuthorityType } from "@src/utils/interfaces/auth";
 import { useEffect, useState } from "react";
 
 const useAuthrity = () => {
-  const [authrityState, setState] = useState<AuthrityType>("USER");
+  const [authorityState, setState] = useState<AuthorityType>("USER");
   useEffect(() => {
     const data = localStorage.getItem("authrity");
-    if (data && isAuthrity(data)) {
+    if (data && isAuthority(data)) {
       setState(data);
     }
   }, []);
 
-  const isAuthrity = (authrity: string): authrity is AuthrityType => {
-    return ALL_Authrity.includes(authrity as AuthrityType);
+  const isAuthority = (authrity: string): authrity is AuthorityType => {
+    return ALL_Authority.includes(authrity as AuthorityType);
   };
 
-  const setAuthrity = (authrity: AuthrityType) => {
+  const setAuthority = (authrity: AuthorityType) => {
     authrity
       ? localStorage.setItem("authrity", authrity)
       : localStorage.removeItem("authrity");
     setState(authrity);
   };
 
-  return { authrityState, setAuthrity };
+  return { authorityState, setAuthority };
 };
 
 export default useAuthrity;
