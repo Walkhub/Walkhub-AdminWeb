@@ -4,6 +4,8 @@ import { setToken } from "@src/utils/function/tokenManager";
 import RootProvider from "@src/utils/function/RootProvider";
 import { LoginContextProvider } from "@src/contexts";
 import StyleProvider from "@src/styles";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -15,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       ]}
     >
       <Component {...pageProps} />
+      <ToastContainer theme='colored' />
     </RootProvider>
   );
 }
