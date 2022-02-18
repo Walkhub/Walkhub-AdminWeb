@@ -34,6 +34,11 @@ const CodeInputBox: React.FC<Props> = ({ inputRef }) => {
           ref={elem => (inputRef.current[i] = elem)}
           maxLength={1}
           onKeyDown={onKeyDownNextChange}
+          onChange={e => {
+            if (!isAlpa.test(e.target.value)) {
+              e.target.value = "";
+            }
+          }}
         />
       ))}
     </InputArea>
