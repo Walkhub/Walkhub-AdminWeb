@@ -1,8 +1,9 @@
 import React, { useState, Dispatch, FC, SetStateAction } from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn/DefaultBtn";
-import { createNotice, deleteNotice } from "@src/utils/apis/notices/index";
+import { createNotice } from "@src/utils/apis/notices/index";
 import axios from "axios";
+import ToastError from "@src/utils/function/errorMessage";
 
 interface Props {
   setMakeState: Dispatch<SetStateAction<boolean>>;
@@ -21,27 +22,26 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
     scope: "",
   });
 
-  const noticeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const noticeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
       createNotice(noticePost.title, noticePost.content, noticePost.scope);
-    } catch (e) {}
+    } catch (e) {
+      errorhandler(e);
+    }
   };
 
   const errorhandler = (e: unknown) => {
     if (axios.isAxiosError(e) && e.response) {
       switch (e.response.status) {
         case 400:
-          alert("모든 빈칸을 채워주세요");
-          return;
+          return ToastError("모든 빈칸을 채워주세요");
         case 401:
-          alert("인증에 실패하였습니다.");
-          return;
+          return ToastError("인증에 실패하였습니다.");
         case 403:
-          alert("권한이 존재하지 않습니다.");
-          return;
+          return ToastError("권한이 존재하지 않습니다.");
         case 500:
-          alert("관리자에게 문의해주세요");
+          ToastError("관리자에게 문의해주세요");
       }
     } else {
       console.log(e);
