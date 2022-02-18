@@ -1,12 +1,22 @@
 import styled from "@emotion/styled";
+import useAuthrity from "@src/hooks/useAuthrity";
 import { certificationTeacherCode } from "@src/utils/apis/teachers";
+import ToastError from "@src/utils/function/errorMessage";
 import { setToken } from "@src/utils/function/tokenManager";
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef } from "react";
 import CodeInputBox from "./CodeInputBox";
+
 const Certification = () => {
   const router = useRouter();
+  const { authorityState, setAuthority } = useAuthrity();
+  useEffect(() => {
+    if (authorityState !== "USER") {
+      ToastError("잘못된 경로입니다");
+      router.back();
+    }
+  }, [authorityState, router]);
 
   const inputRef = useRef<HTMLInputElement[] | null[]>([
     null,
@@ -18,8 +28,58 @@ const Certification = () => {
     null,
   ]);
 
-  const onSubmitCertification = (e: FormEvent<HTMLFormElement>) => {
+  const inputArrayToInputValue = () => {
+    const dataArray: string[] = [];
+    inputRef.current.map(props => {
+      if (props instanceof HTMLInputElement) {
+        dataArray.push(props.value);
+      }
+    });
+    return dataArray.join("");
+  };
+
+  const onSubmitCertification = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const submitData = inputArrayToInputValue();
+    try {
+      const data = await certificationTeacherCode(submitData);
+      setToken(data.access_token, data.refresh_token);
+      setAuthority("TEACHER");
+      router.push("/");
+    } catch (e) {
+      errorHandler(e);
+    }
+  };
+
+  const inputArrayReset = () => {
+    inputRef.current.map(props => {
+      if (props instanceof HTMLInputElement) {
+        props.value = "";
+      }
+    });
+    inputRef.current[0]?.focus();
+  };
+
+  const errorHandler = (err: unknown) => {
+    console.log(err);
+    if (axios.isAxiosError(err) && err.response) {
+      switch (err.response.status) {
+        case 400:
+          return ToastError("관리자에게 문의해주세요!");
+        case 403:
+          ToastError("잘못된 접근입니다");
+          return router.push("/");
+        case 404:
+          ToastError("인증번호를 다시 입력해주세요");
+          return inputArrayReset();
+        case 500:
+          return ToastError(
+            "예기치 못한 에러가 발생하였습니다 관리자에게 문의해주세요"
+          );
+      }
+    } else {
+      ToastError("네트워크연결을 다시 확인해주세요");
+    }
   };
 
   return (
