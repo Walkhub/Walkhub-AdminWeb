@@ -1,6 +1,8 @@
 import React, { useState, Dispatch, FC, SetStateAction } from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn/DefaultBtn";
+import { createNotice, deleteNotice } from "@src/utils/apis/notices/index";
+import axios from "axios";
 
 interface Props {
   setMakeState: Dispatch<SetStateAction<boolean>>;
@@ -16,22 +18,45 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
   const [noticePost, setNoticePost] = useState<NoticePostType>({
     title: "",
     content: "",
-    scope: "all",
+    scope: "",
   });
 
-  const NoticeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(noticePost);
+  const noticeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      createNotice(noticePost.title, noticePost.content, noticePost.scope);
+    } catch (e) {}
   };
 
-  const NoticeTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const errorhandler = (e: unknown) => {
+    if (axios.isAxiosError(e) && e.response) {
+      switch (e.response.status) {
+        case 400:
+          alert("모든 빈칸을 채워주세요");
+          return;
+        case 401:
+          alert("인증에 실패하였습니다.");
+          return;
+        case 403:
+          alert("권한이 존재하지 않습니다.");
+          return;
+        case 500:
+          alert("관리자에게 문의해주세요");
+      }
+    } else {
+      console.log(e);
+      alert("네트워크 연결을 확인해주세요.");
+    }
+  };
+
+  const noticeTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setNoticePost({
       ...noticePost,
       [name]: value,
     });
   };
-  const NoticeContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const noticeContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value, name } = e.target;
     setNoticePost({
       ...noticePost,
@@ -39,32 +64,47 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
     });
   };
 
-  const DeleteClick = () => {
+  const noticeScopeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = e.target;
+    setNoticePost({
+      ...noticePost,
+      [name]: value,
+    });
+  };
+
+  const deleteClick = () => {
     setMakeState(true);
   };
 
   return (
-    <Wrapper onSubmit={NoticeSubmit}>
+    <Wrapper onSubmit={noticeSubmit}>
       <HeadDiv>
-        <button>드롭다운</button>
+        <select
+          name='scope'
+          value={noticePost.scope}
+          onChange={noticeScopeChange}
+        >
+          <option>ALL</option>
+          <option>SCHOOL</option>
+        </select>
       </HeadDiv>
       <ContentDiv>
         <TitleInput
           type='text'
           name='title'
           value={noticePost.title}
-          onChange={NoticeTitleChange}
+          onChange={noticeTitleChange}
           placeholder='제목을 입력하세요'
         />
         <ContentInput
           name='content'
           value={noticePost.content}
-          onChange={NoticeContentChange}
+          onChange={noticeContentChange}
           placeholder='내용을 입력하세요'
         />
       </ContentDiv>
       <PostDiv>
-        <DeleteBtn onClick={DeleteClick}>취소</DeleteBtn>
+        <DeleteBtn onClick={deleteClick}>취소</DeleteBtn>
         <DefaultBtn width={106}>작성</DefaultBtn>
       </PostDiv>
     </Wrapper>
@@ -85,7 +125,7 @@ const HeadDiv = styled.div`
   display: flex;
   justify-content: flex-start;
   margin-bottom: 20px;
-  > button {
+  > select {
     width: 82px;
     height: 24px;
     color: black;
