@@ -1,13 +1,18 @@
 import axios, { AxiosError } from "axios";
-import cookies from "react-cookies";
 import { setToken, removeToken, getToken } from "../function/tokenManager";
 const instance = axios.create({
-  baseURL: "",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   timeout: 10000,
 });
 
 instance.interceptors.request.use(
-  function (config) {
+  async function (config) {
+    const accessToken = await getToken().accessToken;
+    accessToken
+      ? (config.headers = {
+          Authorization: `Bearer ${accessToken}`,
+        })
+      : null;
     return config;
   },
   function (error: AxiosError) {
@@ -20,31 +25,33 @@ instance.interceptors.response.use(
     return response;
   },
   async error => {
-    const { config, response } = error;
-    if (response.status === 401 && getToken().refreshToken) {
-      try {
-        const res = await axios({
-          method: "put",
-          url: "",
-          data: {
-            refresh_token: getToken().refreshToken,
-          },
-        });
-        const { access_token, refresh_token } = res.data;
+    if (axios.isAxiosError(error) && error.response) {
+      const { config, response } = error;
+      if (response.status === 401 && getToken().refreshToken) {
+        try {
+          const res = await axios({
+            method: "patch",
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/users/token`,
+            headers: {
+              "Refresh-Token": `Bearer ${getToken().refreshToken}`,
+            },
+          });
 
-        setToken(access_token, refresh_token);
-        config.headers.Authorization = `Bearer ${access_token}`;
+          const { access_token, refresh_token } = res.data;
 
-        return axios(config);
-      } catch (err: any) {
-        if (err.response.status === 401) {
-          alert("다시 로그인해주세요.");
-          window.location.href = "/login";
-          removeToken();
+          setToken(access_token, refresh_token);
+          if (config.headers)
+            config.headers.Authorization = `Bearer ${access_token}`;
+          return axios(config);
+        } catch (err: any) {
+          if (err.response.status === 401) {
+            alert("다시 로그인해주세요.");
+            window.location.href = "/login";
+            removeToken();
+          }
         }
-      }
+      } else return Promise.reject(error);
     }
-    return Promise.reject(error);
   }
 );
 
