@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import useAuthrity from "@src/hooks/useAuthrity";
 import { login } from "@src/utils/apis/auth";
-import instance from "@src/utils/axios";
+import ToastError from "@src/utils/function/errorMessage";
 import { setToken } from "@src/utils/function/tokenManager";
 import { LoginInfoType, LoginResponseType } from "@src/utils/interfaces/auth";
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState<LoginInfoType>({
@@ -30,22 +30,18 @@ const Login = () => {
     if (axios.isAxiosError(e) && e.response) {
       switch (e.response.status) {
         case 400:
-          alert("모든 빈칸을 채워주세요.");
-          return;
+          return ToastError("모든 빈칸을 채워주세요.");
         case 401:
-          alert("비밀번호를 다시 확인해 주세요.");
-          setLoginInfo({ ...loginInfo, password: "" });
-          return;
+          ToastError("비밀번호를 다시 확인해 주세요.");
+          return setLoginInfo({ ...loginInfo, password: "" });
         case 404:
-          alert("회원이 존재하지 않습니다. 아이디를 다시 확인해 주세요");
-          setLoginInfo({ password: "", account_id: "" });
-          return;
+          ToastError("회원이 존재하지 않습니다. 아이디를 다시 확인해 주세요");
+          return setLoginInfo({ password: "", account_id: "" });
         case 500:
-          alert("관리자에게 문의해주세요");
+          return ToastError("관리자에게 문의해주세요");
       }
     } else {
-      console.log(e);
-      alert("네트워크 연결을 확인해주세요.");
+      ToastError("네트워크 연결을 확인해주세요.");
     }
   };
 
