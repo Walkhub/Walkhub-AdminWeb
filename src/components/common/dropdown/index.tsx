@@ -8,7 +8,7 @@ interface PropsType {
   selectedValue: string;
   setSelectedValue: (value: string) => void;
   optionList: string[];
-  disable: boolean;
+  disabled: boolean;
 }
 const Dropdown: React.FC<PropsType> = ({
   width,
@@ -16,7 +16,7 @@ const Dropdown: React.FC<PropsType> = ({
   selectedValue,
   setSelectedValue,
   optionList,
-  disable,
+  disabled,
 }) => {
   const [isFold, setIsFold] = useState(false);
   const reverseDropdownStatus = () => {
@@ -51,7 +51,7 @@ const Dropdown: React.FC<PropsType> = ({
         </Selected>
         <button
           className='arrowButton'
-          onClick={() => disable && reverseDropdownStatus()}
+          onClick={() => !disabled && reverseDropdownStatus()}
         >
           y
         </button>
