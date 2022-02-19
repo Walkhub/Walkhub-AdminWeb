@@ -1,7 +1,7 @@
 import React, { useState, Dispatch, FC, SetStateAction } from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn";
-import { createNotice } from "@src/utils/apis/notices/index";
+import { createNotice } from "@src/utils/apis/notices";
 import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
 
@@ -53,22 +53,11 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
     }
   };
 
-  const noticeTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target;
-    setNoticePost({
-      ...noticePost,
-      [name]: value,
-    });
-  };
-  const noticeContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value, name } = e.target;
-    setNoticePost({
-      ...noticePost,
-      [name]: value,
-    });
-  };
-
-  const noticeScopeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const noticeInfoChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { value, name } = e.target;
     setNoticePost({
       ...noticePost,
@@ -86,7 +75,7 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
         <select
           name='scope'
           value={noticePost.scope}
-          onChange={noticeScopeChange}
+          onChange={noticeInfoChange}
         >
           <option>ALL</option>
           <option>SCHOOL</option>
@@ -97,13 +86,13 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
           type='text'
           name='title'
           value={noticePost.title}
-          onChange={noticeTitleChange}
+          onChange={noticeInfoChange}
           placeholder='제목을 입력하세요'
         />
         <ContentInput
           name='content'
           value={noticePost.content}
-          onChange={noticeContentChange}
+          onChange={noticeInfoChange}
           placeholder='내용을 입력하세요'
         />
       </ContentDiv>
