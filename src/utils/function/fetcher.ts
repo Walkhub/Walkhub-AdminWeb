@@ -1,5 +1,10 @@
-import axios from 'axios'
+import instance from "../axios";
 
-const fetcher = (url: string) => axios.get(url).then(res => res.data);
+const fetcher = (url: string) => {
+  return instance
+    .get(url)
+    .then(res => res.data)
+    .catch(err => err.response.status);
+};
 
 export default fetcher;
