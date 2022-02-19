@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
-import useAuthrity from "@src/hooks/useAuthrity";
+import useAuthrity from "@src/hooks/useAuthority";
 import { certificationTeacherCode } from "@src/utils/apis/teachers";
 import ToastError from "@src/utils/function/errorMessage";
+import ToastSuccess from "@src/utils/function/successMessage";
 import { setToken } from "@src/utils/function/tokenManager";
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
@@ -39,6 +40,7 @@ const Certification = () => {
       setToken(data.access_token, data.refresh_token);
       setAuthority("TEACHER");
       router.push("/");
+      ToastSuccess("로그인에 성공하였습니다!");
     } catch (e) {
       errorHandler(e);
     }
