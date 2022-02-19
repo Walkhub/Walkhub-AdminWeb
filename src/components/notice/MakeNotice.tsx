@@ -1,6 +1,6 @@
 import React, { useState, Dispatch, FC, SetStateAction } from "react";
 import styled from "@emotion/styled";
-import DefaultBtn from "../common/defaultBtn/DefaultBtn";
+import DefaultBtn from "../common/defaultBtn";
 import { createNotice } from "@src/utils/apis/notices/index";
 import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
@@ -23,9 +23,13 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
   });
 
   const noticeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      createNotice(noticePost.title, noticePost.content, noticePost.scope);
+      await createNotice(
+        noticePost.title,
+        noticePost.content,
+        noticePost.scope
+      );
     } catch (e) {
       errorhandler(e);
     }
@@ -45,7 +49,7 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
       }
     } else {
       console.log(e);
-      alert("네트워크 연결을 확인해주세요.");
+      ToastError("네트워크 연결을 확인해주세요.");
     }
   };
 
