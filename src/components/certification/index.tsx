@@ -40,7 +40,7 @@ const Certification = () => {
       setToken(data.access_token, data.refresh_token);
       setAuthority("TEACHER");
       router.push("/");
-      ToastSuccess("로그인에 성공하였습니다!");
+      ToastSuccess("인증에 성공하였습니다.");
     } catch (e) {
       errorHandler(e);
     }
