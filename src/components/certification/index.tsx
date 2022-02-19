@@ -1,17 +1,17 @@
 import styled from "@emotion/styled";
-import useAuthrity from "@src/hooks/useAuthority";
+import useAuthority from "@src/hooks/useAuthority";
 import { certificationTeacherCode } from "@src/utils/apis/teachers";
 import ToastError from "@src/utils/function/errorMessage";
 import ToastSuccess from "@src/utils/function/successMessage";
 import { setToken } from "@src/utils/function/tokenManager";
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
-import { FormEvent, useEffect, useRef } from "react";
+import { FormEvent, useRef } from "react";
 import CodeInputBox from "./CodeInputBox";
 
 const Certification = () => {
   const router = useRouter();
-  const { setAuthority } = useAuthrity();
+  const { setAuthority } = useAuthority();
   const inputRef = useRef<HTMLInputElement[] | null[]>([
     null,
     null,
