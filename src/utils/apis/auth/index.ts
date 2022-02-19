@@ -1,17 +1,19 @@
 import instance from "@src/utils/axios";
 import { getToken } from "@src/utils/function/tokenManager";
+import { LoginInfoType, LoginResponseType } from "@src/utils/interfaces/auth";
+import axios, { AxiosResponse } from "axios";
 
-export const login = async (
-  id: string,
-  password: string,
-  device_token: string
-) => {
+export const login = async (loginInfo: LoginInfoType) => {
   try {
-    return await instance.post("/users/token", {
-      account_id: id,
-      password: password,
-      device_token: device_token,
-    });
+    const response: AxiosResponse<LoginResponseType> = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/users/token`,
+      {
+        ...loginInfo,
+        device_token: "dmlcks",
+      }
+    );
+
+    return response.data;
   } catch (error) {
     throw error;
   }

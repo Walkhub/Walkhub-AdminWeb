@@ -1,25 +1,61 @@
 import styled from "@emotion/styled";
+import useAuthority from "@src/hooks/useAuthority";
+import { login } from "@src/utils/apis/auth";
+import ToastError from "@src/utils/function/errorMessage";
+import { setToken } from "@src/utils/function/tokenManager";
+import { LoginInfoType, LoginResponseType } from "@src/utils/interfaces/auth";
+import axios from "axios";
+import { useRouter } from "next/dist/client/router";
 import React, { useState } from "react";
-
-interface LoginInfoType {
-  id: string;
-  password: string;
-}
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState<LoginInfoType>({
-    id: "",
+    account_id: "",
     password: "",
   });
+  const { setAuthority } = useAuthority();
+  const router = useRouter();
 
-  const loginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const loginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(loginInfo);
+    try {
+      const info = await login(loginInfo);
+      successHandler(info);
+    } catch (e) {
+      errorHandler(e);
+    }
+  };
+
+  const errorHandler = (e: unknown) => {
+    if (axios.isAxiosError(e) && e.response) {
+      switch (e.response.status) {
+        case 400:
+          return ToastError("모든 빈칸을 채워주세요.");
+        case 401:
+          ToastError("비밀번호를 다시 확인해 주세요.");
+          return setLoginInfo({ ...loginInfo, password: "" });
+        case 404:
+          ToastError("회원이 존재하지 않습니다. 아이디를 다시 확인해 주세요");
+          return setLoginInfo({ password: "", account_id: "" });
+        case 500:
+          return ToastError("관리자에게 문의해주세요");
+      }
+    } else {
+      ToastError("네트워크 연결을 확인해주세요.");
+    }
+  };
+
+  const successHandler = (info: LoginResponseType) => {
+    setAuthority(info.authority);
+    setToken(info.access_token, info.refresh_token);
+    info.authority === "USER"
+      ? router.push("/login/certification")
+      : router.push("/");
   };
 
   const loginInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    if (name === "id" || name === "password") {
+    if (name === "account_id" || name === "password") {
       setLoginInfo({
         ...loginInfo,
         [name]: value,
@@ -34,9 +70,9 @@ const Login = () => {
         <InputArea>
           <input
             placeholder='아이디'
-            name='id'
+            name='account_id'
             onChange={loginInfoChange}
-            value={loginInfo.id}
+            value={loginInfo.account_id}
           />
           <input
             placeholder='비밀번호'
@@ -51,11 +87,6 @@ const Login = () => {
           <p>아이디 저장</p>
         </IdSaveBox>
         <LoginButton type='submit' value='로그인'></LoginButton>
-        <OptionalBox>
-          <p>아이디 찾기</p>
-          <i></i>
-          <p>비밀번호 변경</p>
-        </OptionalBox>
       </LoginBox>
     </Container>
   );
@@ -143,19 +174,6 @@ const LoginButton = styled.input`
   align-items: center;
   justify-content: center;
   margin-bottom: 54px;
-`;
-
-const OptionalBox = styled.div`
-  display: flex;
-  gap: 32px;
-  color: ${({ theme }) => theme.color.normal_gray};
-  font-size: 14px;
-  > p {
-    cursor: pointer;
-  }
-  > i {
-    border-right: 1px solid ${({ theme }) => theme.color.normal_gray};
-  }
 `;
 
 export default Login;
