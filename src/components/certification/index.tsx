@@ -10,14 +10,7 @@ import CodeInputBox from "./CodeInputBox";
 
 const Certification = () => {
   const router = useRouter();
-  const { authorityState, setAuthority } = useAuthrity();
-  useEffect(() => {
-    if (authorityState !== "USER") {
-      ToastError("잘못된 경로입니다");
-      router.back();
-    }
-  }, [authorityState, router]);
-
+  const { setAuthority } = useAuthrity();
   const inputRef = useRef<HTMLInputElement[] | null[]>([
     null,
     null,
@@ -61,14 +54,13 @@ const Certification = () => {
   };
 
   const errorHandler = (err: unknown) => {
-    console.log(err);
     if (axios.isAxiosError(err) && err.response) {
       switch (err.response.status) {
         case 400:
           return ToastError("관리자에게 문의해주세요!");
         case 403:
           ToastError("잘못된 접근입니다");
-          return router.push("/");
+          return router.push("/login");
         case 404:
           ToastError("인증번호를 다시 입력해주세요");
           return inputArrayReset();
