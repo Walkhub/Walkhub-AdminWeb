@@ -1,6 +1,11 @@
 import React, { FC, useState } from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../../common/defaultBtn/DefaultBtn";
+import { createClass } from "@src/utils/apis/teachers";
+import ToastError from "@src/utils/function/errorMessage";
+import axios from "axios";
+import { useRouter } from "next/router";
+import DropDown from "../../common/dropdown";
 
 type inputType = {
   grade: number;
@@ -8,37 +13,70 @@ type inputType = {
 };
 
 const MakeClass: FC = () => {
-  const [input, setInput] = useState<inputType>({
+  const [classInfo, setClassInfo] = useState<inputType>({
     grade: 0,
     Class: 1,
   });
 
-  const { grade, Class } = input;
+  const router = useRouter();
+
+  const classSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await createClass(classInfo.grade, classInfo.Class);
+      successHandler();
+    } catch (e) {
+      errorHandler(e);
+    }
+  };
+
+  const errorHandler = (e: unknown) => {
+    if (axios.isAxiosError(e) && e.response) {
+      switch (e.response.status) {
+        case 400:
+          return ToastError("모든 빈칸을 채워주세요.");
+        case 401:
+          return ToastError("인증에 실패하였습니다.");
+        case 403:
+          return ToastError("권한이 없습니다.");
+        case 409:
+          return ToastError("중복된 클래스입니다.");
+      }
+    } else {
+      ToastError("네트워크 연결을 확인해주세요.");
+    }
+  };
+
+  const successHandler = () => {
+    router.push("/");
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    setInput({
-      ...input,
+    setClassInfo({
+      ...classInfo,
       [name]: value,
     });
   };
 
   const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value, name } = e.target;
-    setInput({
-      ...input,
+    setClassInfo({
+      ...classInfo,
       [name]: value,
     });
   };
 
-  const data = { grade: grade, class: Class };
-
   return (
-    <Wrapper>
+    <Wrapper onSubmit={classSubmit}>
       <PostBox>
         <p>반 개설하기</p>
         <InputDiv>
-          <select name='grade' onChange={onSelectChange} value={input.grade}>
+          <select
+            name='grade'
+            onChange={onSelectChange}
+            value={classInfo.grade}
+          >
             <option value='1'>1</option>
             <option value='2'>2</option>
             <option value='3'>3</option>
@@ -51,7 +89,7 @@ const MakeClass: FC = () => {
             name='Class'
             type='number'
             onChange={onChange}
-            value={input.Class}
+            value={classInfo.Class}
           />
           <p style={{ margin: "20px 0 0 0 " }}>반</p>
         </InputDiv>
