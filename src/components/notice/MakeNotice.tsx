@@ -48,7 +48,6 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
           ToastError("관리자에게 문의해주세요");
       }
     } else {
-      console.log(e);
       ToastError("네트워크 연결을 확인해주세요.");
     }
   };
