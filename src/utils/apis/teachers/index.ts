@@ -1,8 +1,14 @@
 import instance from "@src/utils/axios";
+import { AxiosResponse } from "axios";
+import { TokenType } from "@src/utils/interfaces/auth";
 
-export const createTeacherCode = async () => {
+export const certificationTeacherCode = async (code: string) => {
   try {
-    return await instance.patch("/teachers/verification-codes");
+    const res: AxiosResponse<TokenType> = await instance.patch(
+      "/teachers/verification-codes",
+      { code }
+    );
+    return res.data;
   } catch (error) {
     throw error;
   }

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import useAuthrity from "@src/hooks/useAuthrity";
+import useAuthority from "@src/hooks/useAuthority";
 import { login } from "@src/utils/apis/auth";
 import ToastError from "@src/utils/function/errorMessage";
 import { setToken } from "@src/utils/function/tokenManager";
@@ -13,7 +13,7 @@ const Login = () => {
     account_id: "",
     password: "",
   });
-  const { setAuthrity } = useAuthrity();
+  const { setAuthority } = useAuthority();
   const router = useRouter();
 
   const loginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,7 +46,7 @@ const Login = () => {
   };
 
   const successHandler = (info: LoginResponseType) => {
-    setAuthrity(info.authority);
+    setAuthority(info.authority);
     setToken(info.access_token, info.refresh_token);
     info.authority === "USER"
       ? router.push("/login/certification")
