@@ -44,8 +44,8 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
           return ToastError("인증에 실패하였습니다.");
         case 403:
           return ToastError("권한이 존재하지 않습니다.");
-        case 500:
-          ToastError("관리자에게 문의해주세요");
+        default:
+          return ToastError("관리자에게 문의해주세요.");
       }
     } else {
       ToastError("네트워크 연결을 확인해주세요.");
