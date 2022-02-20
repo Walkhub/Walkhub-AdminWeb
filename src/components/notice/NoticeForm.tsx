@@ -29,7 +29,7 @@ const NoticeForm: FC = () => {
           <EtcDiv>
             <Kindmsg>전체</Kindmsg>
             <div>
-              <Datemsg style={{ margin: "0 8px 0 0" }}>2022-01-30</Datemsg>
+              <Datemsg>2022-01-30</Datemsg>
               <Datemsg>21:50:20</Datemsg>
             </div>
           </EtcDiv>
@@ -108,13 +108,13 @@ const Option = styled.button`
   cursor: pointer;
   > p {
     font-size: 14px;
-    font-weight: Regular;
+    font-weight: 400;
     color: #f04d51;
   }
   :after {
     content: "";
     width: 131.6px;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid ${({ theme }) => theme.color.bright_gray};
     position: absolute;
     margin-top: 31px;
   }
@@ -146,7 +146,7 @@ const UserDiv = styled.div`
   }
   > p {
     font-size: 16px;
-    font-weight: Regular;
+    font-weight: 400;
     color: ${({ theme }) => theme.color.black};
   }
 `;
@@ -156,6 +156,7 @@ const EtcDiv = styled.div`
   flex-direction: column;
   > div {
     display: flex;
+    gap: 8px;
   }
 `;
 
@@ -175,7 +176,7 @@ const TextDiv = styled.div`
   width: 100%;
   > p {
     font-size: 16px;
-    font-weight: Regular;
+    font-weight: 400;
     color: ${({ theme }) => theme.color.black};
   }
   > button {

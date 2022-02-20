@@ -96,7 +96,9 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
         />
       </ContentDiv>
       <PostDiv>
-        <DeleteBtn onClick={deleteClick}>취소</DeleteBtn>
+        <DefaultBtn onClick={deleteClick} width={106} defaultColor={false}>
+          취소
+        </DefaultBtn>
         <DefaultBtn width={106}>작성</DefaultBtn>
       </PostDiv>
     </Wrapper>
@@ -151,23 +153,7 @@ const ContentInput = styled.textarea`
 const PostDiv = styled.div`
   display: flex;
   justify-content: flex-end;
-`;
-
-const DeleteBtn = styled.button`
-  cursor: pointer;
-  width: 106px;
-  height: 48px;
-  margin-right: 20px;
-  background: ${({ theme }) => theme.color.white};
-  border: 1px solid ${({ theme }) => theme.color.main};
-  border-radius: 8px;
-  color: ${({ theme }) => theme.color.main};
-  transition: all 0.3s;
-  :hover {
-    background: ${({ theme }) => theme.color.main};
-    border: 1px solid ${({ theme }) => theme.color.white};
-    color: ${({ theme }) => theme.color.white};
-  }
+  gap: 20px;
 `;
 
 export default MakeNotice;
