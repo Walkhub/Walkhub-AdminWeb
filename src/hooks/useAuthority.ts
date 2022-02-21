@@ -15,11 +15,11 @@ const useAuthority = () => {
     return ALL_Authority.includes(authority as AuthorityType);
   };
 
-  const setAuthority = (authrity: AuthorityType) => {
+  const setAuthority = (authority: AuthorityType) => {
     authority
       ? localStorage.setItem("authority", authority)
       : localStorage.removeItem("authority");
-    setState(authrity);
+    setState(authority);
   };
 
   return { authorityState, setAuthority };
