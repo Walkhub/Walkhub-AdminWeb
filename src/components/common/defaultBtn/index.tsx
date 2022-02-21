@@ -1,20 +1,20 @@
-import React, { FC, HTMLAttributes } from "react";
+import React, { FC, HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
 import styled from "@emotion/styled";
 
-interface Props extends HTMLAttributes<HTMLButtonElement> {
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
   width?: number;
   defaultColor?: boolean;
 }
 
-const DefaultBtn: FC<Props> = ({ defaultColor = true, ...props }) => {
-  return (
-    <DefaultBtnBox defaultColor={defaultColor} {...props}>
-      {props.children}
-    </DefaultBtnBox>
-  );
+const DefaultBtn = ({
+  defaultColor = true,
+  type = "button",
+  ...props
+}: Props) => {
+  return <DefaultBtnBox type={type} defaultColor={defaultColor} {...props} />;
 };
 
-const DefaultBtnBox = styled.button<{ width?: number; defaultColor: boolean }>`
+const DefaultBtnBox = styled.input<{ width?: number; defaultColor: boolean }>`
   cursor: pointer;
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
   height: 48px;
