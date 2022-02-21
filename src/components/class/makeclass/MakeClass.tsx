@@ -12,6 +12,17 @@ type inputType = {
   Class: number;
 };
 
+const sortList: optionListType[] = [
+  {
+    value: "ALL",
+    optionName: "전체",
+  },
+  {
+    value: "SCHOOL",
+    optionName: "학교",
+  },
+];
+
 const MakeClass: FC = () => {
   const [classInfo, setClassInfo] = useState<inputType>({
     grade: 0,
@@ -51,7 +62,9 @@ const MakeClass: FC = () => {
     router.push("/");
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { value, name } = e.target;
     setClassInfo({
       ...classInfo,
@@ -72,18 +85,19 @@ const MakeClass: FC = () => {
       <PostBox>
         <p>반 개설하기</p>
         <InputDiv>
-          <select
+          <DropDown
+            width={85}
+            heigth={40}
             name='grade'
-            onChange={onSelectChange}
-            value={classInfo.grade}
-          >
-            <option value='1'>1</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5</option>
-            <option value='6'>6</option>
-          </select>
+            selectedValue={classInfo.grade}
+            setSelectedValue={() => onSelectChange}
+            optionList={sortList}
+            disabled={false}
+            fontSize={16}
+            lineHeight={24}
+            fontWeight='400'
+            padding='8px 10px'
+          />
           <p style={{ margin: "20px 28px 0 0" }}>학년</p>
           <input
             name='Class'
