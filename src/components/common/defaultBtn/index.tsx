@@ -1,4 +1,4 @@
-import React, { FC, HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
+import React, { FC, InputHTMLAttributes } from "react";
 import styled from "@emotion/styled";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
