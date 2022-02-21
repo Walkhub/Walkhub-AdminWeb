@@ -1,21 +1,21 @@
 import styled from "@emotion/styled";
 import DefaultBox from "@src/components/common/defaultBox";
-import React from "react";
+import { ClassType } from "@src/utils/interfaces/class";
+import React, { FC } from "react";
 
-const ClassCard = () => {
+const ClassCard: FC<ClassType> = ({ user_count, section, teacher }) => {
   return (
     <>
       <DefaultBox width={288} height={100}>
-        <div style={{ fontSize: "20px", fontWeight: 500 }}>2학년 1반</div>
+        <div style={{ fontSize: "20px", fontWeight: 500 }}>
+          {section.grade}학년 {section.class_num}반
+        </div>
         <ClassInfo>
           <div>
-            <img
-              src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/PM5544_with_non-PAL_signals.png/300px-PM5544_with_non-PAL_signals.png'
-              alt='반'
-            />
-            <p>찬익좌</p>
+            <img src={teacher.profile_image_url} alt='' />
+            <p>{teacher.name}</p>
           </div>
-          <div>21명</div>
+          <div>{user_count}명</div>
         </ClassInfo>
       </DefaultBox>
     </>
