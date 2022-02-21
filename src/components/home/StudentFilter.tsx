@@ -197,12 +197,12 @@ const StudentFilter = () => {
 
       <div onClick={excelDownload}>액셀로 변환</div>
 
-      <Test>
+      <Category>
         <div style={{ gridColumn: "4 / 5" }}>평균 걸음 수</div>
         <div>총합 걸음 수</div>
         <div>평균 거리(km)</div>
         <div>총합 거리(km)</div>
-      </Test>
+      </Category>
 
       <div>
         <StudentList />
@@ -241,7 +241,7 @@ const StudetnSearchBox = styled.div`
   justify-content: space-between;
 `;
 
-const Test = styled.div`
+const Category = styled.div`
   width: 100%;
   height: 50px;
   display: grid;
