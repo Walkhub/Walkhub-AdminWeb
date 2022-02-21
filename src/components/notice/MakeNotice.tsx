@@ -4,6 +4,23 @@ import DefaultBtn from "../common/defaultBtn";
 import { createNotice } from "@src/utils/apis/notices";
 import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
+import DropDown from "../common/dropdown";
+
+interface optionListType {
+  value: string;
+  optionName: string;
+}
+
+const sortList: optionListType[] = [
+  {
+    value: "ALL",
+    optionName: "전체",
+  },
+  {
+    value: "SCHOOL",
+    optionName: "학교",
+  },
+];
 
 interface Props {
   setMakeState: Dispatch<SetStateAction<boolean>>;
@@ -19,7 +36,7 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
   const [noticePost, setNoticePost] = useState<NoticePostType>({
     title: "",
     content: "",
-    scope: "",
+    scope: "ALL",
   });
 
   const noticeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -71,14 +88,19 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
   return (
     <Wrapper onSubmit={noticeSubmit}>
       <HeadDiv>
-        <select
+        <DropDown
+          width={85}
+          heigth={40}
           name='scope'
-          value={noticePost.scope}
-          onChange={noticeInfoChange}
-        >
-          <option>ALL</option>
-          <option>SCHOOL</option>
-        </select>
+          selectedValue={noticePost.scope}
+          setSelectedValue={() => noticeInfoChange}
+          optionList={sortList}
+          disabled={false}
+          fontSize={16}
+          lineHeight={24}
+          fontWeight='400'
+          padding='8px 10px'
+        />
       </HeadDiv>
       <ContentDiv>
         <TitleInput
@@ -96,10 +118,13 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
         />
       </ContentDiv>
       <PostDiv>
-        <DefaultBtn onClick={deleteClick} width={106} defaultColor={false}>
-          취소
-        </DefaultBtn>
-        <DefaultBtn width={106}>작성</DefaultBtn>
+        <DefaultBtn
+          onClick={deleteClick}
+          width={106}
+          defaultColor={false}
+          value='취소'
+        />
+        <DefaultBtn type='submit' width={106} value='작성' />
       </PostDiv>
     </Wrapper>
   );
@@ -119,11 +144,6 @@ const HeadDiv = styled.div`
   display: flex;
   justify-content: flex-start;
   margin-bottom: 20px;
-  > select {
-    width: 82px;
-    height: 24px;
-    color: black;
-  }
 `;
 
 const ContentDiv = styled.div`

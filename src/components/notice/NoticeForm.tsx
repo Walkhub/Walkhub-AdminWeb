@@ -1,7 +1,9 @@
 import React, { FC, useState } from "react";
 import styled from "@emotion/styled";
+import OptionBox from "../common/OptionBox";
 
 const NoticeForm: FC = () => {
+  const [modalStatus, setModalStatus] = useState(false);
   const [showMore, setShowMore] = useState<boolean>(false);
 
   const exampleData = {
@@ -13,12 +15,16 @@ const NoticeForm: FC = () => {
       <FormHeadDiv>
         <div>
           <p>대충 공지 제목</p>
-          <MoreBtn>
-            <Moresection>
-              <Option>
-                <p>삭제</p>
-              </Option>
-            </Moresection>
+          <MoreBtn onClick={() => setModalStatus(true)}>
+            {modalStatus ? (
+              <OptionBox
+                width={50}
+                setModalStatus={setModalStatus}
+                value='삭제'
+              />
+            ) : (
+              ""
+            )}
           </MoreBtn>
         </div>
         <div>
@@ -45,7 +51,7 @@ const NoticeForm: FC = () => {
         ) : (
           <>
             {`${exampleData.text.substring(0, 380)}`}
-            <button onClick={() => setShowMore(!showMore)}> ...더보기</button>
+            <button onClick={() => setShowMore(!showMore)}>...더보기</button>
           </>
         )}
       </TextDiv>
@@ -83,47 +89,6 @@ const MoreBtn = styled.button`
   height: 24px;
   cursor: pointer;
   background: black;
-`;
-
-const Moresection = styled.section`
-  width: 55px;
-  position: relative;
-  margin-top: 30px;
-  z-index: 99;
-`;
-
-const Option = styled.button`
-  width: 100%;
-  height: 36px;
-  background-color: ${({ theme }) => theme.color.white};
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  box-shadow: 0px 3px 6px #00000029;
-  position: absolute;
-  right: 30px;
-  cursor: pointer;
-  > p {
-    font-size: 14px;
-    font-weight: 400;
-    color: #f04d51;
-  }
-  :after {
-    content: "";
-    width: 131.6px;
-    border-bottom: 1px solid ${({ theme }) => theme.color.bright_gray};
-    position: absolute;
-    margin-top: 31px;
-  }
-  :last-child {
-    :after {
-      width: 0;
-      height: 0;
-    }
-  }
 `;
 
 const HR = styled.hr`
@@ -184,6 +149,10 @@ const TextDiv = styled.div`
     background: none;
     font-size: 16px;
     font-weight: 600;
+    :hover {
+      color: ${({ theme }) => theme.color.main};
+      text-decoration: underline;
+    }
   }
 `;
 
