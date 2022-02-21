@@ -4,7 +4,9 @@ const fetcher = (url: string) => {
   return instance
     .get(url)
     .then(res => res.data)
-    .catch(err => err.response.status);
+    .catch(err => {
+      return [];
+    });
 };
 
 export default fetcher;
