@@ -13,24 +13,40 @@ type inputType = {
 };
 
 interface optionListType {
-  value: string;
+  value: number;
   optionName: string;
 }
 
 const sortList: optionListType[] = [
   {
-    value: "ALL",
-    optionName: "전체",
+    value: 1,
+    optionName: "1",
   },
   {
-    value: "SCHOOL",
-    optionName: "학교",
+    value: 2,
+    optionName: "2",
+  },
+  {
+    value: 3,
+    optionName: "3",
+  },
+  {
+    value: 4,
+    optionName: "4",
+  },
+  {
+    value: 5,
+    optionName: "5",
+  },
+  {
+    value: 6,
+    optionName: "6",
   },
 ];
 
 const MakeClass: FC = () => {
   const [classInfo, setClassInfo] = useState<inputType>({
-    grade: 0,
+    grade: 1,
     class: 1,
   });
 
@@ -92,7 +108,7 @@ const MakeClass: FC = () => {
         <InputDiv>
           <DropDown
             width={85}
-            heigth={40}
+            heigth={48}
             name='grade'
             selectedValue={classInfo.grade}
             setSelectedValue={() => onSelectChange}
@@ -101,9 +117,9 @@ const MakeClass: FC = () => {
             fontSize={16}
             lineHeight={24}
             fontWeight='400'
-            padding='8px 10px'
+            padding='12px 10px 0 18px'
           />
-          <p style={{ margin: "20px 28px 0 0" }}>학년</p>
+          <p style={{ margin: "20px 28px 0 10px" }}>학년</p>
           <input
             name='class'
             type='number'
@@ -149,14 +165,6 @@ const InputDiv = styled.div`
   margin-bottom: 78px;
   display: flex;
   justify-content: center;
-  > select {
-    width: 83px;
-    height: 48px;
-    padding: 0 0 0 20px;
-    margin-right: 12px;
-    border: 1px solid ${({ theme }) => theme.color.normal_gray};
-    border-radius: 12px;
-  }
   > input {
     width: 83px;
     height: 48px;
