@@ -15,7 +15,7 @@ const ChallengeCard: FC<ChallengeType> = ({
       <DefaultBox width={288} height={164}>
         <Title>{name}</Title>
         <ChallengeWriter>
-          <img src={writer.profile_image_url} alt='담임' />
+          <img src={writer.profile_image_url} alt='' />
           <p>{writer.name}</p>
         </ChallengeWriter>
         <ChallengeGoal>{name}</ChallengeGoal>
