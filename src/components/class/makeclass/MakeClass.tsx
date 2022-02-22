@@ -9,8 +9,13 @@ import DropDown from "../../common/dropdown";
 
 type inputType = {
   grade: number;
-  Class: number;
+  class: number;
 };
+
+interface optionListType {
+  value: string;
+  optionName: string;
+}
 
 const sortList: optionListType[] = [
   {
@@ -26,7 +31,7 @@ const sortList: optionListType[] = [
 const MakeClass: FC = () => {
   const [classInfo, setClassInfo] = useState<inputType>({
     grade: 0,
-    Class: 1,
+    class: 1,
   });
 
   const router = useRouter();
@@ -34,7 +39,7 @@ const MakeClass: FC = () => {
   const classSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await createClass(classInfo.grade, classInfo.Class);
+      await createClass(classInfo.grade, classInfo.class);
       successHandler();
     } catch (e) {
       errorHandler(e);
@@ -100,10 +105,10 @@ const MakeClass: FC = () => {
           />
           <p style={{ margin: "20px 28px 0 0" }}>학년</p>
           <input
-            name='Class'
+            name='class'
             type='number'
             onChange={onChange}
-            value={classInfo.Class}
+            value={classInfo.class}
           />
           <p style={{ margin: "20px 0 0 0 " }}>반</p>
         </InputDiv>
