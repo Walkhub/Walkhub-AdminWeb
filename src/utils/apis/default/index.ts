@@ -4,12 +4,10 @@ export const createImage = async (imageData: FormData) => {
   try {
     return await instance.post(
       "/images",
-      {
-        images: imageData,
-      },
+        imageData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       }
     );
