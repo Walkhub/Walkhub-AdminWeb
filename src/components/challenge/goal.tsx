@@ -1,14 +1,17 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent } from "react";
 import styled from "@emotion/styled";
 import Dropdown from "@src/components/common/dropdown";
 import TextField from "@src/components/challenge/textField";
 import InputHeader from "@src/components/challenge/inputHeader";
-import { ChallengeContentType } from "@src/utils/interfaces/challenge";
+import {
+  ChallengeContentType,
+  goalScopeType,
+  goalType,
+} from "@src/utils/interfaces/challenge";
 
-type goalScopeType = "DAY" | "ALL" | "기간";
 interface goalScopeOptionType {
   optionName: "하루 1번" | "최초 1번";
-  value: goalScopeType;
+  value: goalScopeType | "기간";
 }
 const goalScopeOption: goalScopeOptionType[] = [
   {
@@ -20,10 +23,10 @@ const goalScopeOption: goalScopeOptionType[] = [
     value: "ALL",
   },
 ];
-type goalType = "WALK" | "DISTANCE" | "조건";
+
 interface gaolOptionType {
   optionName: "걸음 수" | "거리";
-  value: goalType;
+  value: goalType | "조건";
 }
 const goalTypeOption: gaolOptionType[] = [
   {
@@ -36,25 +39,17 @@ const goalTypeOption: gaolOptionType[] = [
   },
 ];
 
-interface goalStateType {
-  goal_scope: goalScopeType;
-  goal_type: goalType;
-  goal: number | null;
-  time: number | null;
-}
-
 interface PropsType {
-  onChangeDropdownValue : (value:string,name:string) => void;
-  onChangeInputValue : (e:ChangeEvent<HTMLInputElement>) => void;
-  state : ChallengeContentType;
+  onChangeDropdownValue: (value: string, name: string) => void;
+  onChangeInputValue: (e: ChangeEvent<HTMLInputElement>) => void;
+  state: ChallengeContentType;
 }
 
-const Goal: React.FC<PropsType> = ({onChangeDropdownValue,onChangeInputValue,state}) => {
-  const [time,setTime] = useState<number | null>(null)
-  const onChangeTime = (e:ChangeEvent<HTMLInputElement>) => {
-    const time = Number(e.target.value)
-    setTime(time)
-  }
+const Goal: React.FC<PropsType> = ({
+  onChangeDropdownValue,
+  onChangeInputValue,
+  state,
+}) => {
   return (
     <Wrapper>
       <InputHeader disabled={false}>챌린지 목표</InputHeader>
@@ -98,9 +93,9 @@ const Goal: React.FC<PropsType> = ({onChangeDropdownValue,onChangeInputValue,sta
           width={132}
           disabled={false}
           placeholder='횟수'
-          inputValue={time}
-          changeInputValue={onChangeTime}
-          inputName='time'
+          inputValue={state.success_standard}
+          changeInputValue={onChangeInputValue}
+          inputName='success_standard'
           type='number'
         />
       </InputArea>
