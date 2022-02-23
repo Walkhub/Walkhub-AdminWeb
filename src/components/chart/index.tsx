@@ -54,7 +54,7 @@ const chart: FC<Props> = ({ countList }) => {
     <>
       {
         <BarChart
-          width={460}
+          width={520}
           height={230}
           data={chartData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
