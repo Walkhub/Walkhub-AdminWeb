@@ -72,7 +72,9 @@ const MakeClass: FC = () => {
         case 403:
           return ToastError("권한이 없습니다.");
         case 409:
-          return ToastError("중복된 클래스입니다.");
+          return ToastError(
+            "중복된 클래스 또는 선생님께서는 이미 반이 있습니다."
+          );
       }
     } else {
       ToastError("네트워크 연결을 확인해주세요.");
