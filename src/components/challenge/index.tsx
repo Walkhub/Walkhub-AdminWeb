@@ -14,10 +14,10 @@ import { useRouter } from "next/dist/client/router";
 import { PageType } from "@src/pages/challenge/create";
 
 interface PropsType {
-  PageType : PageType;
+  PageType: PageType;
 }
 
-const Challenge: React.FC<PropsType> = ({PageType}) => {
+const Challenge: React.FC<PropsType> = ({ PageType }) => {
   const [challengeContent, setChallengeContent] =
     useState<ChallengeContentType>({
       name: "",
@@ -74,6 +74,7 @@ const Challenge: React.FC<PropsType> = ({PageType}) => {
       });
       createChallenge({
         ...challengeContent,
+        ["grade"]: Number(challengeContent.grade),
         ["start_at"]: `${start_at.substr(0, 4)}-${start_at.substr(
           4,
           2
