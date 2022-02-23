@@ -1,64 +1,58 @@
 import styled from "@emotion/styled";
 import Chart from "../chart";
+import DefaultModal from "../common/DefaultModal";
+import ProfileBox from "../common/ProfileBox";
+
 const UserDetail = () => {
   return (
-    <Container>
-      <UserTextInfo>
-        <UserSchoolInfo>
-          <img></img>
-          <UserSchoolInfoTextBox>
-            <h2>최민준</h2>
-            <div>
-              <p>3학년</p>
-              <p>3반</p>
-              <p>9번</p>
-            </div>
-          </UserSchoolInfoTextBox>
-        </UserSchoolInfo>
-        <UserStepInfo>
-          <tbody>
-            <tr>
-              <th>평균 걸음수</th>
-              <td>2000</td>
-            </tr>
-            <tr>
-              <th>평균 걸음수</th>
-              <td>2000</td>
-            </tr>
-            <tr>
-              <th>평균 걸음수</th>
-              <td>2000</td>
-            </tr>
-            <tr>
-              <th>평균 걸음수</th>
-              <td>2000</td>
-            </tr>
-          </tbody>
-        </UserStepInfo>
-      </UserTextInfo>
-      <ChartBox>
-        <WeekMonthChange>
-          <WeekMonthButton isClick={true}>주간</WeekMonthButton>
-          <WeekMonthButton isClick={false}>월간</WeekMonthButton>
-        </WeekMonthChange>
-        <TimeSetBox>
-          <img></img>
-          <p>2월 2주차</p>
-          <img></img>
-        </TimeSetBox>
-        <Chart countList={[1000, 3000, 2000, 5000, 4000, 5000, 2220]}></Chart>
-        <CheckRecord>
-          <p>기록 확인하기</p>
-        </CheckRecord>
-      </ChartBox>
-    </Container>
+    <DefaultModal>
+      <Container>
+        <UserTextInfo>
+          <ProfileBox class_num={1} grade={1} name='김의찬' />
+          <UserStepInfo>
+            <tbody>
+              <tr>
+                <th>평균 걸음수</th>
+                <td>2000</td>
+              </tr>
+              <tr>
+                <th>평균 걸음수</th>
+                <td>2000</td>
+              </tr>
+              <tr>
+                <th>평균 걸음수</th>
+                <td>2000</td>
+              </tr>
+              <tr>
+                <th>평균 걸음수</th>
+                <td>2000</td>
+              </tr>
+            </tbody>
+          </UserStepInfo>
+        </UserTextInfo>
+        <ChartBox>
+          <WeekMonthChange>
+            <WeekMonthButton isClick={true}>주간</WeekMonthButton>
+            <WeekMonthButton isClick={false}>월간</WeekMonthButton>
+          </WeekMonthChange>
+          <TimeSetBox>
+            <img></img>
+            <p>2월 2주차</p>
+            <img></img>
+          </TimeSetBox>
+          <Chart countList={[1000, 3000, 2000, 5000, 4000, 5000, 2220]}></Chart>
+          <CheckRecord>
+            <p>기록 확인하기</p>
+          </CheckRecord>
+        </ChartBox>
+      </Container>
+    </DefaultModal>
   );
 };
 
 const Container = styled.div`
   width: 1016px;
   height: 556px;
-  border: 1px solid black;
   padding: 80px 104px 54px;
   display: flex;
   justify-content: space-between;
