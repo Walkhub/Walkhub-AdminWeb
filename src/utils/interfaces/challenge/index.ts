@@ -13,6 +13,7 @@ export interface ChallengeType {
     profile_image_url: string;
   };
 }
+
 export type userType = "TEACHER" | "ROOT" | "SU";
 export type userScopeType = "ALL" | "SCHOOL" | "GRADE" | "CLASS";
 export type gradeType = "1" | "2" | "3" | "4" | "5" | "6";

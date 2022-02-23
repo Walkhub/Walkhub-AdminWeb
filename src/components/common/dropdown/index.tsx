@@ -10,7 +10,7 @@ interface optionListType {
 interface PropsType {
   width: number;
   heigth: number;
-  selectedValue: string | number;
+  selectedValue: string;
   setSelectedValue: (value: string, name: string) => void;
   optionList: optionListType[];
   disabled: boolean;
@@ -34,6 +34,7 @@ const Dropdown: React.FC<PropsType> = ({
   name,
 }) => {
   const [isFold, setIsFold] = useState(false);
+
   const optionBoxStyleProps = {
     padding,
     fontSize,
@@ -44,6 +45,7 @@ const Dropdown: React.FC<PropsType> = ({
   const reverseDropdownStatus = () => {
     setIsFold(prev => !prev);
   };
+
   const OptionList = useMemo(
     () =>
       optionList.map((item, index) => (
@@ -60,6 +62,7 @@ const Dropdown: React.FC<PropsType> = ({
       )),
     [optionList, setSelectedValue]
   );
+
   const SelectValue = useMemo(() => {
     const index = optionList.findIndex(
       (i: optionListType) => i.value === selectedValue
@@ -118,15 +121,12 @@ const Wrapper = styled.label<{
   text-align: left;
   position: relative;
   cursor: pointer;
-
   > .arrowButton {
     width: 16px;
     height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
-    height: 100%;
     background-color: transparent;
   }
 `;

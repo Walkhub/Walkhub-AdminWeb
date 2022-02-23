@@ -11,7 +11,7 @@ import { createImage } from "@src/utils/apis/default";
 import ToastError from "@src/utils/function/errorMessage";
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
-import { PageType } from "@src/pages/challenge";
+import { PageType } from "@src/pages/challenge/create";
 
 interface PropsType {
   PageType : PageType;

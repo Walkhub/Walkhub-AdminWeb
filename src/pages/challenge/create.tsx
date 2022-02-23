@@ -6,7 +6,7 @@ export enum PageType {
   modify = "수정"
 }
 
-const ChallengePage: React.FC = () => {
+const ChallengeCreatePage: React.FC = () => {
   return <Challenge PageType={PageType.make} />;
 };
-export default ChallengePage;
+export default ChallengeCreatePage;
