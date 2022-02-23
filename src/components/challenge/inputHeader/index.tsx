@@ -1,22 +1,22 @@
-import React from 'react';
+import React from "react";
 import styled from "@emotion/styled";
 
 interface PropsType {
-  disabled : boolean;
+  disabled: boolean;
 }
 
-const InputHeader:React.FC<PropsType> = ({children,disabled}) => {
+const InputHeader: React.FC<PropsType> = ({ children, disabled }) => {
   return (
     <Wrapper disalbed={disabled}>
-      <p className="text">{children}</p>
-      <p className="required">*</p>
+      <p className='text'>{children}</p>
+      <p className='required'>*</p>
     </Wrapper>
-  )
-}
-export default InputHeader
+  );
+};
+export default InputHeader;
 
 const Wrapper = styled.section<{
-  disalbed : boolean;
+  disalbed: boolean;
 }>`
   display: flex;
   font-size: 16px;
@@ -25,9 +25,11 @@ const Wrapper = styled.section<{
   font-weight: normal;
   margin-bottom: 12px;
   > .text {
-    color: ${props => props.disalbed ? props.theme.color.normal_gray : props.theme.color.black};
+    color: ${props =>
+      props.disalbed ? props.theme.color.normal_gray : props.theme.color.black};
   }
   > .required {
-    color: ${props => props.disalbed ? props.theme.color.normal_gray : "#4D99F0"};
+    color: ${props =>
+      props.disalbed ? props.theme.color.normal_gray : "#4D99F0"};
   }
-`
+`;
