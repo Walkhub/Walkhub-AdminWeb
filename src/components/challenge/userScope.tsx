@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import styled from "@emotion/styled";
 import InputHeader from "@src/components/challenge/inputHeader";
 import Dropdown from "@src/components/common/dropdown";
@@ -6,8 +6,9 @@ import {
   ChallengeContentType,
   gradeType,
   userScopeType,
-  userType,
 } from "@src/utils/interfaces/challenge";
+import useAuthority from "@src/hooks/useAuthority";
+import { AuthorityType } from "@src/utils/interfaces/auth";
 
 interface PropsType {
   changeUserScopeValue: (value: string, name: string) => void;
@@ -18,17 +19,25 @@ const UserScope: React.FC<PropsType> = ({
   changeUserScopeValue,
   challengeContent,
 }) => {
-  const userType: userType = "TEACHER";
+  const authority = useAuthority();
+  const userType: AuthorityType = authority.authorityState;
   const userScopeInput = useMemo(() => {
-    if (userType === "TEACHER")
+    if (userType === "TEACHER") {
       return <DisabledInputBox>2학년 1반</DisabledInputBox>;
-    else if (userType === "ROOT")
+    } else if (userType === "ROOT")
       return (
         <UserScopeDropdown
           changeUserScopeValue={changeUserScopeValue}
           challengeContent={challengeContent}
         />
       );
+    else if (userType === "SU") {
+      return <DisabledInputBox>대전 전체</DisabledInputBox>;
+    }
+  }, [userType, challengeContent]);
+  useEffect(() => {
+    if (userType === "TEACHER") changeUserScopeValue("CLASS", "user_scope");
+    else if (userType === "SU") changeUserScopeValue("ALL", "user_scope");
   }, [userType]);
   return (
     <Wrapper>
@@ -41,6 +50,7 @@ const UserScope: React.FC<PropsType> = ({
 const DisabledInputBox: React.FC = ({ children }) => {
   return <div className='teacher'>{children}</div>;
 };
+
 type userScopeOptionType = {
   optionName: "학교 전체" | "학년 전체";
   value: userScopeType;
@@ -95,7 +105,7 @@ const UserScopeDropdown: React.FC<{
     (value: string, name: string) => {
       changeUserScopeValue(value, name);
     },
-    [challengeContent]
+    [challengeContent, changeUserScopeValue]
   );
   return (
     <DropdownWrapper>
