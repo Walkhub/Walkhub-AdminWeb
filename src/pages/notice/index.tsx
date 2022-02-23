@@ -1,11 +1,12 @@
+import Notice from "@src/components/notice";
 import React from "react";
-import MakeNotice from "@src/components/notice/MakeNotice";
-import NoticeForm from "@src/components/notice/NoticeForm";
 
-const Notice = () => {
+const NoticePage = () => {
   return (
     <>
-      <MakeNotice />
+      <Notice />
     </>
   );
 };
+
+export default NoticePage;
