@@ -10,7 +10,7 @@ interface optionListType {
 interface PropsType {
   width: number;
   heigth: number;
-  selectedValue: string;
+  selectedValue: string | number;
   setSelectedValue: (value: string, name: string) => void;
   optionList: optionListType[];
   disabled: boolean;
