@@ -6,9 +6,9 @@ import {
   ChallengeContentType,
   gradeType,
   userScopeType,
-} from "@src/utils/interfaces/challenge";
-import useAuthority from "@src/hooks/useAuthority";
+} from "@src/utils/interfaces/challenge";;
 import { AuthorityType } from "@src/utils/interfaces/auth";
+import { getAuthority } from "@src/utils/function/localstorgeAuthority";
 
 interface PropsType {
   changeUserScopeValue: (value: string, name: string) => void;
@@ -19,8 +19,8 @@ const UserScope: React.FC<PropsType> = ({
   changeUserScopeValue,
   challengeContent,
 }) => {
-  const authority = useAuthority();
-  const userType: AuthorityType = authority.authorityState;
+  const authority = getAuthority();
+  const userType: AuthorityType = authority;
   const userScopeInput = useMemo(() => {
     if (userType === "TEACHER") {
       return <DisabledInputBox>2학년 1반</DisabledInputBox>;
