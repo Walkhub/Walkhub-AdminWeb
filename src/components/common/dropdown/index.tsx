@@ -3,15 +3,15 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styled from "@emotion/styled";
 
 interface optionListType {
-  value: string;
-  optionName: string;
+  value: string|number;
+  optionName: string|number;
 }
 
 interface PropsType {
   width: number;
   heigth: number;
   selectedValue: string | number;
-  setSelectedValue: (value: string, name: string) => void;
+  setSelectedValue: (value: string|number, name: string|number) => void;
   optionList: optionListType[];
   disabled: boolean;
   padding: string;
