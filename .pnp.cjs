@@ -62,7 +62,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-toastify", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:8.2.0"],
             ["recharts", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:2.1.9"],
             ["swr", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:1.2.1"],
-            ["typescript", "patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=493e53"],
+            ["typescript", "patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"],
             ["xlsx", "npm:0.17.5"]
           ],
           "linkType": "SOFT",
@@ -175,6 +175,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@babel-runtime-npm-7.15.4-52ce5bf6ea-c408254304.zip/node_modules/@babel/runtime/",
           "packageDependencies": [
             ["@babel/runtime", "npm:7.15.4"],
+            ["regenerator-runtime", "npm:0.13.9"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:7.16.5", {
+          "packageLocation": "./.yarn/cache/@babel-runtime-npm-7.16.5-324a158d8a-b96e67280e.zip/node_modules/@babel/runtime/",
+          "packageDependencies": [
+            ["@babel/runtime", "npm:7.16.5"],
             ["regenerator-runtime", "npm:0.13.9"]
           ],
           "linkType": "HARD",
@@ -1406,7 +1414,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/aria-query-npm-4.2.2-e0c4f1a309-38401a9a40.zip/node_modules/aria-query/",
           "packageDependencies": [
             ["aria-query", "npm:4.2.2"],
-            ["@babel/runtime", "npm:7.17.2"],
+            ["@babel/runtime", "npm:7.16.5"],
             ["@babel/runtime-corejs3", "npm:7.17.2"]
           ],
           "linkType": "HARD",
@@ -2917,7 +2925,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/eslint-plugin-jsx-a11y-virtual-f1d5640964/0/cache/eslint-plugin-jsx-a11y-npm-6.5.1-ea493bf2f2-311ab993ed.zip/node_modules/eslint-plugin-jsx-a11y/",
           "packageDependencies": [
             ["eslint-plugin-jsx-a11y", "virtual:4c865713f2f9e88bec2ddc6f93b0246b8a54d934546a20937fb5dd798034f3e6385db82b764c05239d879e09f43fb5889545174d071878615d6ecebe06b37030#npm:6.5.1"],
-            ["@babel/runtime", "npm:7.17.2"],
+            ["@babel/runtime", "npm:7.16.5"],
             ["@types/eslint", null],
             ["aria-query", "npm:4.2.2"],
             ["array-includes", "npm:3.1.4"],
@@ -5564,7 +5572,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/react-toastify-virtual-8f55a839c9/0/cache/react-toastify-npm-8.2.0-3f638b6659-670f1176fb.zip/node_modules/react-toastify/",
           "packageDependencies": [
             ["react-toastify", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:8.2.0"],
-            ["@types/react", "npm:17.0.37"],
+            ["@types/react", "npm:17.0.39"],
             ["@types/react-dom", "npm:17.0.11"],
             ["clsx", "npm:1.1.1"],
             ["react", "npm:17.0.2"],
@@ -6384,7 +6392,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-toastify", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:8.2.0"],
             ["recharts", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:2.1.9"],
             ["swr", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:1.2.1"],
-            ["typescript", "patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=493e53"],
+            ["typescript", "patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"],
             ["xlsx", "npm:0.17.5"]
           ],
           "linkType": "SOFT",
