@@ -1,61 +1,121 @@
 import React, { FC, useState } from "react";
 import styled from "@emotion/styled";
 import DeleteBtn from "../common/DeleteBtn";
+import { NoticeType } from "@src/utils/interfaces/notice";
+import { deleteNotice } from "@src/utils/apis/notices";
+import axios from "axios";
+import ToastError from "@src/utils/function/errorMessage";
+import { KeyedMutator } from "swr";
 
-const NoticeForm: FC = () => {
+const NoticeForm: FC<NoticeType & { mutate: KeyedMutator<any> }> = ({
+  title,
+  content,
+  created_at,
+  writer,
+  id,
+  mutate,
+}) => {
   const [modalStatus, setModalStatus] = useState(false);
-  const [showMore, setShowMore] = useState<boolean>(false);
+  const [showMore, setShowMore] = useState<boolean>(true);
 
-  const exampleData = {
-    text: "보고, 이 가득 옥 헤는 봅니다. 별들을 쉬이 다 당신은 겨울이 것은 까닭입니다. 시인의 옥 그리워 지나가는 된 있습니다. 이름을 나의 별에도 마리아 별들을 어머니, 된 있습니다. 소학교 아직 하나에 언덕 가을로 걱정도 하나에 별이 파란 봅니다. 사랑과 내일 쉬이 까닭입니다. 것은 차 나는 위에 무덤 하나에 봄이 이름과, 까닭입니다. 별이 오면 패, 무성할 남은 별 거외다. 묻힌 아스라히 했던 까닭입니다. 그러나 이런 잔디가 이 하나에 멀듯이, 별 이름과, 이름과, 있습니다. 북간도에 이름과, 별에도 하늘에는 노루, 강아지, 쓸쓸함과 속의 오는 계십니다.보고, 이 가득 옥 헤는 봅니다. 별들을 쉬이 다 당신은 겨울이 것은 까닭입니다. 시인의 옥 그리워 지나가는 된 있습니다. 이름을 나의 별에도 마리아 별들을 어머니, 된 있습니다. 소학교 아직 하나에 언덕 가을로 걱정도 하나에 별이 파란 봅니다. 사랑과 내일 쉬이 까닭입니다. 것은 차 나는 위에 무덤 하나에 봄이 이름과, 까닭입니다. 별이 오면 패, 무성할 남은 별 거외다. 묻힌 아스라히 했던 까닭입니다. 그러나 이런 잔디가 이 하나에 멀듯이, 별 이름과, 이름과, 있습니다. 북간도에 이름과, 별에도 하늘에는 노루, 강아지, 쓸쓸함과 속의 오는 계십니다.보고, 이 가득 옥 헤는 봅니다. 별들을 쉬이 다 당신은 겨울이 것은 까닭입니다. 시인의 옥 그리워 지나가는 된 있습니다. 이름을 나의 별에도 마리아 별들을 어머니, 된 있습니다. 소학교 아직 하나에 언덕 가을로 걱정도 하나에 별이 파란 봅니다. 사랑과 내일 쉬이 까닭입니다. 것은 차 나는 위에 무덤 하나에 봄이 이름과, 까닭입니다. 별이 오면 패, 무성할 남은 별 거외다. 묻힌 아스라히 했던 까닭입니다. 그러나 이런 잔디가 이 하나에 멀듯이, 별 이름과, 이름과, 있습니다. 북간도에 이름과, 별에도 하늘에는 노루, 강아지, 쓸쓸함과 속의 오는 계십니다.보고, 이 가득 옥 헤는 봅니다. 별들을 쉬이 다 당신은 겨울이 것은 까닭입니다. 시인의 옥 그리워 지나가는 된 있습니다. 이름을 나의 별에도 마리아 별들을 어머니, 된 있습니다. 소학교 아직 하나에 언덕 가을로 걱정도 하나에 별이 파란 봅니다. 사랑과 내일 쉬이 까닭입니다. 것은 차 나는 위에 무덤 하나에 봄이 이름과, 까닭입니다. 별이 오면 패, 무성할 남은 별 거외다. 묻힌 아스라히 했던 까닭입니다. 그러나 이런 잔디가 이 하나에 멀듯이, 별 이름과, 이름과, 있습니다. 북간도에 이름과, 별에도 하늘에는 노루, 강아지, 쓸쓸함과 속의 오는 계십니다.",
+  const timestamp = created_at;
+  const time = new Date(timestamp);
+
+  const noticeDelete = async (e: any) => {
+    e.preventDefault();
+    try {
+      await deleteNotice(id);
+      mutate();
+    } catch (e) {
+      errorhandler(e);
+    }
+  };
+
+  const errorhandler = (e: unknown) => {
+    if (axios.isAxiosError(e) && e.response) {
+      switch (e.response.status) {
+        case 401:
+          return ToastError("인증에 실패하였습니다.");
+        case 403:
+          return ToastError("권한이 존재하지 않습니다.");
+        case 404:
+          return ToastError("삭제할 게시물을 찾지 못했습니다.");
+        default:
+          return ToastError("관리자에게 문의해주세요.");
+      }
+    } else {
+      ToastError("네트워크 연결을 확인해주세요.");
+    }
   };
 
   return (
-    <Wrapper>
-      <FormHeadDiv>
-        <div>
-          <p>대충 공지 제목</p>
-          <MoreBtn onClick={() => setModalStatus(true)}>
-            {modalStatus ? (
-              <DeleteBtn
-                width={50}
-                setModalStatus={setModalStatus}
-                value='삭제'
-              />
-            ) : (
-              ""
-            )}
-          </MoreBtn>
-        </div>
-        <div>
-          <UserDiv>
-            <div>img</div>
-            <p>정대현</p>
-          </UserDiv>
-          <EtcDiv>
-            <Kindmsg>전체</Kindmsg>
-            <div>
-              <Datemsg>2022-01-30</Datemsg>
-              <Datemsg>21:50:20</Datemsg>
-            </div>
-          </EtcDiv>
-        </div>
-      </FormHeadDiv>
-      <HR />
-      <TextDiv>
-        {showMore ? (
-          <>
-            <p>{exampleData.text}</p>
-            <button onClick={() => setShowMore(!showMore)}>간략히</button>
-          </>
-        ) : (
-          <>
-            {`${exampleData.text.substring(0, 380)}`}
-            <button onClick={() => setShowMore(!showMore)}>...더보기</button>
-          </>
-        )}
-      </TextDiv>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <FormHeadDiv>
+          <div>
+            <p>{title}</p>
+            <MoreBtn onClick={() => setModalStatus(true)}>
+              {modalStatus ? (
+                <DeleteBtn
+                  width={50}
+                  setModalStatus={setModalStatus}
+                  value='삭제'
+                  onClick={noticeDelete}
+                />
+              ) : (
+                ""
+              )}
+            </MoreBtn>
+          </div>
+          <div>
+            <UserDiv>
+              <img src={writer.profile_image_url} alt='' />
+              <p>{writer.name}</p>
+            </UserDiv>
+            <EtcDiv>
+              <Kindmsg>학교</Kindmsg>
+              <div>
+                <Datemsg>
+                  {time.getFullYear() +
+                    "-" +
+                    time.getMonth() +
+                    "-" +
+                    time.getDate() +
+                    " " +
+                    time.getHours() +
+                    ":" +
+                    time.getMinutes() +
+                    ":" +
+                    time.getSeconds()}
+                </Datemsg>
+              </div>
+            </EtcDiv>
+          </div>
+        </FormHeadDiv>
+        <HR />
+        <TextDiv>
+          {showMore ? (
+            <>
+              {content.length > 140 ? (
+                <>
+                  {`${content.substring(0, 380)}`}
+                  <button onClick={() => setShowMore(!showMore)}>
+                    ...더보기
+                  </button>
+                </>
+              ) : (
+                <p>{content}</p>
+              )}
+            </>
+          ) : (
+            <>
+              <p>{content}</p>
+              <button onClick={() => setShowMore(!showMore)}>간략히</button>
+            </>
+          )}
+        </TextDiv>
+      </Wrapper>
+    </>
   );
 };
 
@@ -102,12 +162,10 @@ const HR = styled.hr`
 const UserDiv = styled.div`
   display: flex;
   align-items: center;
-  > div {
+  > img {
     width: 24px;
     height: 24px;
     margin-right: 8px;
-    background: black;
-    color: white;
   }
   > p {
     font-size: 16px;
