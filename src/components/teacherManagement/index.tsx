@@ -1,23 +1,26 @@
 import styled from "@emotion/styled";
+import fetcher from "@src/utils/function/fetcher";
+import { TeacherType } from "@src/utils/interfaces/teacher";
 import React from "react";
+import useSWR from "swr";
 import TeacherCard from "./TeacherCard";
 
 const TeacherManagement = () => {
+  const { data } = useSWR("/teachers/classes/lists", fetcher);
+
   return (
     <>
       <WrapperBox>
         <Certification>
-          인증코드 <p>#187293</p>
+          인증코드 <p>#{data.auth_code}</p>
         </Certification>
 
         <Box>
           <Title>선생님 관리</Title>
           <List>
-            {Array(20)
-              .fill(-1)
-              .map(i => (
-                <TeacherCard key={i} />
-              ))}
+            {data.class_list?.map((i: TeacherType) => (
+              <TeacherCard key={i.teacher.user_id} {...i} />
+            ))}
           </List>
         </Box>
       </WrapperBox>
