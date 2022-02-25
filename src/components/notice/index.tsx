@@ -1,40 +1,49 @@
-import React, { FC, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import NoticeForm from "./NoticeForm";
 import MakeNotice from "./MakeNotice";
 import useSWR from "swr";
 import fetcher from "@src/utils/function/fetcher";
+import { NoticeType } from "@src/utils/interfaces/notice";
 
-const Notice: FC = () => {
+const Notice = () => {
   const [makeState, setMakeState] = useState<boolean>(true);
   const MakeOnClick = () => {
     setMakeState(false);
   };
 
-  /*
-  const { data } = useSWR("/notices/lists", fetcher);
-
-  console.log(data);
-*/
-
-  return (
-    <Wrapper>
-      {makeState ? (
-        <WriteDiv onClick={MakeOnClick}>
-          <em>공지사항 작성하기...</em>
-        </WriteDiv>
-      ) : (
-        <MakeNotice setMakeState={setMakeState} />
-      )}
-      <NoticeTitleDiv>
-        <p>공지</p>
-      </NoticeTitleDiv>
-      <NoticeListDiv>
-        <NoticeForm />
-        <NoticeForm />
-      </NoticeListDiv>
-    </Wrapper>
+  const { data, error, mutate } = useSWR(
+    `/notices/list?scope=SCHOOL&page=0`,
+    fetcher
   );
+
+  if (!(data || error)) {
+    return <div>로딩중</div>;
+  } else
+    return (
+      <Wrapper>
+        {makeState ? (
+          <WriteDiv onClick={MakeOnClick}>
+            <em>공지사항 작성하기...</em>
+          </WriteDiv>
+        ) : (
+          <MakeNotice setMakeState={setMakeState} mutate={mutate} />
+        )}
+        <NoticeTitleDiv>
+          <p>공지</p>
+        </NoticeTitleDiv>
+        <NoticeListDiv>
+          {data.notice_list?.map((i: NoticeType) => {
+            console.log(i);
+            return (
+              <div style={{ marginBottom: "16px" }} key={i.id}>
+                <NoticeForm {...i} mutate={mutate} />
+              </div>
+            );
+          })}
+        </NoticeListDiv>
+      </Wrapper>
+    );
 };
 
 const Wrapper = styled.div`

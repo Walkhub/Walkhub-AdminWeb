@@ -5,6 +5,7 @@ import { createNotice } from "@src/utils/apis/notices";
 import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
 import DropDown from "../common/dropdown";
+import { KeyedMutator } from "swr";
 
 interface optionListType {
   value: string;
@@ -32,11 +33,14 @@ interface NoticePostType {
   scope: string;
 }
 
-const MakeNotice: FC<Props> = ({ setMakeState }) => {
+const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
+  setMakeState,
+  mutate,
+}) => {
   const [noticePost, setNoticePost] = useState<NoticePostType>({
     title: "",
     content: "",
-    scope: "ALL",
+    scope: "SCHOOL",
   });
 
   const noticeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,6 +51,7 @@ const MakeNotice: FC<Props> = ({ setMakeState }) => {
         noticePost.content,
         noticePost.scope
       );
+      mutate("/notices");
     } catch (e) {
       errorhandler(e);
     }
