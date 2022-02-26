@@ -1,20 +1,23 @@
 import styled from "@emotion/styled";
-import React from "react";
+import { TeacherType } from "@src/utils/interfaces/teacher";
+import React, { FC } from "react";
 import DefaultBox from "../common/defaultBox";
 
-const TeacherCard = () => {
+const TeacherCard: FC<TeacherType> = ({ teacher, section }) => {
   return (
     <>
       <DefaultBox width={288} height={100}>
         <CardInfo>
-          <Image
-            src={`https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E`}
-            alt=''
-          />
+          <Image src={teacher.profile_image_url} alt='' />
           <TeacherInfo>
-            <p>좌선생</p>
-            <ClassInfo>2학년 1반</ClassInfo>
-            {/* <ClassNone>담당 클래스가 없습니다</ClassNone> */}
+            <p>{teacher.name}</p>
+            {section.section_id ? (
+              <ClassInfo>
+                {section.grade}학년 {section.class_num}반
+              </ClassInfo>
+            ) : (
+              <ClassNone>담당 클래스가 없습니다</ClassNone>
+            )}
           </TeacherInfo>
           <div>...</div>
         </CardInfo>

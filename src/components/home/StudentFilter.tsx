@@ -110,12 +110,10 @@ const StudentFilter = () => {
   };
 
   const changeFilter = async () => {
-    const { scope, sort, grade } = type;
-    const updateData = await instance
-      .get(
-        `/teachers/users?page=0&scope=${scope}&sort=${sort}&grade=${grade}&class=`
-      )
-      .then(res => res.data);
+    const { scope, sort, grade, name } = type;
+    const updateData = await fetcher(
+      `/teachers/users/search?name=${name}&scope=${scope}&sort=${sort}&grade=${grade}&class=`
+    );
 
     mutate(updateData, false);
   };
