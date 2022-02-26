@@ -17,7 +17,7 @@ interface optionListType {
   optionName: string;
 }
 
-const sortList: optionListType[] = [
+const gradeList: optionListType[] = [
   {
     value: 1,
     optionName: "1",
@@ -56,7 +56,7 @@ const MakeClass: FC = () => {
     e.preventDefault();
     try {
       await createClass(classInfo.grade, classInfo.class);
-      successHandler();
+      router.push("/");
     } catch (e) {
       errorHandler(e);
     }
@@ -79,10 +79,6 @@ const MakeClass: FC = () => {
     } else {
       ToastError("네트워크 연결을 확인해주세요.");
     }
-  };
-
-  const successHandler = () => {
-    router.push("/");
   };
 
   const onChange = (
@@ -114,7 +110,7 @@ const MakeClass: FC = () => {
             name='grade'
             selectedValue={classInfo.grade}
             setSelectedValue={() => onSelectChange}
-            optionList={sortList}
+            optionList={gradeList}
             disabled={false}
             fontSize={16}
             lineHeight={24}
