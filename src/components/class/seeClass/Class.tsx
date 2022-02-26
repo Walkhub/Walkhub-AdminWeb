@@ -1,15 +1,48 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "@emotion/styled";
-import useSWR from "swr";
-import fetcher from "@src/utils/function/fetcher";
 import { DetailClassType } from "@src/utils/interfaces/detailClass";
+import Dropdown from "@src/components/common/dropdown";
+
+interface optionListType {
+  value: string;
+  optionName: string;
+}
+
+const scopeList: optionListType[] = [
+  {
+    value: "NAME",
+    optionName: "이름순",
+  },
+  {
+    value: "DISTANCE",
+    optionName: "거리순",
+  },
+  {
+    value: "WALK_COUNT",
+    optionName: "걸음순",
+  },
+  {
+    value: "GCN",
+    optionName: "학번순",
+  },
+];
 
 const ClassBanner: FC<DetailClassType> = ({
   class_cord,
   teacher,
   user_List,
 }) => {
-  const { data } = useSWR(`/teachers/classes/${}`, fetcher);
+  const [type, setType] = useState({
+    scope: "NAME",
+  });
+
+  const changeType = (value: string, name: string) => {
+    console.log(type);
+    setType({
+      ...type,
+      [name]: value,
+    });
+  };
 
   return (
     <Wrapper>
@@ -27,19 +60,12 @@ const ClassBanner: FC<DetailClassType> = ({
           <ClassName>n학년 n반</ClassName>
           <ClassPeopleDiv>
             <p>소속인원</p>
-            <p>{user_List.length}명</p>
+            <p>명</p>
           </ClassPeopleDiv>
         </BannerDiv1>
         <BannerDiv2>
           <TeacherDiv>
-            <div
-              style={{
-                width: "35px",
-                height: "35px",
-                margin: "0 8px 0 0",
-                background: "#ffffff",
-              }}
-            ></div>
+            <img src={teacher.profile_image_url} alt='' />
             <TeacherName>{teacher.name}</TeacherName>
             <p>선생님</p>
           </TeacherDiv>
@@ -51,7 +77,19 @@ const ClassBanner: FC<DetailClassType> = ({
       </Banner>
       <Title>
         <p>학생 확인</p>
-        <p>드롭다운</p>
+        <Dropdown
+          width={64}
+          heigth={24}
+          selectedValue={type.scope}
+          name='sort'
+          optionList={scopeList}
+          setSelectedValue={changeType}
+          disabled={false}
+          lineHeight={24}
+          fontSize={16}
+          fontWeight='normal'
+          padding='12px 16px'
+        />
       </Title>
       <TypeMenuDiv>
         <p style={{ margin: "0 80px 0 468px" }}>평균 걸음 수</p>
@@ -175,6 +213,10 @@ const TeacherDiv = styled.div`
   > p {
     color: ${({ theme }) => theme.color.white};
   }
+  > img {
+    width: 35px;
+    height: 35px;
+  }
 `;
 
 const TeacherName = styled.p`
@@ -199,8 +241,8 @@ const ClassCodeDiv = styled.div`
 `;
 
 const ClassCode = styled.p`
-width: 64px
-  color: ${({ theme }) => theme.color.white}
+  width: 64px;
+  color: ${({ theme }) => theme.color.white};
   font-weight: medium;
   font-size: 16px;
 `;
