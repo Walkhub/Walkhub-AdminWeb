@@ -45,17 +45,17 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
           console.log(res);
           setChallengeContent({
             ...challengeContent,
-            ["name"]: res.name,
-            ["content"]: res.content,
-            ["image_url"]: res.image_url,
-            ["start_at"]: res.start_at.replace(/-/g, ""),
-            ["end_at"]: res.end_at.replace(/-/g, ""),
-            ["award"]: res.award,
-            ["user_scope"]: res.user_scope,
-            ["goal"]: res.goal,
-            ["goal_type"]: res.goal_type,
-            ["goal_scope"]: res.goal_scope,
-            ["success_standard"]: res.success_standard,
+            name: res.name,
+            content: res.content,
+            image_url: res.image_url,
+            start_at: res.start_at.replace(/-/g, ""),
+            end_at: res.end_at.replace(/-/g, ""),
+            award: res.award,
+            user_scope: res.user_scope,
+            goal: res.goal,
+            goal_type: res.goal_type,
+            goal_scope: res.goal_scope,
+            success_standard: res.success_standard,
           });
         });
   }, [pageType]);
@@ -95,31 +95,31 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
     if (pageType === "create") {
       createChallenge({
         ...challengeContent,
-        ["image_url"]: img,
-        ["grade"]: challengeContent.grade as number,
-        ["start_at"]: `${start_at.substr(0, 4)}-${start_at.substr(
+        image_url: img,
+        grade: challengeContent.grade as number,
+        start_at: `${start_at.substr(0, 4)}-${start_at.substr(
           4,
           2
         )}-${start_at.substr(6, 2)}`,
-        ["end_at"]: `${end_at.substr(0, 4)}-${end_at.substr(
-          4,
+        end_at: `${end_at.substr(0, 4)}-${end_at.substr(4, 2)}-${end_at.substr(
+          6,
           2
-        )}-${end_at.substr(6, 2)}`,
+        )}`,
       });
     } else {
       if (id)
         changeChallenge({
           ...challengeContent,
-          ["grade"]: challengeContent.grade as number,
-          ["start_at"]: `${start_at.substr(0, 4)}-${start_at.substr(
+          grade: challengeContent.grade as number,
+          start_at: `${start_at.substr(0, 4)}-${start_at.substr(
             4,
             2
           )}-${start_at.substr(6, 2)}`,
-          ["end_at"]: `${end_at.substr(0, 4)}-${end_at.substr(
+          end_at: `${end_at.substr(0, 4)}-${end_at.substr(
             4,
             2
           )}-${end_at.substr(6, 2)}`,
-          ["challenge_id"]: Number(id),
+          challenge_id: Number(id),
         });
     }
   };
@@ -156,7 +156,8 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
           ToastError("챌린지를 생성할 수 있는 권한이 없습니다.");
           break;
         case 500:
-          return ToastError("관리자에게 문의해주세요");
+          ToastError("관리자에게 문의해주세요");
+          break;
       }
     } else {
       ToastError("네트워크 연결을 확인해주세요.");
