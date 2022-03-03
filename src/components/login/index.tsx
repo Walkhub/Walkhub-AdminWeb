@@ -4,7 +4,7 @@ import ToastError from "@src/utils/function/errorMessage";
 import { setToken } from "@src/utils/function/tokenManager";
 import { LoginInfoType, LoginResponseType } from "@src/utils/interfaces/auth";
 import axios from "axios";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 const Login = () => {

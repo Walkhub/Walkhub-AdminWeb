@@ -7,17 +7,16 @@ import ClassCard from "./cards/ClassCard";
 const ClassList = () => {
   const { data } = useSWR("/teachers/classes/lists", fetcher);
 
-  console.log(data);
-
   return (
     <>
-      {data.class_list?.map((i: ClassType) => {
-        return (
-          <div style={{ marginRight: "22px" }} key={i.section.section_id}>
-            <ClassCard {...i} />
-          </div>
-        );
-      })}
+      {data.class_list?.map(
+        (i: ClassType) =>
+          i.section.section_id && (
+            <div style={{ marginRight: "22px" }} key={i.section.section_id}>
+              <ClassCard {...i} />
+            </div>
+          )
+      )}
     </>
   );
 };

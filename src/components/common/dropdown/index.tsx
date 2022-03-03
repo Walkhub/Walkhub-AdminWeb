@@ -20,6 +20,7 @@ interface PropsType {
   fontWeight: string;
   name: string;
 }
+
 const Dropdown: React.FC<PropsType> = ({
   width,
   heigth,
