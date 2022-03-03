@@ -11,7 +11,7 @@ const DefaultModal: FC<Props> = ({ width, height, children }) => {
   return (
     <>
       <DefaultModalBackground>
-        <DefaultModalWrapper width={width} height={height}>
+        <DefaultModalWrapper width={width || ""} height={height || ""}>
           <CloseBtn>&times;</CloseBtn>
           <div>{children}</div>
         </DefaultModalWrapper>
@@ -24,7 +24,6 @@ export default DefaultModal;
 
 const DefaultModalBackground = styled.div`
   width: 100vw;
-
   height: 100vh;
   background-color: rgba(117, 117, 117, 0.4);
   display: flex;

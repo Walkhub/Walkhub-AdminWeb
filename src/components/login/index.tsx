@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { login } from "@src/utils/apis/auth";
 import ToastError from "@src/utils/function/errorMessage";
+import { setAuthority } from "@src/utils/function/localstorgeAuthority";
 import { setToken } from "@src/utils/function/tokenManager";
 import { LoginInfoType, LoginResponseType } from "@src/utils/interfaces/auth";
 import axios from "axios";
@@ -12,6 +13,7 @@ const Login = () => {
     account_id: "",
     password: "",
   });
+
   const router = useRouter();
 
   const loginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,6 +47,7 @@ const Login = () => {
 
   const successHandler = (info: LoginResponseType) => {
     setToken(info.access_token, info.refresh_token);
+    setAuthority(info.authority);
     info.authority === "USER"
       ? router.push("/login/certification")
       : router.push("/");
