@@ -8,18 +8,23 @@ import { FC } from "react";
 import withAuth from "@src/hocs/withAuth";
 import { ClassType } from "@src/utils/interfaces/class";
 import { StudentType } from "@src/utils/interfaces/student";
+import { SchoolListType } from "@src/utils/interfaces/school";
 
 interface FallbackType {
   fallback: {
     "/challenges/lists": ChallengeType[];
     "/teachers/classes/lists": ClassType[];
     "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class=": StudentType[];
+    "/ranks/schools/search?name=&schoolDateType=WEEK": SchoolListType;
   };
 }
 
 export async function getStaticProps() {
   const challenges = await fetcher(`/challenges/lists`);
   const classes = await fetcher(`/teachers/classes/lists`);
+  const schools = await fetcher(
+    "/ranks/schools/search?name=&schoolDateType=WEEK"
+  );
   const students = await fetcher(
     "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class="
   );
@@ -30,7 +35,7 @@ export async function getStaticProps() {
         "/challenges/lists": challenges,
         "/teachers/classes/lists": classes,
         "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class=": students,
-        "/notices/list?scope={scope}&page={page}": notices,
+        "/ranks/schools/search?name=&schoolDateType=WEEK": schools,
       },
     },
   };
@@ -47,4 +52,4 @@ const Home: FC<FallbackType> = ({ fallback }) => {
   );
 };
 
-export default withAuth(Home, ["TEACHER", "ROOT"]);
+export default withAuth(Home, ["TEACHER", "ROOT", "SU"]);
