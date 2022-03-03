@@ -1,12 +1,9 @@
 import Challenge from "@src/components/challenge";
 import React from "react";
 
-export enum PageType {
-  make = "생성",
-  modify = "수정"
-}
+export type PageType = "create" | "modify";
 
 const ChallengeCreatePage: React.FC = () => {
-  return <Challenge PageType={PageType.make} />;
+  return <Challenge pageType={"create"} />;
 };
 export default ChallengeCreatePage;

@@ -3,13 +3,13 @@ import styled from "@emotion/styled";
 import InputHeader from "@src/components/challenge/inputHeader";
 
 interface PropsType {
-  value: File | string;
+  value: File | null;
   onChangeInputValue: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ImageUpload: React.FC<PropsType> = ({ onChangeInputValue, value }) => {
   const imageName = useMemo(() => {
-    if (value && (typeof value !== 'string'))
+    if (value)
       return <strong className='imgName selectedImg'>{value.name}</strong>;
     return <p className='imgName isEmpty'>선택된 파일 없음</p>;
   }, [value]);

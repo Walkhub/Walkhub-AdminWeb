@@ -26,7 +26,7 @@ const TextField: React.FC<PropsType> = ({
   const getClassName = `textFieldWrapper ${inputName}`;
   return (
     <section className={getClassName}>
-      {summary && <InputHeader disabled={false}>{summary}</InputHeader>}
+      {summary && <InputHeader disabled={disabled}>{summary}</InputHeader>}
       <Input
         name={inputName}
         width={width}
@@ -34,6 +34,8 @@ const TextField: React.FC<PropsType> = ({
         value={inputValue || ""}
         onChange={changeInputValue}
         placeholder={placeholder}
+        isDisabled={disabled}
+        readOnly={disabled}
       />
     </section>
   );
@@ -42,6 +44,7 @@ export default TextField;
 
 const Input = styled.input<{
   width: number;
+  isDisabled: boolean;
 }>`
   width: ${props => props.width}px;
   height: 48px;
@@ -52,7 +55,8 @@ const Input = styled.input<{
   line-height: 24px;
   font-style: normal;
   font-weight: normal;
-  color: ${({ theme }) => theme.color.black};
+  color: ${props =>
+    props.isDisabled ? props.theme.color.normal_gray : props.theme.color.black};
   ::placeholder {
     color: ${({ theme }) => theme.color.normal_gray};
   }

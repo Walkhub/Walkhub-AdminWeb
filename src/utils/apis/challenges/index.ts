@@ -1,22 +1,18 @@
 import instance from "@src/utils/axios";
-import { ChallengeContentType } from "@src/utils/interfaces/challenge";
+import {
+  ChallengeContentType,
+  ChallengeDetailsType,
+  ChallengeParticipantsType,
+} from "@src/utils/interfaces/challenge";
+import {
+  participantOrderType,
+  participantsScopeType,
+  successScopeType,
+} from "@src/components/challengeDetail/search";
 
-interface ChallangeType {
-  name: string;
-  content: string;
-  image_url: string;
-  start_at: string;
-  end_at: string;
-  award: string;
-  user_scope: string;
-  goal_scope: string;
-  goal_type: string;
-  goal: number;
-  success_standard: number;
-  challenge_id?: number;
-}
-
-export const createChallenge = async (challengesRequest: ChallengeContentType) => {
+export const createChallenge = async (
+  challengesRequest: ChallengeContentType
+) => {
   try {
     await instance.post("/challenges", challengesRequest);
   } catch (error) {
@@ -24,7 +20,9 @@ export const createChallenge = async (challengesRequest: ChallengeContentType) =
   }
 };
 
-export const changeChallenge = async (challengesRequest: ChallangeType) => {
+export const changeChallenge = async (
+  challengesRequest: ChallengeContentType
+) => {
   try {
     await instance.patch(
       `/challenges/${challengesRequest.challenge_id}`,
@@ -40,5 +38,33 @@ export const deleteChallenge = async (challenge_id: number) => {
     await instance.delete(`/challenges/${challenge_id}`);
   } catch (error) {
     throw error;
+  }
+};
+
+export const getChallengeDetails = async (
+  challenge_id: number
+): Promise<ChallengeDetailsType> => {
+  try {
+    const response = await instance.get(`/challenges/${challenge_id}`);
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getChallengeParticipants = async (
+  challenge_id: number,
+  successScope: successScopeType,
+  page: number,
+  participantsOrder: participantOrderType,
+  participantsScope: participantsScopeType
+): Promise<ChallengeParticipantsType> => {
+  try {
+    const response = await instance.get(
+      `/challenges/${challenge_id}/progress?SuccessScope=${successScope}&page=${page}&participantsOrder=${participantsOrder}&participantsScope=${participantsScope}`
+    );
+    return response.data;
+  } catch (err) {
+    throw err;
   }
 };

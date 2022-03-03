@@ -40,7 +40,10 @@ const goalTypeOption: gaolOptionType[] = [
 ];
 
 interface PropsType {
-  onChangeDropdownValue: (value: string, name: string) => void;
+  onChangeDropdownValue: (
+    value: string | number,
+    name: string | number
+  ) => void;
   onChangeInputValue: (e: ChangeEvent<HTMLInputElement>) => void;
   state: ChallengeContentType;
 }
@@ -56,7 +59,7 @@ const Goal: React.FC<PropsType> = ({
       <InputArea>
         <Dropdown
           width={132}
-          heigth={48}
+          height={48}
           selectedValue={state.goal_scope || "기간"}
           setSelectedValue={onChangeDropdownValue}
           optionList={goalScopeOption}
@@ -69,7 +72,7 @@ const Goal: React.FC<PropsType> = ({
         />
         <Dropdown
           width={132}
-          heigth={48}
+          height={48}
           selectedValue={state.goal_type || "조건"}
           setSelectedValue={onChangeDropdownValue}
           optionList={goalTypeOption}
