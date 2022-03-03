@@ -1,4 +1,5 @@
 import instance from "@src/utils/axios";
+import { ChallengeContentType } from "@src/utils/interfaces/challenge";
 
 interface ChallangeType {
   name: string;
@@ -15,7 +16,7 @@ interface ChallangeType {
   challenge_id?: number;
 }
 
-export const createChallenge = async (challengesRequest: ChallangeType) => {
+export const createChallenge = async (challengesRequest: ChallengeContentType) => {
   try {
     await instance.post("/challenges", challengesRequest);
   } catch (error) {

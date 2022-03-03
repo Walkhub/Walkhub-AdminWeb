@@ -3,15 +3,15 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styled from "@emotion/styled";
 
 interface optionListType {
-  value: string | number;
-  optionName: string;
+  value: string|number;
+  optionName: string|number;
 }
 
 interface PropsType {
   width: number;
   heigth: number;
   selectedValue: string | number;
-  setSelectedValue: (value: string | number, name: string) => void;
+  setSelectedValue: (value: string|number, name: string|number) => void;
   optionList: optionListType[];
   disabled: boolean;
   padding: string;
@@ -20,6 +20,7 @@ interface PropsType {
   fontWeight: string;
   name: string;
 }
+
 const Dropdown: React.FC<PropsType> = ({
   width,
   heigth,
@@ -60,13 +61,14 @@ const Dropdown: React.FC<PropsType> = ({
           {item.optionName}
         </li>
       )),
-    [optionList]
+    [optionList, setSelectedValue]
   );
 
   const SelectValue = useMemo(() => {
     const index = optionList.findIndex(
       (i: optionListType) => i.value === selectedValue
     );
+    if (index === -1) return selectedValue;
     return optionList[index].optionName;
   }, [selectedValue]);
 
@@ -120,7 +122,6 @@ const Wrapper = styled.label<{
   text-align: left;
   position: relative;
   cursor: pointer;
-
   > .arrowButton {
     width: 16px;
     height: 16px;
