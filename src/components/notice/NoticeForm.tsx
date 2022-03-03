@@ -16,10 +16,22 @@ const NoticeForm: FC<NoticeType & { mutate: KeyedMutator<any> }> = ({
   mutate,
 }) => {
   const [modalStatus, setModalStatus] = useState(false);
-  const [showMore, setShowMore] = useState<boolean>(true);
+  const [isMore, setIsMore] = useState<boolean>(true);
 
   const timestamp = created_at;
   const time = new Date(timestamp);
+  const timeText =
+    time.getFullYear() +
+    "-" +
+    time.getMonth() +
+    "-" +
+    time.getDate() +
+    " " +
+    time.getHours() +
+    ":" +
+    time.getMinutes() +
+    ":" +
+    time.getSeconds();
 
   const noticeDelete = async (e: any) => {
     e.preventDefault();
@@ -55,15 +67,13 @@ const NoticeForm: FC<NoticeType & { mutate: KeyedMutator<any> }> = ({
           <div>
             <p>{title}</p>
             <MoreBtn onClick={() => setModalStatus(true)}>
-              {modalStatus ? (
+              {modalStatus && (
                 <DeleteBtn
                   width={50}
                   setModalStatus={setModalStatus}
                   value='삭제'
                   onClick={noticeDelete}
                 />
-              ) : (
-                ""
               )}
             </MoreBtn>
           </div>
@@ -75,33 +85,19 @@ const NoticeForm: FC<NoticeType & { mutate: KeyedMutator<any> }> = ({
             <EtcDiv>
               <Kindmsg>학교</Kindmsg>
               <div>
-                <Datemsg>
-                  {time.getFullYear() +
-                    "-" +
-                    time.getMonth() +
-                    "-" +
-                    time.getDate() +
-                    " " +
-                    time.getHours() +
-                    ":" +
-                    time.getMinutes() +
-                    ":" +
-                    time.getSeconds()}
-                </Datemsg>
+                <Datemsg>{timeText}</Datemsg>
               </div>
             </EtcDiv>
           </div>
         </FormHeadDiv>
         <HR />
         <TextDiv>
-          {showMore ? (
+          {isMore ? (
             <>
               {content.length > 140 ? (
                 <>
-                  {`${content.substring(0, 380)}`}
-                  <button onClick={() => setShowMore(!showMore)}>
-                    ...더보기
-                  </button>
+                  {content.substring(0, 380)}
+                  <button onClick={() => setIsMore(!isMore)}>...더보기</button>
                 </>
               ) : (
                 <p>{content}</p>
@@ -110,7 +106,7 @@ const NoticeForm: FC<NoticeType & { mutate: KeyedMutator<any> }> = ({
           ) : (
             <>
               <p>{content}</p>
-              <button onClick={() => setShowMore(!showMore)}>간략히</button>
+              <button onClick={() => setIsMore(!isMore)}>간략히</button>
             </>
           )}
         </TextDiv>

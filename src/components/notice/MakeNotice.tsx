@@ -140,7 +140,7 @@ const Wrapper = styled.form`
   padding: 40px 27px 40px 27px;
   border-radius: 12px;
   margin-bottom: 36px;
-  background: ${({ theme }) => theme.color.light_gray};
+  background-color: ${({ theme }) => theme.color.light_gray};
   display: flex;
   flex-direction: column;
 `;
