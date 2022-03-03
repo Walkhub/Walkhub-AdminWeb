@@ -28,6 +28,7 @@ export async function getStaticProps() {
   const students = await fetcher(
     "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class="
   );
+  const notices = await fetcher(`notices/list?scope={scope}&page={page}`);
   return {
     props: {
       fallback: {
