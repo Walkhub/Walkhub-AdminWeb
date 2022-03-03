@@ -1,4 +1,3 @@
-// import Header from "@src/components/common/";
 import HomePage from "@src/components/home";
 import Header from "@src/components/common/header";
 import fetcher from "@src/utils/function/fetcher";
