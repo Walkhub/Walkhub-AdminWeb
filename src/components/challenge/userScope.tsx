@@ -6,7 +6,7 @@ import {
   ChallengeContentType,
   gradeType,
   userScopeType,
-} from "@src/utils/interfaces/challenge";;
+} from "@src/utils/interfaces/challenge";
 import { AuthorityType } from "@src/utils/interfaces/auth";
 import { getAuthority } from "@src/utils/function/localstorgeAuthority";
 
@@ -34,11 +34,11 @@ const UserScope: React.FC<PropsType> = ({
     else if (userType === "SU") {
       return <DisabledInputBox>대전 전체</DisabledInputBox>;
     }
-  }, [userType, challengeContent]);
+  }, [userType, challengeContent, changeUserScopeValue]);
   useEffect(() => {
     if (userType === "TEACHER") changeUserScopeValue("CLASS", "user_scope");
     else if (userType === "SU") changeUserScopeValue("ALL", "user_scope");
-  }, [userType]);
+  }, [userType, changeUserScopeValue]);
   return (
     <Wrapper>
       <InputHeader disabled={userType !== "ROOT"}>참여대상</InputHeader>
@@ -102,16 +102,18 @@ const UserScopeDropdown: React.FC<{
   challengeContent: ChallengeContentType;
 }> = ({ changeUserScopeValue, challengeContent }) => {
   const changeDropdownValue = useCallback(
-    (value: string, name: string) => {
-      changeUserScopeValue(value, name);
+    (value: string | number, name: string | number) => {
+      const stringValue = String(value);
+      const stringName = String(name);
+      changeUserScopeValue(stringValue, stringName);
     },
-    [challengeContent, changeUserScopeValue]
+    [changeUserScopeValue]
   );
   return (
     <DropdownWrapper>
       <Dropdown
         width={184}
-        heigth={48}
+        height={48}
         selectedValue={challengeContent.user_scope}
         setSelectedValue={changeDropdownValue}
         optionList={userScopeOptionList}
@@ -124,7 +126,7 @@ const UserScopeDropdown: React.FC<{
       />
       <Dropdown
         width={184}
-        heigth={48}
+        height={48}
         selectedValue={challengeContent.grade || "선택"}
         setSelectedValue={changeDropdownValue}
         optionList={graderOptionList}
