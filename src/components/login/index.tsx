@@ -1,11 +1,10 @@
 import styled from "@emotion/styled";
-import useAuthority from "@src/hooks/useAuthority";
 import { login } from "@src/utils/apis/auth";
 import ToastError from "@src/utils/function/errorMessage";
 import { setToken } from "@src/utils/function/tokenManager";
 import { LoginInfoType, LoginResponseType } from "@src/utils/interfaces/auth";
 import axios from "axios";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 const Login = () => {
@@ -13,7 +12,6 @@ const Login = () => {
     account_id: "",
     password: "",
   });
-  const { setAuthority } = useAuthority();
   const router = useRouter();
 
   const loginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,7 +44,6 @@ const Login = () => {
   };
 
   const successHandler = (info: LoginResponseType) => {
-    setAuthority(info.authority);
     setToken(info.access_token, info.refresh_token);
     info.authority === "USER"
       ? router.push("/login/certification")

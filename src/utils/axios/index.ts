@@ -28,7 +28,8 @@ instance.interceptors.response.use(
   async error => {
     if (axios.isAxiosError(error) && error.response) {
       const { config, response } = error;
-      if (response.status === 401 && getToken().refreshToken) {
+      console.log(response.data.status, getToken().refreshToken);
+      if (response.data.status === 401 && getToken().refreshToken) {
         try {
           const res = await axios({
             method: "patch",
@@ -45,7 +46,10 @@ instance.interceptors.response.use(
             config.headers.Authorization = `Bearer ${access_token}`;
           return axios(config);
         } catch (err: any) {
-          if (err.response.status === 401) {
+          if (
+            err.response.data.status === 401 ||
+            err.response.data.status === 404
+          ) {
             ToastError("다시 로그인해주세요.");
             window.location.href = "/login";
             removeToken();
