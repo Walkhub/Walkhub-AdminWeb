@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
-import useAuthority from "@src/hooks/useAuthority";
+import withAuth from "@src/hocs/withAuth";
 import { certificationTeacherCode } from "@src/utils/apis/teachers";
 import ToastError from "@src/utils/function/errorMessage";
+import { setAuthority } from "@src/utils/function/localstorgeAuthority";
 import ToastSuccess from "@src/utils/function/successMessage";
 import { setToken } from "@src/utils/function/tokenManager";
 import axios from "axios";
@@ -11,7 +12,6 @@ import CodeInputBox from "./CodeInputBox";
 
 const Certification = () => {
   const router = useRouter();
-  const { setAuthority } = useAuthority();
   const inputRef = useRef<HTMLInputElement[] | null[]>([
     null,
     null,
@@ -147,4 +147,4 @@ const SubmitButton = styled.input`
   cursor: pointer;
 `;
 
-export default Certification;
+export default withAuth(Certification, ["USER"]);
