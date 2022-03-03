@@ -1,22 +1,28 @@
 import styled from "@emotion/styled";
 import React from "react";
-import ClassList from "./ClassList";
-import ChallengeList from "./ChallengeList";
+import ClassList from "./lists/ClassList";
+import ChallengeList from "./lists/ChallengeList";
 import SchoolInfo from "./SchoolInfo";
 import StudentFilter from "./StudentFilter";
+import useAuthCheck from "@src/hooks/useAuthCheck";
+import SchoolFilter from "./SchoolFilter";
 
 const Home = () => {
+  const { isAuth } = useAuthCheck(["ROOT", "TEACHER"]);
+
   return (
     <>
       <HomeBox>
         <SchoolInfo />
 
-        <Box>
-          <Title>클래스</Title>
-          <List>
-            <ClassList />
-          </List>
-        </Box>
+        {isAuth && (
+          <Box>
+            <Title>클래스</Title>
+            <List>
+              <ClassList />
+            </List>
+          </Box>
+        )}
 
         <Box>
           <Title>진행 중인 챌린지</Title>
@@ -25,9 +31,7 @@ const Home = () => {
           </List>
         </Box>
 
-        <Box>
-          <StudentFilter />
-        </Box>
+        <Box>{isAuth ? <StudentFilter /> : <SchoolFilter />}</Box>
       </HomeBox>
     </>
   );
@@ -38,13 +42,6 @@ export default Home;
 const HomeBox = styled.div`
   width: 1220px;
   margin: 0 auto;
-  img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 24px;
-  }
 `;
 
 const Box = styled.div`

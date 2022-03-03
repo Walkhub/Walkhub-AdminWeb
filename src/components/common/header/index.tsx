@@ -1,17 +1,56 @@
+/* eslint-disable @next/next/link-passhref */
 import styled from "@emotion/styled";
-import { getToken } from "@src/utils/function/tokenManager";
-import React from "react";
+import { getToken, removeToken } from "@src/utils/function/tokenManager";
+import React, { useMemo } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import useAuthCheck from "@src/hooks/useAuthCheck";
 
 const Header = () => {
+  const router = useRouter();
+  const { isAuth } = useAuthCheck(["TEACHER", "ROOT"]);
+
+  const logHandler = () => {
+    removeToken();
+    router.push("/login");
+  };
+
+  const ClassOrSchoolManagement = useMemo(() => {
+    return (
+      <>
+        {isAuth ? (
+          <Link href='/class'>
+            <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
+          </Link>
+        ) : (
+          <Link href='/su'>
+            <Text style={{ gridColumn: "4 / 5" }}>학교관리</Text>
+          </Link>
+        )}
+      </>
+    );
+  }, [isAuth]);
+
   return (
     <>
       <HeaderWrapper>
         <HeaderBox>
-          <Text style={{ gridColumn: "3 / 4" }}>공지</Text>
-          <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
-          <Text style={{ gridColumn: "5 / 6" }}>챌린지</Text>
-          <Text style={{ gridColumn: "7 / 8" }}>
-            {getToken().accessToken || getToken().refreshToken
+          <Link href='/'>
+            <Text>WalkHub</Text>
+          </Link>
+
+          <Link href='/notice'>
+            <Text style={{ gridColumn: "3 / 4" }}>공지</Text>
+          </Link>
+
+          {ClassOrSchoolManagement}
+
+          <Link href='/challenge'>
+            <Text style={{ gridColumn: "5 / 6" }}>챌린지</Text>
+          </Link>
+
+          <Text style={{ gridColumn: "7 / 8" }} onClick={logHandler}>
+            {getToken().accessToken && getToken().refreshToken
               ? "로그아웃"
               : "로그인"}
           </Text>
@@ -50,6 +89,10 @@ const Text = styled.div`
   cursor: pointer;
   z-index: 99;
   position: relative;
+  a {
+    text-decoration: none;
+    color: ${({ theme }) => theme.color.black};
+  }
   ::before,
   ::after {
     content: "";

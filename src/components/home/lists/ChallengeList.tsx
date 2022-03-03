@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { ChallengeType } from "@src/utils/interfaces/challenge";
-import ChallengeCard from "./cards/ChallengeCard";
+import ChallengeCard from "../cards/ChallengeCard";
 import useSWR from "swr";
 import fetcher from "@src/utils/function/fetcher";
 

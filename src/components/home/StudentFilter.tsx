@@ -2,11 +2,10 @@ import styled from "@emotion/styled";
 import instance from "@src/utils/axios";
 import fetcher from "@src/utils/function/fetcher";
 import getExcel from "@src/utils/function/getExcel";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
-import DefaultBox from "../common/defaultBox";
 import Dropdown from "../common/dropdown";
-import StudentList from "./StudentList";
+import StudentList from "./lists/StudentList";
 interface optionListType {
   value: string;
   optionName: string;
