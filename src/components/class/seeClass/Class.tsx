@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { DetailClassType } from "@src/utils/interfaces/detailClass";
 import Dropdown from "@src/components/common/dropdown";
 import ClassStudentList from "./ClassStudentList";
+import DeleteBtn from "../../common/DeleteBtn";
 
 interface optionListType {
   value: string;
@@ -29,6 +30,8 @@ const scopeList: optionListType[] = [
 ];
 
 const ClassBanner: FC<DetailClassType> = ({ class_cord, teacher }) => {
+  const [modalStatus, setModalStatus] = useState(false);
+
   const [type, setType] = useState({
     scope: "NAME",
   });
@@ -45,12 +48,15 @@ const ClassBanner: FC<DetailClassType> = ({ class_cord, teacher }) => {
     <Wrapper>
       <Banner>
         <DetailBtnDiv>
-          <DetailBtn>
-            <Moresection>
-              <Option>
-                <p>클래스 폐쇄</p>
-              </Option>
-            </Moresection>
+          <DetailBtn onClick={() => setModalStatus(true)}>
+            {modalStatus && (
+              <DeleteBtn
+                width={50}
+                setModalStatus={setModalStatus}
+                value='삭제'
+                onClick={noticeDelete}
+              />
+            )}
           </DetailBtn>
         </DetailBtnDiv>
         <BannerDiv1>
@@ -125,51 +131,6 @@ const DetailBtn = styled.button`
   margin-top: 28px;
   margin-right: 20px;
   background: #ffffff;
-`;
-
-const Moresection = styled.section`
-  width: 100px;
-  border-radius: 4px;
-  border: none;
-  box-shadow: 0px 3px 6px #00000029;
-  background-color: #ffffff;
-  margin-top: 30px;
-  position: relative;
-  z-index: 99;
-`;
-
-const Option = styled.button`
-  width: 100px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  padding: 6px 10px;
-  border-radius: 4px;
-  box-shadow: 0px 3px 6px #00000029;
-  background: white;
-  position: absolute;
-  right: 88px;
-  border: none;
-  cursor: pointer;
-  > p {
-    font-size: 14px;
-    font-weight: normal;
-    color: #f04d51;
-  }
-  :after {
-    content: "";
-    width: 131.6px;
-    border-bottom: 1px solid #e0e0e0;
-    position: absolute;
-    margin-top: 31px;
-  }
-  :last-child {
-    :after {
-      width: 0;
-      height: 0;
-    }
-  }
 `;
 
 const BannerDiv1 = styled.div`
