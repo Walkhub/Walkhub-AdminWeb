@@ -1,23 +1,36 @@
-import React from "react";
+import React, { FC } from "react";
 import Class from "@src/components/class/seeClass/Class";
-import useSWR from "swr";
+import { SWRConfig } from "swr";
 import fetcher from "@src/utils/function/fetcher";
 import { DetailClassType } from "@src/utils/interfaces/detailClass";
-import { GetServerSidePropsContext } from "next";
-export function getServerSideProps(context: GetServerSidePropsContext) {
-  return {
-    props: { section_id: context.query.section_id },
+
+interface FallBackType {
+  fallback: {
+    "/teachers/classes/{section_id}": DetailClassType;
   };
 }
 
-const SeeClassPage = ({ section_id }: { section_id: number }) => {
-  const { data } = useSWR(`/teachers/classes/${section_id}`, fetcher);
+export async function getServerSideProps() {
+  const schoolClass = await fetcher(`/teachers/classes/{section_id}`);
+  return {
+    props: {
+      fallback: {
+        "/teachers/classes/{section_id}": schoolClass,
+      },
+    },
+  };
+}
 
+const SeeClassPage: FC<FallBackType & DetailClassType> = ({
+  fallback,
+  class_cord,
+  teacher,
+}) => {
   return (
     <>
-      <div>
-        <Class {...data} />
-      </div>
+      <SWRConfig value={{ fallback }}>
+        <Class class_cord={class_cord} teacher={teacher} />
+      </SWRConfig>
     </>
   );
 };

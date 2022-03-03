@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import styled from "@emotion/styled";
 import { DetailClassType } from "@src/utils/interfaces/detailClass";
 import Dropdown from "@src/components/common/dropdown";
+import ClassStudentList from "./ClassStudentList";
 
 interface optionListType {
   value: string;
@@ -27,11 +28,7 @@ const scopeList: optionListType[] = [
   },
 ];
 
-const ClassBanner: FC<DetailClassType> = ({
-  class_cord,
-  teacher,
-  user_List,
-}) => {
+const ClassBanner: FC<DetailClassType> = ({ class_cord, teacher }) => {
   const [type, setType] = useState({
     scope: "NAME",
   });
@@ -83,7 +80,7 @@ const ClassBanner: FC<DetailClassType> = ({
           selectedValue={type.scope}
           name='sort'
           optionList={scopeList}
-          setSelectedValue={changeType}
+          setSelectedValue={() => changeType}
           disabled={false}
           lineHeight={24}
           fontSize={16}
@@ -97,7 +94,9 @@ const ClassBanner: FC<DetailClassType> = ({
         <p>평균 거리</p>
         <p>종합 거리</p>
       </TypeMenuDiv>
-      <StudentListDiv></StudentListDiv>
+      <StudentListDiv>
+        <ClassStudentList />
+      </StudentListDiv>
     </Wrapper>
   );
 };

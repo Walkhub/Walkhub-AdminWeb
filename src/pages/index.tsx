@@ -7,13 +7,11 @@ import { FC } from "react";
 import withAuth from "@src/hocs/withAuth";
 import { ClassType } from "@src/utils/interfaces/class";
 import { StudentType } from "@src/utils/interfaces/student";
-import { DetailClassType } from "@src/utils/interfaces/detailClass";
 
 interface FallbackType {
   fallback: {
     "/challenges/lists": ChallengeType[];
     "/teachers/classes/lists": ClassType[];
-    "/teachers/classes/{section-id}": DetailClassType[];
     "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class=": StudentType[];
   };
 }
@@ -24,14 +22,12 @@ export async function getStaticProps() {
   const students = await fetcher(
     "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class="
   );
-  const detailClass = await fetcher(`/teachers/classes/{section_id}`);
   return {
     props: {
       fallback: {
         "/challenges/lists": challenges,
         "/teachers/classes/lists": classes,
         "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class=": students,
-        "/teachers/classes/{section-id}": detailClass,
       },
     },
   };
