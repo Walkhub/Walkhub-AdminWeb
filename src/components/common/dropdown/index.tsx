@@ -3,15 +3,15 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styled from "@emotion/styled";
 
 interface optionListType {
-  value: string|number;
-  optionName: string|number;
+  value: string | number;
+  optionName: string | number;
 }
 
 interface PropsType {
   width: number;
-  heigth: number;
+  height: number;
   selectedValue: string | number;
-  setSelectedValue: (value: string|number, name: string|number) => void;
+  setSelectedValue: (value: string | number, name: string | number) => void;
   optionList: optionListType[];
   disabled: boolean;
   padding: string;
@@ -22,7 +22,7 @@ interface PropsType {
 }
 const Dropdown: React.FC<PropsType> = ({
   width,
-  heigth,
+  height,
   selectedValue,
   setSelectedValue,
   optionList,
@@ -75,7 +75,7 @@ const Dropdown: React.FC<PropsType> = ({
     <OutsideClickHandler onOutsideClick={() => setIsFold(false)}>
       <Wrapper
         width={width}
-        heigth={heigth}
+        height={height}
         isFold={isFold}
         {...optionBoxStyleProps}
         className='dropdown'
@@ -99,7 +99,7 @@ const Dropdown: React.FC<PropsType> = ({
 
 const Wrapper = styled.label<{
   width: number;
-  heigth: number;
+  height: number;
   isFold: boolean;
   padding: string;
   fontSize: number;
@@ -107,7 +107,7 @@ const Wrapper = styled.label<{
   fontWeight: string;
 }>`
   width: ${({ width }) => width}px;
-  height: ${({ heigth }) => heigth}px;
+  height: ${({ height }) => height}px;
   border: 1px solid
     ${props =>
       props.isFold ? props.theme.color.main : props.theme.color.normal_gray};
@@ -128,6 +128,7 @@ const Wrapper = styled.label<{
     align-items: center;
     justify-content: center;
     background-color: transparent;
+    margin-left: auto;
   }
 `;
 const Selected = styled.div<{
@@ -135,6 +136,8 @@ const Selected = styled.div<{
 }>`
   width: calc(100% - 28px);
   height: 100%;
+  display: flex;
+  align-items: center;
   color: ${props =>
     props.isDefaultValue
       ? props.theme.color.black
