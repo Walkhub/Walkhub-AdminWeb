@@ -19,15 +19,13 @@ interface FallbackType {
 }
 
 export async function getStaticProps() {
-  const challenges = await fetcher(`/challenges/lists`);
-  const classes = await fetcher(`/teachers/classes/lists`);
-  const schools = await fetcher(
-    "/ranks/schools/search?name=&schoolDateType=WEEK"
-  );
-  const students = await fetcher(
-    "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class="
-  );
-  const notices = await fetcher(`notices/list?scope={scope}&page={page}`);
+  const [challenges, classes, schools, students] = await Promise.all([
+    fetcher(`/challenges/lists`),
+    fetcher(`/teachers/classes/lists`),
+    fetcher("/ranks/schools/search?name=&schoolDateType=WEEK"),
+    fetcher("/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class="),
+  ]);
+
   return {
     props: {
       fallback: {
