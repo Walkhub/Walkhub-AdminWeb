@@ -100,7 +100,7 @@ const StudentFilter = () => {
     });
   };
 
-  const changeType = (value: string, name: string) => {
+  const changeType = (value: string | number, name: string | number) => {
     console.log(type);
     setType({
       ...type,
@@ -153,7 +153,7 @@ const StudentFilter = () => {
         />
         <Dropdown
           width={136}
-          heigth={48}
+          height={48}
           selectedValue={type.sort}
           name='sort'
           optionList={sortList}
@@ -166,7 +166,7 @@ const StudentFilter = () => {
         />
         <Dropdown
           width={136}
-          heigth={48}
+          height={48}
           selectedValue={type.scope}
           name='scope'
           optionList={scopeList}
@@ -179,7 +179,7 @@ const StudentFilter = () => {
         />
         <Dropdown
           width={136}
-          heigth={48}
+          height={48}
           selectedValue={type.grade}
           name='grade'
           optionList={gradeList}

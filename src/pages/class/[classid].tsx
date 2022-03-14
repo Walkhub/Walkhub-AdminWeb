@@ -10,27 +10,27 @@ interface FallBackType {
   };
 }
 
-export async function getServerSideProps() {
-  const schoolClass = await fetcher(`/teachers/classes/{section_id}`);
-  return {
-    props: {
-      fallback: {
-        "/teachers/classes/{section_id}": schoolClass,
-      },
-    },
-  };
-}
+// export async function getServerSideProps() {
+//   const schoolClass = await fetcher(`/teachers/classes/{section_id}`);
+//   return {
+//     props: {
+//       fallback: {
+//         "/teachers/classes/{section_id}": schoolClass,
+//       },
+//     },
+//   };
+// }
 
 const SeeClassPage: FC<FallBackType & DetailClassType> = ({
   fallback,
-  class_cord,
-  teacher,
+  // class_cord,
+  // teacher,
 }) => {
   return (
     <>
-      <SWRConfig value={{ fallback }}>
-        <Class class_cord={class_cord} teacher={teacher} />
-      </SWRConfig>
+      {/* <SWRConfig value={{ fallback }}> */}
+      <Class />
+      {/* </SWRConfig> */}
     </>
   );
 };

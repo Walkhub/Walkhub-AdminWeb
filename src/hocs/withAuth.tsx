@@ -16,9 +16,6 @@ function withAuth<T>(
       if (!getToken().accessToken && !getToken().refreshToken) {
         router.push("/login");
         ToastError("로그인을 해주세요");
-      } else if (localStorage.getItem("authority") === "USER") {
-        router.push("/login/certification");
-        ToastError("접근 권한이 없습니다.");
       } else if (
         !option.find((i: string) => i === localStorage.getItem("authority"))
       ) {

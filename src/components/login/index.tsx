@@ -2,18 +2,33 @@ import styled from "@emotion/styled";
 import { login } from "@src/utils/apis/auth";
 import ToastError from "@src/utils/function/errorMessage";
 import { setAuthority } from "@src/utils/function/localstorgeAuthority";
+import { getId, setId } from "@src/utils/function/localstorgeId";
 import { setToken } from "@src/utils/function/tokenManager";
 import { LoginInfoType, LoginResponseType } from "@src/utils/interfaces/auth";
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState<LoginInfoType>({
     account_id: "",
     password: "",
   });
+  const [isState, setIsState] = useState<Record<"save" | "look", boolean>>({
+    save: false,
+    look: false,
+  });
 
+  useLayoutEffect(() => {
+    if (isState) {
+      const savedId = getId();
+      setLoginInfo({ ...loginInfo, account_id: savedId });
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(isState.save);
+  }, [isState.save]);
   const router = useRouter();
 
   const loginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,6 +36,7 @@ const Login = () => {
     try {
       const info = await login(loginInfo);
       successHandler(info);
+      isState.save && setId(loginInfo.account_id);
     } catch (e) {
       errorHandler(e);
     }
@@ -79,11 +95,20 @@ const Login = () => {
             name='password'
             onChange={loginInfoChange}
             value={loginInfo.password}
+            type={isState.look ? "text" : "password"}
           />
-          <img></img>
+          <img
+            onClick={() =>
+              setIsState(state => ({ ...state, look: !state.look }))
+            }
+          ></img>
         </InputArea>
         <IdSaveBox>
-          <img />
+          <img
+            onClick={() =>
+              setIsState(state => ({ ...state, save: !state.save }))
+            }
+          />
           <p>아이디 저장</p>
         </IdSaveBox>
         <LoginButton type='submit' value='로그인'></LoginButton>

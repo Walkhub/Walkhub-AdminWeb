@@ -19,6 +19,7 @@ interface PropsType {
   lineHeight: number;
   fontWeight: string;
   name: string;
+  isBoard?: boolean;
 }
 
 const Dropdown: React.FC<PropsType> = ({
@@ -32,6 +33,7 @@ const Dropdown: React.FC<PropsType> = ({
   fontSize,
   lineHeight,
   fontWeight,
+  isBoard = true,
   name,
 }) => {
   const [isFold, setIsFold] = useState(false);
@@ -41,6 +43,7 @@ const Dropdown: React.FC<PropsType> = ({
     fontSize,
     lineHeight,
     fontWeight,
+    isBoard,
   };
 
   const reverseDropdownStatus = () => {
@@ -102,25 +105,28 @@ const Wrapper = styled.label<{
   width: number;
   height: number;
   isFold: boolean;
-  padding: string;
   fontSize: number;
   lineHeight: number;
   fontWeight: string;
+  isBoard: boolean;
 }>`
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
-  border: 1px solid
-    ${props =>
-      props.isFold ? props.theme.color.main : props.theme.color.normal_gray};
+  ${props =>
+    props.isBoard &&
+    `border: 1px solid ${
+      props.isFold ? props.theme.color.main : props.theme.color.normal_gray
+    }`};
   border-radius: 12px;
   display: flex;
-  padding: ${props => props.padding};
+  padding: 0 12px;
   font-size: ${props => props.fontSize}px;
   line-height: ${props => props.lineHeight}px;
   font-weight: ${props => props.fontWeight};
   font-style: normal;
   text-align: left;
   position: relative;
+  align-items: center;
   cursor: pointer;
   > .arrowButton {
     width: 16px;
@@ -168,6 +174,7 @@ const Options = styled.ul<{
     font-size: ${props => props.fontSize}px;
     line-height: ${props => props.lineHeight}px;
     font-weight: ${props => props.fontWeight};
+    cursor: pointer;
     :hover {
       color: ${({ theme }) => theme.color.main};
     }

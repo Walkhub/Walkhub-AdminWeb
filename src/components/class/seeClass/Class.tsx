@@ -4,7 +4,7 @@ import { DetailClassType } from "@src/utils/interfaces/detailClass";
 import Dropdown from "@src/components/common/dropdown";
 import ClassStudentList from "./ClassStudentList";
 import DeleteBtn from "../../common/DeleteBtn";
-
+import { Test } from "@src/components/certification/test";
 interface optionListType {
   value: string;
   optionName: string;
@@ -29,14 +29,15 @@ const scopeList: optionListType[] = [
   },
 ];
 
-const ClassBanner: FC<DetailClassType> = ({ class_cord, teacher }) => {
+const ClassBanner: FC = () => {
   const [modalStatus, setModalStatus] = useState(false);
 
   const [type, setType] = useState({
-    scope: "NAME",
+    value: "NAME",
+    optionName: "이름순",
   });
 
-  const changeType = (value: string, name: string) => {
+  const changeType = (value: string | number, name: string | number) => {
     console.log(type);
     setType({
       ...type,
@@ -54,7 +55,6 @@ const ClassBanner: FC<DetailClassType> = ({ class_cord, teacher }) => {
                 width={50}
                 setModalStatus={setModalStatus}
                 value='삭제'
-                onClick={noticeDelete}
               />
             )}
           </DetailBtn>
@@ -68,30 +68,31 @@ const ClassBanner: FC<DetailClassType> = ({ class_cord, teacher }) => {
         </BannerDiv1>
         <BannerDiv2>
           <TeacherDiv>
-            <img src={teacher.profile_image_url} alt='' />
-            <TeacherName>{teacher.name}</TeacherName>
+            {/* <img src={teacher.profile_image_url} alt='' /> */}
+            <TeacherName>{}</TeacherName>
             <p>선생님</p>
           </TeacherDiv>
           <ClassCodeDiv>
             <p>가입코드</p>
-            <ClassCode>{class_cord}</ClassCode>
+            <ClassCode>{}</ClassCode>
           </ClassCodeDiv>
         </BannerDiv2>
       </Banner>
       <Title>
         <p>학생 확인</p>
         <Dropdown
-          width={64}
-          heigth={24}
-          selectedValue={type.scope}
+          width={102}
+          height={16}
+          selectedValue={type.optionName}
           name='sort'
           optionList={scopeList}
-          setSelectedValue={() => changeType}
+          setSelectedValue={changeType}
           disabled={false}
           lineHeight={24}
           fontSize={16}
           fontWeight='normal'
-          padding='12px 16px'
+          padding='10px 16px'
+          isBoard={false}
         />
       </Title>
       <TypeMenuDiv>

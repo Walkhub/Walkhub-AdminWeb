@@ -46,7 +46,7 @@ const SchoolManagement = () => {
     });
   };
 
-  const changeType = (value: string, name: string) => {
+  const changeType = (value: string | number, name: string | number) => {
     console.log(type);
     setType({
       ...type,
@@ -76,7 +76,7 @@ const SchoolManagement = () => {
         />
         <Dropdown
           width={136}
-          heigth={48}
+          height={48}
           selectedValue={type.scope}
           name='sort'
           optionList={scopeList}

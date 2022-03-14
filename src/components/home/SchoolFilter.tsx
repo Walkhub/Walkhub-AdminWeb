@@ -47,8 +47,7 @@ const SchoolFilter = () => {
     });
   };
 
-  const changeType = (value: string, name: string) => {
-    console.log(type);
+  const changeType = (value: string | number, name: string | number) => {
     setType({
       ...type,
       [name]: value,
@@ -70,7 +69,7 @@ const SchoolFilter = () => {
         />
         <Dropdown
           width={136}
-          heigth={48}
+          height={48}
           selectedValue={type.scope}
           name='sort'
           optionList={scopeList}
@@ -83,7 +82,7 @@ const SchoolFilter = () => {
         />
         <Dropdown
           width={136}
-          heigth={48}
+          height={48}
           selectedValue={type.scope}
           name='scope'
           optionList={scopeList}
@@ -95,7 +94,6 @@ const SchoolFilter = () => {
           padding='12px 16px'
         />
       </SchoolSearchBox>
-
       <SchoolList />
     </>
   );

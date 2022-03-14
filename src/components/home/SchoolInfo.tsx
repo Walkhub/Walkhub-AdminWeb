@@ -18,6 +18,11 @@ export default SchoolInfo;
 const SchoolInfoBox = styled.div`
   display: flex;
   align-items: center;
+  margin: 32px 0;
+  > img {
+    width: 80px;
+    height: 80px;
+  }
   p {
     font-size: 20px;
     font-weight: bold;
