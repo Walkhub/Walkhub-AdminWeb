@@ -3,6 +3,7 @@ import Class from "@src/components/class/seeClass/Class";
 import { SWRConfig } from "swr";
 import fetcher from "@src/utils/function/fetcher";
 import { DetailClassType } from "@src/utils/interfaces/detailClass";
+import withAuth from "@src/hocs/withAuth";
 
 interface FallBackType {
   fallback: {
@@ -35,4 +36,4 @@ const SeeClassPage: FC<FallBackType & DetailClassType> = ({
   );
 };
 
-export default SeeClassPage;
+export default withAuth(SeeClassPage, ["ROOT", "SU", "TEACHER"]);

@@ -85,4 +85,4 @@ const NoticeListDiv = styled.div`
   flex-direction: column;
 `;
 
-export default withAuth(Notice, ["ROOT", "SU", "TEACHER"]);
+export default Notice;
