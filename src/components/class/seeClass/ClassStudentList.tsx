@@ -3,7 +3,7 @@ import fetcher from "@src/utils/function/fetcher";
 import useSWR from "swr";
 import { StudentType } from "@src/utils/interfaces/student";
 import StudentCard from "@src/components/home/cards/StudentCard";
-
+import Link from "next/link";
 interface Type {
   class_code: string;
   teacher: {
@@ -56,9 +56,16 @@ const ClassStudentList = () => {
     <>
       {data.user_list.map((i: StudentType) => {
         return (
-          <div key={i.user_id}>
-            <StudentCard {...i} />
-          </div>
+          <Link
+            href='/class/1?userdetail'
+            as='/userdetail'
+            passHref
+            key={i.user_id}
+          >
+            <a>
+              <StudentCard {...i} />
+            </a>
+          </Link>
         );
       })}
     </>
