@@ -3,7 +3,7 @@ import ToastError from "@src/utils/function/errorMessage";
 import { getToken } from "@src/utils/function/tokenManager";
 import { AuthorityType } from "@src/utils/interfaces/auth";
 import { useRouter } from "next/dist/client/router";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 
 function withAuth<T>(
   Component: React.ComponentType<T>,
@@ -12,7 +12,7 @@ function withAuth<T>(
   const AuthenticateCheck = (props: T) => {
     const router = useRouter();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (!getToken().accessToken && !getToken().refreshToken) {
         router.push("/login");
         ToastError("로그인을 해주세요");
