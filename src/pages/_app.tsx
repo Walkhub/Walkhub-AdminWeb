@@ -9,6 +9,7 @@ import {
 import StyleProvider from "@src/styles";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Header from "@src/components/common/header";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         ParticipantOptionContextProvider,
       ]}
     >
+      <Header></Header>
       <Component {...pageProps} />
       <ToastContainer theme='colored' />
     </RootProvider>

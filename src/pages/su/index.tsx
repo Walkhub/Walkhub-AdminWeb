@@ -29,7 +29,6 @@ const SchoolPage: FC<FallbackType> = ({ fallback }) => {
   return (
     <>
       <SWRConfig value={{ fallback }}>
-        <Header />
         <SchoolManagement />
       </SWRConfig>
     </>

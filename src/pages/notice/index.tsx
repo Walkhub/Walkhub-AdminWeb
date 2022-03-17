@@ -26,7 +26,6 @@ const NoticePage: FC<NoticeFallbackType> = ({ fallback }) => {
   return (
     <>
       <SWRConfig value={{ fallback }}>
-        <Header />
         <Notice />
       </SWRConfig>
     </>
