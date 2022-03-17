@@ -7,7 +7,7 @@ import { setToken } from "@src/utils/function/tokenManager";
 import { LoginInfoType, LoginResponseType } from "@src/utils/interfaces/auth";
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState<LoginInfoType>({
@@ -19,16 +19,16 @@ const Login = () => {
     look: false,
   });
 
-  useLayoutEffect(() => {
-    if (isState) {
-      const savedId = getId();
-      setLoginInfo({ ...loginInfo, account_id: savedId });
-    }
+  useEffect(() => {
+    const savedId = getId();
+    if (savedId) setIsState({ ...isState, save: true });
+    setLoginInfo({ ...loginInfo, account_id: savedId });
   }, []);
 
   useEffect(() => {
-    console.log(isState.save);
-  }, [isState.save]);
+    isState.save ? setId(loginInfo.account_id) : setId("");
+  }, [isState.save, loginInfo.account_id]);
+
   const router = useRouter();
 
   const loginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,7 +36,6 @@ const Login = () => {
     try {
       const info = await login(loginInfo);
       successHandler(info);
-      isState.save && setId(loginInfo.account_id);
     } catch (e) {
       errorHandler(e);
     }
