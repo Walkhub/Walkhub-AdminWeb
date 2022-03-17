@@ -27,7 +27,7 @@ const ClassStudentList = () => {
       {
         user_id: 1,
         name: "user",
-        profile_iamge_url: "https://~~~~~~",
+        profile_image_url: "https://~~~~~~",
         number: 1,
         average_walk_count: 1234, //오늘부터 7일전 까지
         total_walk_count: 12345, //오늘부터 7일전 까지
@@ -40,7 +40,7 @@ const ClassStudentList = () => {
       {
         user_id: 2,
         name: "user2",
-        profile_iamge_url: "https://~~~~~~",
+        profile_image_url: "https://~~~~~~",
         number: 1,
         average_walk_count: 1234, //오늘부터 7일전 까지
         total_walk_count: 12345, //오늘부터 7일전 까지

@@ -95,7 +95,7 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
       <HeadDiv>
         <DropDown
           width={85}
-          heigth={40}
+          height={40}
           name='scope'
           selectedValue={noticePost.scope}
           setSelectedValue={() => noticeInfoChange}
