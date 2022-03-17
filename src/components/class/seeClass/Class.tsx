@@ -1,10 +1,10 @@
-import React, { FC, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import { DetailClassType } from "@src/utils/interfaces/detailClass";
 import Dropdown from "@src/components/common/dropdown";
 import ClassStudentList from "./ClassStudentList";
 import DeleteBtn from "../../common/DeleteBtn";
-import { Test } from "@src/components/certification/test";
+
 interface optionListType {
   value: string;
   optionName: string;
@@ -32,17 +32,10 @@ const scopeList: optionListType[] = [
 const ClassBanner: FC = () => {
   const [modalStatus, setModalStatus] = useState(false);
 
-  const [type, setType] = useState({
-    value: "NAME",
-    optionName: "이름순",
-  });
+  const [type, setType] = useState("NAME");
 
   const changeType = (value: string | number, name: string | number) => {
-    console.log(type);
-    setType({
-      ...type,
-      [name]: value,
-    });
+    setType(value as string);
   };
 
   return (
@@ -83,8 +76,8 @@ const ClassBanner: FC = () => {
         <Dropdown
           width={102}
           height={16}
-          selectedValue={type.optionName}
-          name='sort'
+          selectedValue={type}
+          name='value'
           optionList={scopeList}
           setSelectedValue={changeType}
           disabled={false}
@@ -96,7 +89,7 @@ const ClassBanner: FC = () => {
         />
       </Title>
       <TypeMenuDiv>
-        <p style={{ margin: "0 80px 0 468px" }}>평균 걸음 수</p>
+        <p style={{ gridColumn: "4/5" }}>평균 걸음 수</p>
         <p>종합 걸음 수</p>
         <p>평균 거리</p>
         <p>종합 거리</p>
@@ -212,7 +205,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   margin-top: 48px;
-  margin-bottom: 20px;
+
   > p {
     font-size: 28px;
     font-style: normal;
@@ -222,16 +215,22 @@ const Title = styled.div`
 `;
 
 const TypeMenuDiv = styled.div`
-  display: flex;
+  width: 1224px;
+  padding: 16px 18px;
+  display: grid;
   align-items: center;
-  margin-bottom: 16px;
+  grid-template-columns: repeat(8, 1fr);
+  place-items: center;
   > p {
-    margin-right: 80px;
     font-size: 16px;
     color: ${({ theme }) => theme.color.dark_gray};
   }
 `;
 
-const StudentListDiv = styled.div``;
+const StudentListDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 
 export default ClassBanner;
