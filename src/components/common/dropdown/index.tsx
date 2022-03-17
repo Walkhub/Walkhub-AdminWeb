@@ -168,7 +168,6 @@ const Options = styled.ul<{
   > .eachOption {
     width: 100%;
     list-style: none;
-    height: 48px;
     border-bottom: 1px solid ${({ theme }) => theme.color.normal_gray};
     padding: ${props => props.padding};
     font-size: ${props => props.fontSize}px;
