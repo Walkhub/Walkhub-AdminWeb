@@ -4,8 +4,8 @@ import DefaultBtn from "../common/defaultBtn/DefaultBtn";
 import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
 
-const MakeRoot = () => {
-  const makeRootSubmit = async (e: any) => {
+const ModifyRoot = () => {
+  const modifyRootSubmit = async (e: any) => {
     e.preventDefault();
     try {
     } catch (e) {
@@ -31,13 +31,13 @@ const MakeRoot = () => {
   return (
     <Wrapper>
       <PostBox>
-        <h3>루트 선생님 생성</h3>
-        <p>아이디와 비밀번호는 자동 생성 됩니다.</p>
+        <h3>루트 선생님 수정</h3>
+        <p>아이디와 비밀번호는 수정할 수 없습니다.</p>
         <InputDiv>
           <p>학교 이름</p>
           <SchoolInput placeholder='학교 이름' />
         </InputDiv>
-        <DefaultBtn value='생성' />
+        <DefaultBtn value='수정' />
       </PostBox>
     </Wrapper>
   );
@@ -95,4 +95,4 @@ const SchoolInput = styled.input`
   border: 1px solid ${({ theme }) => theme.color.normal_gray};
 `;
 
-export default MakeRoot;
+export default ModifyRoot;
