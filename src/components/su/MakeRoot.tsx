@@ -34,7 +34,10 @@ const MakeRoot = () => {
         <h3>루트 선생님 생성</h3>
         <p>아이디와 비밀번호는 자동 생성 됩니다.</p>
         <InputDiv>
-          <p>학교 이름</p>
+          <div>
+            <p>학교 이름</p>
+            <BlueStar>*</BlueStar>
+          </div>
           <SchoolInput placeholder='학교 이름' />
         </InputDiv>
         <DefaultBtn value='생성' />
@@ -79,12 +82,19 @@ const InputDiv = styled.div`
   width: 392px;
   height: 84px;
   margin-bottom: 48px;
-  > p {
-    font-size: 16px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.color.black};
-    margin-bottom: 12px;
+  > div {
+    display: flex;
+    > p {
+      font-size: 16px;
+      font-weight: 600;
+      color: ${({ theme }) => theme.color.black};
+      margin-bottom: 12px;
+    }
   }
+`;
+
+const BlueStar = styled.strong`
+  color: ${({ theme }) => theme.color.main};
 `;
 
 const SchoolInput = styled.input`
