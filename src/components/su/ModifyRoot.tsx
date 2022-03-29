@@ -32,7 +32,7 @@ const ModifyRoot = () => {
     <Wrapper>
       <PostBox>
         <h3>루트 선생님 수정</h3>
-        <p>아이디와 비밀번호는 수정할 수 없습니다.</p>
+        <p>아이디는 수정할 수 없습니다.</p>
         <InputDiv>
           <div>
             <p>학교 이름</p>
@@ -41,6 +41,10 @@ const ModifyRoot = () => {
           <SchoolInput placeholder='학교 이름' />
         </InputDiv>
         <DefaultBtn value='수정' />
+        <ReissuanceDiv>
+          <p>루트 선생님이 비밀번호를 잊었을 경우</p>
+          <h6>비밀번호 재발급</h6>
+        </ReissuanceDiv>
       </PostBox>
     </Wrapper>
   );
@@ -58,7 +62,7 @@ const Wrapper = styled.form`
 const PostBox = styled.div`
   width: 600px;
   height: 642px;
-  padding: 127px 104px 183px;
+  padding: 127px 104px 134px;
   border-radius: 12px;
   background-color: ${({ theme }) => theme.color.white};
   display: flex;
@@ -103,6 +107,24 @@ const SchoolInput = styled.input`
   padding-left: 16px;
   border-radius: 12px;
   border: 1px solid ${({ theme }) => theme.color.normal_gray};
+`;
+
+const ReissuanceDiv = styled.div`
+  width: 360px;
+  margin-top: 24px;
+  display: flex;
+  > p {
+    font-size: 14px;
+    font-weight: 500;
+    color: ${({ theme }) => theme.color.normal_gray};
+    margin-right: 5px;
+  }
+  > h6 {
+    font-size: 14px;
+    font-weight: 500;
+    color: ${({ theme }) => theme.color.main};
+    text-decoration: underline;
+  }
 `;
 
 export default ModifyRoot;

@@ -35,6 +35,10 @@ const RootResult = () => {
 const Wrapper = styled.div`
   width: 1220px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   > h1 {
     font-size: 32px;
     font-weight: bold;
