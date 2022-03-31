@@ -6,7 +6,6 @@ import React from "react";
 const ChallengePage = () => {
   return (
     <>
-      <Header />
       <ChallengeList />
     </>
   );

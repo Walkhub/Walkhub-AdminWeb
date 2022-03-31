@@ -85,7 +85,12 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
       [name]: value,
     });
   };
-
+  const noticeSortChange = (value: string | number, name: string | number) => {
+    setNoticePost({
+      ...noticePost,
+      [name]: value,
+    });
+  };
   const deleteClick = () => {
     setMakeState(true);
   };
@@ -95,10 +100,10 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
       <HeadDiv>
         <DropDown
           width={85}
-          heigth={40}
+          height={40}
           name='scope'
           selectedValue={noticePost.scope}
-          setSelectedValue={() => noticeInfoChange}
+          setSelectedValue={noticeSortChange}
           optionList={sortList}
           disabled={false}
           fontSize={16}

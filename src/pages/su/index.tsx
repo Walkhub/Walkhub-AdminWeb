@@ -6,32 +6,31 @@ import { SchoolListType } from "@src/utils/interfaces/school";
 import React, { FC } from "react";
 import { SWRConfig } from "swr";
 
-interface FallbackType {
-  fallback: {
-    "/ranks/schools/search?name=&schoolDateType=WEEK": SchoolListType;
-  };
-}
+// interface FallbackType {
+//   fallback: {
+//     "/ranks/schools/search?name=&schoolDateType=WEEK": SchoolListType;
+//   };
+// }
 
-export async function getStaticProps() {
-  const schools = await fetcher(
-    "/ranks/schools/search?name=&schoolDateType=WEEK"
-  );
-  return {
-    props: {
-      fallback: {
-        "/ranks/schools/search?name=&schoolDateType=WEEK": schools,
-      },
-    },
-  };
-}
+// export async function getStaticProps() {
+//   const schools = await fetcher(
+//     "/ranks/schools/search?name=&schoolDateType=WEEK"
+//   );
+//   return {
+//     props: {
+//       fallback: {
+//         "/ranks/schools/search?name=&schoolDateType=WEEK": schools,
+//       },
+//     },
+//   };
+// }
 
-const SchoolPage: FC<FallbackType> = ({ fallback }) => {
+const SchoolPage = () => {
   return (
     <>
-      <SWRConfig value={{ fallback }}>
-        <Header />
-        <SchoolManagement />
-      </SWRConfig>
+      {/* <SWRConfig value={{ fallback }}> */}
+      <SchoolManagement />
+      {/* </SWRConfig> */}
     </>
   );
 };

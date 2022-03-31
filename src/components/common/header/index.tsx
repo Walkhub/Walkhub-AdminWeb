@@ -19,7 +19,8 @@ const Header = () => {
     return (
       <>
         {isAuth ? (
-          <Link href='/class'>
+          <Link href='/class/1'>
+            {/* 이부분은 나중에 선생님 자신의 클래스로 이동*/}
             <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
           </Link>
         ) : (
@@ -65,6 +66,7 @@ export default Header;
 const HeaderWrapper = styled.div`
   width: 100%;
   height: 60px;
+
   display: flex;
   align-items: center;
   justify-content: center;

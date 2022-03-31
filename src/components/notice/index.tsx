@@ -5,6 +5,7 @@ import MakeNotice from "./MakeNotice";
 import useSWR from "swr";
 import fetcher from "@src/utils/function/fetcher";
 import { NoticeType } from "@src/utils/interfaces/notice";
+import withAuth from "@src/hocs/withAuth";
 
 const Notice = () => {
   const [makeState, setMakeState] = useState<boolean>(true);

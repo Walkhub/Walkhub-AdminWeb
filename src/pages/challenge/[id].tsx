@@ -18,6 +18,7 @@ import { useRouter } from "next/dist/client/router";
 import PageNation from "@src/components/common/pagenation";
 import ToastError from "@src/utils/function/errorMessage";
 import axios from "axios";
+import withAuth from "@src/hocs/withAuth";
 
 const ChallengeDetailPage = () => {
   const [challengeDetail, setChallengeDetail] =
@@ -87,7 +88,7 @@ const ChallengeDetailPage = () => {
   );
 };
 
-export default ChallengeDetailPage;
+export default withAuth(ChallengeDetailPage, ["ROOT", "SU", "TEACHER"]);
 
 const Wrapper = styled.section`
   width: 1224px;
