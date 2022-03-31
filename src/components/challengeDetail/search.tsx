@@ -95,7 +95,7 @@ const SearchOptions: React.FC<PropsType> = ({ onChangeDropdownValue }) => {
         </label>
         <Dropdown
           width={136}
-          heigth={48}
+          height={48}
           selectedValue={state.participantOrder}
           setSelectedValue={onChangeDropdownValue}
           optionList={participantOrderOptionList}
@@ -108,7 +108,7 @@ const SearchOptions: React.FC<PropsType> = ({ onChangeDropdownValue }) => {
         />
         <Dropdown
           width={136}
-          heigth={48}
+          height={48}
           selectedValue={state.participantsScope}
           setSelectedValue={onChangeDropdownValue}
           optionList={participantOptionList}
@@ -121,7 +121,7 @@ const SearchOptions: React.FC<PropsType> = ({ onChangeDropdownValue }) => {
         />
         <Dropdown
           width={136}
-          heigth={48}
+          height={48}
           selectedValue={state.successScope}
           setSelectedValue={onChangeDropdownValue}
           optionList={successScopeOptionList}

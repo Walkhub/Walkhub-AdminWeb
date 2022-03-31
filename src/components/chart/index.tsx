@@ -9,11 +9,12 @@ import {
   BarChart,
   Cell,
   TooltipProps,
-} from "recharts";
+} from "@walkhub/recharts";
+
 import {
   ValueType,
   NameType,
-} from "recharts/src/component/DefaultTooltipContent";
+} from "@walkhub/recharts/src/component/DefaultTooltipContent";
 import getChartData from "../../utils/function/getChartData";
 
 interface Props {
