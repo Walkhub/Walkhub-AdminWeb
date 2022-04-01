@@ -33,8 +33,9 @@ const RootResult = () => {
 };
 
 const Wrapper = styled.div`
-  width: 1220px;
+  width: 100%;
   margin: 0 auto;
+  padding: 100px 0 0;
   display: flex;
   flex-direction: column;
   justify-content: center;

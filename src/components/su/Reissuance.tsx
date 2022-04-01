@@ -23,6 +23,7 @@ const ReissuancePW = () => {
 const Wrapper = styled.form`
   width: 100%;
   height: 100vh;
+  padding: 40px 0 0;
   background-color: ${({ theme }) => theme.color.light_gray};
   display: flex;
   justify-content: center;
