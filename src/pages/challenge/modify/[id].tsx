@@ -2,6 +2,7 @@ import React from "react";
 import Challenge from "@src/components/challenge";
 import { PageType } from "@src/pages/challenge/create";
 import { useRouter } from "next/dist/client/router";
+import withAuth from "@src/hocs/withAuth";
 
 const ModifyChallenge: React.FC = () => {
   const router = useRouter();
@@ -13,4 +14,4 @@ const ModifyChallenge: React.FC = () => {
     </>
   );
 };
-export default ModifyChallenge;
+export default withAuth(ModifyChallenge, ["ROOT", "SU"]);

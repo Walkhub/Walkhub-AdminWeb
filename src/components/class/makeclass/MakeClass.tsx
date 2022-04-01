@@ -106,7 +106,7 @@ const MakeClass: FC = () => {
         <InputDiv>
           <DropDown
             width={85}
-            heigth={48}
+            height={48}
             name='grade'
             selectedValue={classInfo.grade}
             setSelectedValue={() => onSelectChange}

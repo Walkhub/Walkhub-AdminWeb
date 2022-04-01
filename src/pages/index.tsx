@@ -42,7 +42,6 @@ const Home: FC<FallbackType> = ({ fallback }) => {
   return (
     <>
       <SWRConfig value={{ fallback }}>
-        <Header />
         <HomePage />
       </SWRConfig>
     </>

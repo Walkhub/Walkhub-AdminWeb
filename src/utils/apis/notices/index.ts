@@ -16,7 +16,7 @@ export const createNotice = async (
   }
 };
 
-export const deleteNotice = async (notice_id: string) => {
+export const deleteNotice = async (notice_id: number) => {
   try {
     await instance.delete(`/notices/${notice_id}`);
   } catch (error) {

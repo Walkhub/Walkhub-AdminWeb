@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import { DetailClassType } from "@src/utils/interfaces/detailClass";
 import Dropdown from "@src/components/common/dropdown";
@@ -29,19 +29,13 @@ const scopeList: optionListType[] = [
   },
 ];
 
-const ClassBanner: FC<DetailClassType> = ({ class_cord, teacher }) => {
+const ClassBanner: FC = () => {
   const [modalStatus, setModalStatus] = useState(false);
 
-  const [type, setType] = useState({
-    scope: "NAME",
-  });
+  const [type, setType] = useState("NAME");
 
-  const changeType = (value: string, name: string) => {
-    console.log(type);
-    setType({
-      ...type,
-      [name]: value,
-    });
+  const changeType = (value: string | number, name: string | number) => {
+    setType(value as string);
   };
 
   return (
@@ -54,7 +48,6 @@ const ClassBanner: FC<DetailClassType> = ({ class_cord, teacher }) => {
                 width={50}
                 setModalStatus={setModalStatus}
                 value='삭제'
-                onClick={noticeDelete}
               />
             )}
           </DetailBtn>
@@ -68,34 +61,35 @@ const ClassBanner: FC<DetailClassType> = ({ class_cord, teacher }) => {
         </BannerDiv1>
         <BannerDiv2>
           <TeacherDiv>
-            <img src={teacher.profile_image_url} alt='' />
-            <TeacherName>{teacher.name}</TeacherName>
+            {/* <img src={teacher.profile_image_url} alt='' /> */}
+            <TeacherName>{}</TeacherName>
             <p>선생님</p>
           </TeacherDiv>
           <ClassCodeDiv>
             <p>가입코드</p>
-            <ClassCode>{class_cord}</ClassCode>
+            <ClassCode>{}</ClassCode>
           </ClassCodeDiv>
         </BannerDiv2>
       </Banner>
       <Title>
         <p>학생 확인</p>
         <Dropdown
-          width={64}
-          heigth={24}
-          selectedValue={type.scope}
-          name='sort'
+          width={102}
+          height={16}
+          selectedValue={type}
+          name='value'
           optionList={scopeList}
-          setSelectedValue={() => changeType}
+          setSelectedValue={changeType}
           disabled={false}
           lineHeight={24}
           fontSize={16}
           fontWeight='normal'
-          padding='12px 16px'
+          padding='10px 16px'
+          isBoard={false}
         />
       </Title>
       <TypeMenuDiv>
-        <p style={{ margin: "0 80px 0 468px" }}>평균 걸음 수</p>
+        <p style={{ gridColumn: "4/5" }}>평균 걸음 수</p>
         <p>종합 걸음 수</p>
         <p>평균 거리</p>
         <p>종합 거리</p>
@@ -211,7 +205,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   margin-top: 48px;
-  margin-bottom: 20px;
+
   > p {
     font-size: 28px;
     font-style: normal;
@@ -221,16 +215,22 @@ const Title = styled.div`
 `;
 
 const TypeMenuDiv = styled.div`
-  display: flex;
+  width: 1224px;
+  padding: 16px 18px;
+  display: grid;
   align-items: center;
-  margin-bottom: 16px;
+  grid-template-columns: repeat(8, 1fr);
+  place-items: center;
   > p {
-    margin-right: 80px;
     font-size: 16px;
     color: ${({ theme }) => theme.color.dark_gray};
   }
 `;
 
-const StudentListDiv = styled.div``;
+const StudentListDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 
 export default ClassBanner;

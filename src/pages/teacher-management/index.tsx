@@ -27,7 +27,6 @@ const TeacherManagementPage: FC<FallbackType> = ({ fallback }) => {
   return (
     <>
       <SWRConfig value={{ fallback }}>
-        <Header />
         <TeacherManagement />
       </SWRConfig>
     </>
