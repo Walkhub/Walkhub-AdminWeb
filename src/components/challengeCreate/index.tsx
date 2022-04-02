@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import TextField from "@src/components/challenge/textField";
+import TextField from "@src/components/challengeCreate/textField";
 import { ChallengeContentType } from "@src/utils/interfaces/challenge";
-import UserScope from "@src/components/challenge/userScope";
-import ImageUpload from "@src/components/challenge/imageUpload";
-import Goal from "@src/components/challenge/goal";
+import UserScope from "@src/components/challengeCreate/userScope";
+import ImageUpload from "@src/components/challengeCreate/imageUpload";
+import Goal from "@src/components/challengeCreate/goal";
 import DefaultBtn from "@src/components/common/defaultBtn/DefaultBtn";
 import {
   changeChallenge,
@@ -64,6 +64,7 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
   const router = useRouter();
   const onChangeInputValue = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
+      console.log(e.target.value);
       if (e.target.files) {
         setFile(e.target.files[0]);
         return;
@@ -167,6 +168,22 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
   const today = `${date.getFullYear()}${
     date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`
   }${date.getDate()}`;
+  useEffect(() => {
+    if (challengeContent.goal_scope === "ALL") {
+      setChallengeContent({
+        ...challengeContent,
+        success_standard: 1,
+      });
+    }
+  }, [challengeContent.goal_scope]);
+  useEffect(() => {
+    if (challengeContent.user_scope === "SCHOOL") {
+      setChallengeContent({
+        ...challengeContent,
+        grade: null,
+      });
+    }
+  }, [challengeContent.user_scope]);
   return (
     <Wrapper>
       <ChallengeBox>
@@ -235,9 +252,11 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
             type='text'
           />
         </InputsArea>
-        <DefaultBtn onClick={onClickSubmit} width={184}>
-          {pageType === "create" ? "생성" : "수정"}하기
-        </DefaultBtn>
+        <DefaultBtn
+          onClick={onClickSubmit}
+          width={184}
+          value={pageType === "create" ? "생성하기" : "수정하기"}
+        />
       </ChallengeBox>
     </Wrapper>
   );
@@ -269,7 +288,7 @@ const ChallengeBox = styled.section`
     font-weight: bold;
     font-style: normal;
   }
-  > button {
+  > input[type="button"] {
     margin-top: 44px;
     display: flex;
     justify-content: center;
