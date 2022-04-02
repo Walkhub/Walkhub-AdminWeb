@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import InputHeader from "@src/components/challenge/inputHeader";
+import InputHeader from "@src/components/challengeCreate/inputHeader";
 import styled from "@emotion/styled";
 
 interface PropsType {

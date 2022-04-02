@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useMemo } from "react";
 import styled from "@emotion/styled";
-import InputHeader from "@src/components/challenge/inputHeader";
+import InputHeader from "@src/components/challengeCreate/inputHeader";
 
 interface PropsType {
   value: File | null;

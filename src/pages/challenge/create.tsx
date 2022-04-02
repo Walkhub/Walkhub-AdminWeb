@@ -1,4 +1,4 @@
-import Challenge from "@src/components/challenge";
+import Challenge from "@src/components/challengeCreate";
 import withAuth from "@src/hocs/withAuth";
 import React from "react";
 
