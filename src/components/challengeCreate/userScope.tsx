@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "@emotion/styled";
-import InputHeader from "@src/components/challenge/inputHeader";
+import InputHeader from "@src/components/challengeCreate/inputHeader";
 import Dropdown from "@src/components/common/dropdown";
 import {
   ChallengeContentType,
@@ -19,8 +19,11 @@ const UserScope: React.FC<PropsType> = ({
   changeUserScopeValue,
   challengeContent,
 }) => {
-  const authority = getAuthority();
-  const userType: AuthorityType = authority;
+  const [userType, setUserType] = useState<AuthorityType>();
+  useEffect(() => {
+    const authority = getAuthority();
+    setUserType(authority);
+  }, []);
   const userScopeInput = useMemo(() => {
     if (userType === "TEACHER") {
       return <DisabledInputBox>2학년 1반</DisabledInputBox>;

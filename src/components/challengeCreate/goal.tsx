@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from "react";
 import styled from "@emotion/styled";
 import Dropdown from "@src/components/common/dropdown";
-import TextField from "@src/components/challenge/textField";
-import InputHeader from "@src/components/challenge/inputHeader";
+import TextField from "@src/components/challengeCreate/textField";
+import InputHeader from "@src/components/challengeCreate/inputHeader";
 import {
   ChallengeContentType,
   goalScopeType,
@@ -94,7 +94,7 @@ const Goal: React.FC<PropsType> = ({
         />
         <TextField
           width={132}
-          disabled={false}
+          disabled={state.goal_scope === "ALL"}
           placeholder='횟수'
           inputValue={state.success_standard}
           changeInputValue={onChangeInputValue}
