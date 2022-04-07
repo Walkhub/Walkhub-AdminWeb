@@ -1,39 +1,73 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useState, FC, useEffect } from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn/DefaultBtn";
+import instance from "@src/utils/axios";
 import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
-import useSWR from "swr";
-import fetcher from "@src/utils/function/fetcher";
+import router from "next/router";
 
-const MakeRoot = () => {
-  const [allData, setAllData] = useState([]);
-  const [filteredData, setFilteredData] = useState(allData);
+const MakeRoot: FC = () => {
+  const [school_id, setSchool_id] = useState<number>();
+  const [btnDisable, setBtnDisable] = useState<boolean>(true);
+  const [seeModal, setSeeModal] = useState<boolean>(false);
+  const [filteredData, setFilteredData] = useState([]);
+  const [inputContent, setInputContent] = useState<string>();
 
-  const makeRootSubmit = async (e: any) => {
-    e.preventDefault();
-    try {
-    } catch (e) {
-      errorHandler(e);
-    }
+  const fetch = (e: any) => {
+    setInputContent(e.target.value);
+    if (e.target.value == "") {
+      setSeeModal(false);
+      setBtnDisable(true);
+    } else setSeeModal(true);
+    instance
+      .get(`https://server.walkhub.co.kr/schools/search?name=${e.target.value}`)
+      .then(response => {
+        setFilteredData(response.data.search_school_list);
+      })
+      .catch(error => {
+        console.log("Error getting fake data: " + error);
+      });
   };
 
-  const errorHandler = (e: unknown) => {
+  const modalContent = (name: string, id: number) => {
+    setInputContent(name);
+    setSeeModal(false);
+    setSchool_id(id);
+    setBtnDisable(false);
+  };
+
+  const makeRootBtn = () => {
+    instance
+      .post(`/su/accounts/${school_id}`)
+      .then(res => {
+        console.log(res.data);
+        const { account_id, password } = res.data;
+        router.push({
+          pathname: `/su/result?id=${account_id}&pw=${password}&type=생성`,
+        });
+      })
+      .catch(err => errorhandler(err));
+  };
+
+  const errorhandler = (e: unknown) => {
     if (axios.isAxiosError(e) && e.response) {
       switch (e.response.status) {
-        case 400:
-          return ToastError("모든 빈칸을 채워주세요.");
         case 401:
           return ToastError("인증에 실패하였습니다.");
         case 403:
-          return ToastError("권한이 없습니다.");
+          return ToastError("권한이 존재하지 않습니다.");
+        case 404:
+          return ToastError("요청 대상을 찾을 수 없습니다.");
         case 409:
-          return ToastError("이미 학교가 있습니다.");
+          return ToastError("이미 존재합니다.");
+        default:
+          return ToastError("관리자에게 문의해주세요.");
       }
+    } else {
+      console.log(e);
+      ToastError("네트워크 연결을 확인해주세요.");
     }
   };
-
-  const { mutate } = useSWR("/schools/search?name=", fetcher);
 
   return (
     <Wrapper>
@@ -45,25 +79,38 @@ const MakeRoot = () => {
             <p>학교 이름</p>
             <BlueStar>*</BlueStar>
           </div>
-          <SchoolInput placeholder='학교 이름' />
-          <ModalBox>
-            <ul>
-              <ModalLi>
-                <ImgBox />
-                <SchoolName>대덕중학교</SchoolName>
-              </ModalLi>
-              <ModalLi>
-                <ImgBox />
-                <SchoolName>대덕소프트웨어마이스터고</SchoolName>
-              </ModalLi>
-              <ModalLi>
-                <ImgBox />
-                <SchoolName>대덕고등학교</SchoolName>
-              </ModalLi>
-            </ul>
-          </ModalBox>
+          <SchoolInput
+            placeholder='학교 이름'
+            onChange={fetch}
+            value={inputContent}
+          />
+          {seeModal ? (
+            <ModalBox>
+              {filteredData.map(value => {
+                return (
+                  <ModalLi
+                    key={value.schoool_id}
+                    onClick={() => {
+                      modalContent(value.school_name, value.school_id);
+                      console.log(value);
+                    }}
+                  >
+                    <ImgBox src={value.logo_image_url} />
+                    <SchoolName>{value.school_name}</SchoolName>
+                  </ModalLi>
+                );
+              })}
+            </ModalBox>
+          ) : (
+            <BtnDiv>
+              <DefaultBtn
+                value='생성'
+                disabled={btnDisable}
+                onClick={makeRootBtn}
+              />
+            </BtnDiv>
+          )}
         </InputDiv>
-        {/*<DefaultBtn value='생성' />*/}
       </PostBox>
     </Wrapper>
   );
@@ -117,6 +164,10 @@ const InputDiv = styled.div`
   }
 `;
 
+const BtnDiv = styled.div`
+  margin-top: 48px;
+`;
+
 const BlueStar = styled.strong`
   color: ${({ theme }) => theme.color.main};
 `;
@@ -129,49 +180,40 @@ const SchoolInput = styled.input`
   border: 1px solid ${({ theme }) => theme.color.normal_gray};
 `;
 
-const ModalBox = styled.div`
+const ModalBox = styled.ul`
   width: 100%;
   height: 144px;
   margin-top: 12px;
   border: 1px solid ${({ theme }) => theme.color.normal_gray};
   border-radius: 12px;
+  overflow: auto;
 `;
 
 const ModalLi = styled.li`
-  width: 392px;
+  width: 100%;
   display: flex;
   align-items: center;
   padding: 8px 0 8px 16px;
-  :nth-child(2) {
+  :nth-of-type(2) {
     border-color: ${({ theme }) => theme.color.normal_gray};
     border-width: 1px;
     border-top-style: solid;
     border-bottom-style: solid;
   }
   :hover {
-    :nth-child(1) {
-      background-color: ${({ theme }) => theme.color.main};
-      border-radius: 12px 12px 0 0;
-    }
-    :nth-child(2) {
-      background-color: ${({ theme }) => theme.color.main};
-    }
-    :nth-child(3) {
-      background-color: ${({ theme }) => theme.color.main};
-      border-radius: 0 0 12px 12px;
-    }
+    background-color: ${({ theme }) => theme.color.main};
+    cursor: pointer;
     > p {
       color: white;
     }
   }
 `;
 
-const ImgBox = styled.div`
+const ImgBox = styled.img`
   width: 32px;
   height: 32px;
   margin-right: 12px;
   border-radius: 16px;
-  background-color: ${({ theme }) => theme.color.normal_gray};
 `;
 
 const SchoolName = styled.p`

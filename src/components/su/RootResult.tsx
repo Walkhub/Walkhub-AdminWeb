@@ -1,34 +1,54 @@
-import React from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 
 const RootResult = () => {
+  const [data, setData] = useState<{
+    account_id: string | string[];
+    pw: string | string[];
+    type: string | string[];
+  }>();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const { id, pw, type } = router.query;
+    setData({ account_id: id, pw: pw, type: type });
+  }, []);
+
+  console.log();
+
   return (
-    <Wrapper>
-      <h1>생성이 완료되었습니다.</h1>
-      <TextDiv>
-        <h6>
-          학교관리 &#62; 학교 상세 페이지 &#62; 루트 선생님 관리 페이지에서
-          확인해주세요.
-        </h6>
-        <p>이동하기</p>
-      </TextDiv>
-      <CardDiv>
-        <BlueLine />
-        <CardBox>
-          <h1>대덕소프트웨어마이스터고등학교</h1>
-          <InfoDiv>
-            <div>
-              <p>아이디</p>
-              <BlueText>QWER1234</BlueText>
-            </div>
-            <div>
-              <p>비밀번호</p>
-              <BlueText>QWER1234</BlueText>
-            </div>
-          </InfoDiv>
-        </CardBox>
-      </CardDiv>
-    </Wrapper>
+    <>
+      {data && (
+        <Wrapper>
+          <h1>{data.type}이 완료되었습니다.</h1>
+          <TextDiv>
+            <h6>
+              학교관리 &#62; 학교 상세 페이지 &#62; 루트 선생님 관리 페이지에서
+              확인해주세요.
+            </h6>
+            <p>이동하기</p>
+          </TextDiv>
+          <CardDiv>
+            <BlueLine />
+            <CardBox>
+              <h1>대덕소프트웨어마이스터고등학교</h1>
+              <InfoDiv>
+                <div>
+                  <p>아이디</p>
+                  <BlueText>{data.account_id}</BlueText>
+                </div>
+                <div>
+                  <p>비밀번호</p>
+                  <BlueText>{data.pw}</BlueText>
+                </div>
+              </InfoDiv>
+            </CardBox>
+          </CardDiv>
+        </Wrapper>
+      )}
+    </>
   );
 };
 
@@ -48,7 +68,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const TextDiv = styled.div`
+const TextDiv = styled.form`
   display: flex;
   margin-bottom: 48px;
   > h6 {

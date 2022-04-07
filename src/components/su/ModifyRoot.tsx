@@ -1,30 +1,70 @@
-import React, { FC } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn/DefaultBtn";
 import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
+import instance from "@src/utils/axios";
+import router from "next/router";
 
 const ModifyRoot = () => {
-  const modifyRootSubmit = async (e: any) => {
-    e.preventDefault();
-    try {
-    } catch (e) {
-      errorHandler(e);
-    }
+  const [school_id, setSchool_id] = useState<number>();
+  const [btnDisable, setBtnDisable] = useState<boolean>(true);
+  const [seeModal, setSeeModal] = useState<boolean>(false);
+  const [inputContent, setInputContent] = useState<string>();
+  const [filteredData, setFilteredData] = useState([]);
+
+  const fetch = (e: any) => {
+    setInputContent(e.target.value);
+    if (e.target.value == "") {
+      setSeeModal(false);
+      setBtnDisable(true);
+    } else setSeeModal(true);
+    instance
+      .get(`https://server.walkhub.co.kr/schools/search?name=${e.target.value}`)
+      .then(response => {
+        setFilteredData(response.data.search_school_list);
+      })
+      .catch(error => {
+        console.log("Error getting fake data: " + error);
+      });
   };
 
-  const errorHandler = (e: unknown) => {
+  const modalContent = (name: string, id: number) => {
+    setInputContent(name);
+    setSeeModal(false);
+    setSchool_id(id);
+    setBtnDisable(false);
+  };
+
+  const modifyRootSubmit = async () => {
+    instance
+      .patch(`/su/accounts/${school_id}`)
+      .then(res => {
+        console.log(res.data);
+        const { account_id, password } = res.data;
+
+        router.push(`/su/result?id=${account_id}&pw=${password}&type=수정`);
+      })
+      .catch(err => errorhandler(err));
+  };
+
+  const errorhandler = (e: unknown) => {
     if (axios.isAxiosError(e) && e.response) {
       switch (e.response.status) {
-        case 400:
-          return ToastError("모든 빈칸을 채워주세요.");
         case 401:
           return ToastError("인증에 실패하였습니다.");
         case 403:
-          return ToastError("권한이 없습니다.");
+          return ToastError("권한이 존재하지 않습니다.");
+        case 404:
+          return ToastError("요청 대상을 찾을 수 없습니다.");
         case 409:
-          return ToastError("이미 학교가 있습니다.");
+          return ToastError("이미 존재합니다.");
+        default:
+          return ToastError("관리자에게 문의해주세요.");
       }
+    } else {
+      console.log(e);
+      ToastError("네트워크 연결을 확인해주세요.");
     }
   };
 
@@ -38,9 +78,38 @@ const ModifyRoot = () => {
             <p>학교 이름</p>
             <BlueStar>*</BlueStar>
           </div>
-          <SchoolInput placeholder='학교 이름' />
+          <SchoolInput
+            placeholder='학교 이름'
+            onChange={fetch}
+            value={inputContent}
+          />
+          {seeModal ? (
+            <ModalBox>
+              {filteredData.map(value => {
+                return (
+                  <ModalLi
+                    key={value.schoool_id}
+                    onClick={() => {
+                      modalContent(value.school_name, value.school_id);
+                      console.log(value);
+                    }}
+                  >
+                    <ImgBox src={value.logo_image_url} />
+                    <SchoolName>{value.school_name}</SchoolName>
+                  </ModalLi>
+                );
+              })}
+            </ModalBox>
+          ) : (
+            <BtnDiv>
+              <DefaultBtn
+                value='수정'
+                disabled={btnDisable}
+                onClick={modifyRootSubmit}
+              />
+            </BtnDiv>
+          )}
         </InputDiv>
-        <DefaultBtn value='수정' />
         <ReissuanceDiv>
           <p>루트 선생님이 비밀번호를 잊었을 경우</p>
           <h6>비밀번호 재발급</h6>
@@ -98,6 +167,10 @@ const InputDiv = styled.div`
   }
 `;
 
+const BtnDiv = styled.div`
+  margin-top: 48px;
+`;
+
 const BlueStar = styled.strong`
   color: ${({ theme }) => theme.color.main};
 `;
@@ -112,7 +185,7 @@ const SchoolInput = styled.input`
 
 const ReissuanceDiv = styled.div`
   width: 360px;
-  margin-top: 24px;
+  margin-top: 70px;
   display: flex;
   > p {
     font-size: 14px;
@@ -127,6 +200,48 @@ const ReissuanceDiv = styled.div`
     text-decoration: underline;
     cursor: pointer;
   }
+`;
+
+const ModalBox = styled.ul`
+  width: 100%;
+  height: 144px;
+  margin-top: 12px;
+  border: 1px solid ${({ theme }) => theme.color.normal_gray};
+  border-radius: 12px;
+  overflow: auto;
+`;
+
+const ModalLi = styled.li`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 8px 0 8px 16px;
+  :nth-of-type(2) {
+    border-color: ${({ theme }) => theme.color.normal_gray};
+    border-width: 1px;
+    border-top-style: solid;
+    border-bottom-style: solid;
+  }
+  :hover {
+    background-color: ${({ theme }) => theme.color.main};
+    cursor: pointer;
+    > p {
+      color: white;
+    }
+  }
+`;
+
+const ImgBox = styled.img`
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  border-radius: 16px;
+`;
+
+const SchoolName = styled.p`
+  font-size: 16px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.color.black};
 `;
 
 export default ModifyRoot;
