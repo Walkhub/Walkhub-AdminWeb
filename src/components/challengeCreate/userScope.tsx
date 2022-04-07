@@ -8,43 +8,42 @@ import {
   userScopeType,
 } from "@src/utils/interfaces/challenge";
 import { AuthorityType } from "@src/utils/interfaces/auth";
-import { getAuthority } from "@src/utils/function/localstorgeAuthority";
 
 interface PropsType {
   changeUserScopeValue: (value: string, name: string) => void;
   challengeContent: ChallengeContentType;
+  userInfo: {
+    type: AuthorityType;
+    grade: number;
+    class_num: number;
+  };
 }
-
 const UserScope: React.FC<PropsType> = ({
   changeUserScopeValue,
   challengeContent,
+  userInfo,
 }) => {
-  const [userType, setUserType] = useState<AuthorityType>();
-  useEffect(() => {
-    const authority = getAuthority();
-    setUserType(authority);
-  }, []);
   const userScopeInput = useMemo(() => {
-    if (userType === "TEACHER") {
-      return <DisabledInputBox>2학년 1반</DisabledInputBox>;
-    } else if (userType === "ROOT")
+    if (userInfo.type === "TEACHER") {
+      return (
+        <DisabledInputBox>
+          {userInfo.grade}학년 {userInfo.class_num}반
+        </DisabledInputBox>
+      );
+    } else if (userInfo.type === "ROOT")
       return (
         <UserScopeDropdown
           changeUserScopeValue={changeUserScopeValue}
           challengeContent={challengeContent}
         />
       );
-    else if (userType === "SU") {
+    else if (userInfo.type === "SU") {
       return <DisabledInputBox>대전 전체</DisabledInputBox>;
     }
-  }, [userType, challengeContent, changeUserScopeValue]);
-  useEffect(() => {
-    if (userType === "TEACHER") changeUserScopeValue("CLASS", "user_scope");
-    else if (userType === "SU") changeUserScopeValue("ALL", "user_scope");
-  }, [userType, changeUserScopeValue]);
+  }, [userInfo, challengeContent, changeUserScopeValue]);
   return (
     <Wrapper>
-      <InputHeader disabled={userType !== "ROOT"}>참여대상</InputHeader>
+      <InputHeader disabled={userInfo.type !== "ROOT"}>참여대상</InputHeader>
       {userScopeInput}
     </Wrapper>
   );

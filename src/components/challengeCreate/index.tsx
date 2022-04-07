@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import styled from "@emotion/styled";
 import TextField from "@src/components/challengeCreate/textField";
 import { ChallengeContentType } from "@src/utils/interfaces/challenge";
@@ -16,11 +22,44 @@ import ToastError from "@src/utils/function/errorMessage";
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
 import { PageType } from "@src/pages/challenge/create";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import InputHeader from "./inputHeader";
+import OutsideClickHandler from "react-outside-click-handler";
+import { AuthorityType } from "@src/utils/interfaces/auth";
+import { getAuthority } from "@src/utils/function/localstorgeAuthority";
+import { getUser } from "@src/utils/apis/users";
+import { userInfo } from "os";
 
 interface PropsType {
   pageType: PageType;
   id?: string;
 }
+
+type CalendarType = "start_at" | "end_at" | "";
+
+const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+const standardDate = new Date();
+const errorHandler = (e: unknown) => {
+  if (axios.isAxiosError(e) && e.response) {
+    switch (e.response.status) {
+      case 400:
+        ToastError("모든 빈칸을 채워주세요.");
+        break;
+      case 401:
+        ToastError("로그인 상태를 다시 확인해 주세요.");
+        break;
+      case 403:
+        ToastError("챌린지를 생성할 수 있는 권한이 없습니다.");
+        break;
+      case 500:
+        ToastError("관리자에게 문의해주세요");
+        break;
+    }
+  } else {
+    ToastError("네트워크 연결을 확인해주세요.");
+  }
+};
 
 const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
   const [challengeContent, setChallengeContent] =
@@ -38,24 +77,48 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
       success_standard: null,
       grade: null,
     });
+  const [user, setUser] = useState<{
+    type: AuthorityType | null;
+    grade: number | null;
+    class_num: number | null;
+  }>({
+    type: null,
+    grade: null,
+    class_num: null,
+  });
+  useEffect(() => {
+    const authority = getAuthority();
+    getUser().then(res => {
+      setUser({
+        type: authority,
+        grade: res.grade,
+        class_num: res.class_num,
+      });
+    });
+  }, []);
+  useEffect(() => {
+    if (user.type === "TEACHER") onChangeDropdownValue("CLASS", "user_scope");
+    else if (user.type === "SU") onChangeDropdownValue("ALL", "user_scope");
+  }, [user]);
   useEffect(() => {
     if (id)
       pageType === "modify" &&
         getChallengeDetails(Number(id)).then(res => {
-          console.log(res);
           setChallengeContent({
             ...challengeContent,
             name: res.name,
             content: res.content,
             image_url: res.image_url,
-            start_at: res.start_at.replace(/-/g, ""),
-            end_at: res.end_at.replace(/-/g, ""),
             award: res.award,
             user_scope: res.user_scope,
             goal: res.goal,
             goal_type: res.goal_type,
             goal_scope: res.goal_scope,
             success_standard: res.success_standard,
+          });
+          setSelectedDay({
+            start_at: new Date(res.start_at),
+            end_at: new Date(res.end_at),
           });
         });
   }, [pageType]);
@@ -64,7 +127,6 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
   const router = useRouter();
   const onChangeInputValue = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      console.log(e.target.value);
       if (e.target.files) {
         setFile(e.target.files[0]);
         return;
@@ -83,47 +145,36 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
     },
     [challengeContent]
   );
-  const onChangeDropdownValue = (
-    value: string | number,
-    name: string | number
-  ) => {
-    setChallengeContent({
-      ...challengeContent,
-      [name]: value,
-    });
-  };
+  const onChangeDropdownValue = useCallback(
+    (value: string | number, name: string | number) => {
+      setChallengeContent({
+        ...challengeContent,
+        [name]: value,
+      });
+    },
+    [challengeContent, setChallengeContent]
+  );
   const judgeRequestAPI = (img: string) => {
     if (pageType === "create") {
       createChallenge({
         ...challengeContent,
         image_url: img,
         grade: challengeContent.grade as number,
-        start_at: `${start_at.substr(0, 4)}-${start_at.substr(
-          4,
-          2
-        )}-${start_at.substr(6, 2)}`,
-        end_at: `${end_at.substr(0, 4)}-${end_at.substr(4, 2)}-${end_at.substr(
-          6,
-          2
-        )}`,
+        start_at,
+        end_at,
       });
     } else {
       if (id)
         changeChallenge({
           ...challengeContent,
           grade: challengeContent.grade as number,
-          start_at: `${start_at.substr(0, 4)}-${start_at.substr(
-            4,
-            2
-          )}-${start_at.substr(6, 2)}`,
-          end_at: `${end_at.substr(0, 4)}-${end_at.substr(
-            4,
-            2
-          )}-${end_at.substr(6, 2)}`,
+          start_at,
+          end_at,
           challenge_id: Number(id),
         });
     }
   };
+  const [selectedCalnedar, setSelectedCalnedar] = useState<CalendarType>("");
   const onClickSubmit = useCallback(async () => {
     try {
       if (file) {
@@ -136,38 +187,18 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
         return;
       }
       judgeRequestAPI("");
-      success_handler();
+      router.push("/challenge");
     } catch (err) {
       errorHandler(err);
     }
   }, [challengeContent, file]);
-  const success_handler = () => {
-    router.push("/challenge");
-  };
-  const errorHandler = (e: unknown) => {
-    if (axios.isAxiosError(e) && e.response) {
-      switch (e.response.status) {
-        case 400:
-          ToastError("모든 빈칸을 채워주세요.");
-          break;
-        case 401:
-          ToastError("로그인 상태를 다시 확인해 주세요.");
-          break;
-        case 403:
-          ToastError("챌린지를 생성할 수 있는 권한이 없습니다.");
-          break;
-        case 500:
-          ToastError("관리자에게 문의해주세요");
-          break;
-      }
-    } else {
-      ToastError("네트워크 연결을 확인해주세요.");
-    }
-  };
-  const date = new Date();
-  const today = `${date.getFullYear()}${
-    date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`
-  }${date.getDate()}`;
+  const [selectedDay, setSelectedDay] = useState<{
+    start_at: Date;
+    end_at: Date;
+  }>({
+    start_at: new Date(),
+    end_at: new Date(),
+  });
   useEffect(() => {
     if (challengeContent.goal_scope === "ALL") {
       setChallengeContent({
@@ -184,6 +215,65 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
       });
     }
   }, [challengeContent.user_scope]);
+  useEffect(() => {
+    if (
+      selectedDay.start_at.toISOString().substring(0, 19) !==
+      standardDate.toISOString().substring(0, 19)
+    ) {
+      const start_utc =
+        selectedDay.start_at.getTime() +
+        selectedDay.start_at.getTimezoneOffset() +
+        1000;
+      const start_kr_curr = new Date(start_utc + KR_TIME_DIFF);
+      setChallengeContent({
+        ...challengeContent,
+        start_at: start_kr_curr.toISOString().substring(0, 10),
+      });
+    }
+    if (
+      selectedDay.end_at.toISOString().substring(0, 19) !==
+      standardDate.toISOString().substring(0, 19)
+    ) {
+      const end_utc =
+        selectedDay.end_at.getTime() +
+        selectedDay.end_at.getTimezoneOffset() +
+        1000;
+      const end_kr_curr = new Date(end_utc + KR_TIME_DIFF);
+      setChallengeContent({
+        ...challengeContent,
+        end_at: end_kr_curr.toISOString().substring(0, 10),
+      });
+    }
+  }, [selectedDay]);
+  const onChangeDate = (value: Date, evnet: any) => {
+    selectedCalnedar === "start_at"
+      ? setSelectedDay({
+          ...selectedDay,
+          start_at: value,
+        })
+      : setSelectedDay({
+          ...selectedDay,
+          end_at: value,
+        });
+  };
+  const calendar = useMemo(() => {
+    return (
+      <OutsideClickHandler onOutsideClick={() => setSelectedCalnedar("")}>
+        <Calendar
+          value={
+            selectedCalnedar === "start_at"
+              ? selectedDay.start_at
+              : selectedDay.end_at
+          }
+          onChange={onChangeDate}
+          calendarType='US'
+          className='calendar'
+          locale='kr-KR'
+        />
+      </OutsideClickHandler>
+    );
+  }, [selectedCalnedar, setSelectedCalnedar, onChangeDate]);
+
   return (
     <Wrapper>
       <ChallengeBox>
@@ -202,6 +292,7 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
             inputName='name'
           />
           <UserScope
+            userInfo={user}
             changeUserScopeValue={onChangeDropdownValue}
             challengeContent={challengeContent}
           />
@@ -216,26 +307,34 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
             type='text'
             inputName='award'
           />
-          <TextField
-            width={392}
-            disabled={pageType === "modify" && Number(start_at) < Number(today)}
-            placeholder='ex.20220218'
-            inputValue={start_at}
-            changeInputValue={onChangeInputValue}
-            summary='시작일'
-            type='number'
-            inputName='start_at'
-          />
-          <TextField
-            width={392}
-            disabled={false}
-            placeholder='ex.20220218'
-            inputValue={end_at}
-            changeInputValue={onChangeInputValue}
-            summary='종료일'
-            type='number'
-            inputName='end_at'
-          />
+          <section className='start_at'>
+            <InputHeader disabled={false}>시작일</InputHeader>
+            <CalendarInput isFocused={selectedCalnedar === "start_at"}>
+              <input
+                className='date'
+                value={start_at}
+                readOnly
+                onFocus={() => setSelectedCalnedar("start_at")}
+                placeholder='시작일을 선택해주세요'
+              />
+              <img className='calendarImg' />
+            </CalendarInput>
+            {selectedCalnedar === "start_at" && calendar}
+          </section>
+          <section className='end_at'>
+            <InputHeader disabled={false}>종료일</InputHeader>
+            <CalendarInput isFocused={selectedCalnedar === "end_at"}>
+              <input
+                className='date'
+                value={end_at}
+                readOnly
+                onFocus={() => setSelectedCalnedar("end_at")}
+                placeholder='종료일을 선택해주세요'
+              />
+              <img className='calendarImg' />
+            </CalendarInput>
+            {selectedCalnedar === "end_at" && calendar}
+          </section>
           <Goal
             onChangeInputValue={onChangeInputValue}
             onChangeDropdownValue={onChangeDropdownValue}
@@ -308,6 +407,83 @@ export const InputsArea = styled.div`
     margin-left: auto;
   }
   > .end_at {
+    margin-left: auto;
+  }
+  > .start_at,
+  .end_at {
+    margin-top: 24px;
+    > div {
+      position: relative;
+      top: 8px;
+      > .calendar {
+        border-radius: 12px;
+        box-shadow: 0px 12px 12px ${({ theme }) => theme.color.normal_gray};
+        border: none;
+        position: absolute;
+        z-index: 99;
+        width: 392px;
+        > div {
+          > .react-calendar__navigation__prev2-button,
+          .react-calendar__navigation__next2-button {
+            display: none;
+          }
+          > .react-calendar__navigation__prev-button,
+          .react-calendar__navigation__next-button {
+            font-size: 24px;
+          }
+        }
+        > .react-calendar__viewContainer {
+          > div > div > div > .react-calendar__month-view__days {
+            > .react-calendar__tile--now {
+              :enabled {
+                background-color: transparent;
+              }
+              :focus {
+                background-color: ${({ theme }) => theme.color.main};
+              }
+            }
+            > .react-calendar__tile--active {
+              background-color: ${({ theme }) => theme.color.main} !important;
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+const CalendarInput = styled.label<{
+  isFocused: boolean;
+}>`
+  border: 1px solid
+    ${props =>
+      props.isFocused ? props.theme.color.main : props.theme.color.normal_gray};
+  border-radius: 12px;
+  width: 392px;
+  display: flex;
+  align-items: center;
+  padding: 12px 12px 12px 16px;
+  box-sizing: border-box;
+  height: 48px;
+  > .date {
+    width: calc(100% - 34px);
+    background-color: transparent;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: ${({ theme }) => theme.color.black};
+    display: flex;
+    align-items: center;
+    ::placeholder {
+      color: ${props =>
+        props.isFocused
+          ? props.theme.color.black
+          : props.theme.color.normal_gray};
+    }
+  }
+  > .calendarImg {
+    width: 20px;
+    height: 20px;
     margin-left: auto;
   }
 `;
