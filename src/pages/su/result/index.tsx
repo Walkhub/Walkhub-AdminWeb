@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC, useState, useEffect } from "react";
 import RootResult from "@src/components/su/RootResult";
 
-const ResultPage = () => {
+const ResultPage: FC = () => {
   return (
     <>
       <RootResult />
