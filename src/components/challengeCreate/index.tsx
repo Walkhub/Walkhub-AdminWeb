@@ -29,7 +29,6 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { AuthorityType } from "@src/utils/interfaces/auth";
 import { getAuthority } from "@src/utils/function/localstorgeAuthority";
 import { getUser } from "@src/utils/apis/users";
-import { userInfo } from "os";
 
 interface PropsType {
   pageType: PageType;
