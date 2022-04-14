@@ -39,7 +39,7 @@ const SeeClassPage = () => {
           ToastError("권한이 없습니다.");
           break;
         case 404:
-          router.push("/404");
+          router.push("/");
           break;
       }
     } else {
