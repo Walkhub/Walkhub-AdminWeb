@@ -47,18 +47,7 @@ const SeeClassPage = () => {
     }
   };
 
-  return (
-    <>
-      {classDetail && (
-        <Class
-          class_code={classDetail.class_code}
-          grade={classDetail.grade}
-          class_num={classDetail.class_num}
-          teacher={classDetail.teacher}
-        />
-      )}
-    </>
-  );
+  return <>{classDetail && <Class />}</>;
 };
 
 export default withAuth(SeeClassPage, ["ROOT", "SU", "TEACHER"]);
