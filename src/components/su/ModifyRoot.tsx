@@ -1,73 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn/DefaultBtn";
-import axios from "axios";
-import ToastError from "@src/utils/function/errorMessage";
-import instance from "@src/utils/axios";
-import router from "next/router";
+import Link from "next/dist/client/link";
 
 const ModifyRoot = () => {
-  const [school_id, setSchool_id] = useState<number>();
-  const [btnDisable, setBtnDisable] = useState<boolean>(true);
-  const [seeModal, setSeeModal] = useState<boolean>(false);
-  const [inputContent, setInputContent] = useState<string>();
-  const [filteredData, setFilteredData] = useState([]);
-
-  const fetch = (e: any) => {
-    setInputContent(e.target.value);
-    if (e.target.value == "") {
-      setSeeModal(false);
-      setBtnDisable(true);
-    } else setSeeModal(true);
-    instance
-      .get(`https://server.walkhub.co.kr/schools/search?name=${e.target.value}`)
-      .then(response => {
-        setFilteredData(response.data.search_school_list);
-      })
-      .catch(error => {
-        console.log("Error getting fake data: " + error);
-      });
-  };
-
-  const modalContent = (name: string, id: number) => {
-    setInputContent(name);
-    setSeeModal(false);
-    setSchool_id(id);
-    setBtnDisable(false);
-  };
-
-  const modifyRootSubmit = async () => {
-    instance
-      .patch(`/su/accounts/${school_id}`)
-      .then(res => {
-        console.log(res.data);
-        const { account_id, password } = res.data;
-
-        router.push(`/su/result?id=${account_id}&pw=${password}&type=수정`);
-      })
-      .catch(err => errorhandler(err));
-  };
-
-  const errorhandler = (e: unknown) => {
-    if (axios.isAxiosError(e) && e.response) {
-      switch (e.response.status) {
-        case 401:
-          return ToastError("인증에 실패하였습니다.");
-        case 403:
-          return ToastError("권한이 존재하지 않습니다.");
-        case 404:
-          return ToastError("요청 대상을 찾을 수 없습니다.");
-        case 409:
-          return ToastError("이미 존재합니다.");
-        default:
-          return ToastError("관리자에게 문의해주세요.");
-      }
-    } else {
-      console.log(e);
-      ToastError("네트워크 연결을 확인해주세요.");
-    }
-  };
-
   return (
     <Wrapper>
       <PostBox>
@@ -78,41 +14,16 @@ const ModifyRoot = () => {
             <p>학교 이름</p>
             <BlueStar>*</BlueStar>
           </div>
-          <SchoolInput
-            placeholder='학교 이름'
-            onChange={fetch}
-            value={inputContent}
-          />
-          {seeModal ? (
-            <ModalBox>
-              {filteredData.map(value => {
-                return (
-                  <ModalLi
-                    key={value.schoool_id}
-                    onClick={() => {
-                      modalContent(value.school_name, value.school_id);
-                      console.log(value);
-                    }}
-                  >
-                    <ImgBox src={value.logo_image_url} />
-                    <SchoolName>{value.school_name}</SchoolName>
-                  </ModalLi>
-                );
-              })}
-            </ModalBox>
-          ) : (
-            <BtnDiv>
-              <DefaultBtn
-                value='수정'
-                disabled={btnDisable}
-                onClick={modifyRootSubmit}
-              />
-            </BtnDiv>
-          )}
+          <SchoolInput placeholder='학교 이름' />
+          <BtnDiv>
+            <DefaultBtn value='수정' />
+          </BtnDiv>
         </InputDiv>
         <ReissuanceDiv>
           <p>루트 선생님이 비밀번호를 잊었을 경우</p>
-          <h6>비밀번호 재발급</h6>
+          <Link href='issuance'>
+            <h6>비밀번호 재발급</h6>
+          </Link>
         </ReissuanceDiv>
       </PostBox>
     </Wrapper>

@@ -1,32 +1,37 @@
-import React, { useState, FC, useEffect } from "react";
+import React, { useState, FC } from "react";
 import styled from "@emotion/styled";
 import DefaultBtn from "../common/defaultBtn/DefaultBtn";
 import instance from "@src/utils/axios";
 import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
 import router from "next/router";
+import fetcher from "@src/utils/function/fetcher";
+import useSWR from "swr";
 
 const MakeRoot: FC = () => {
   const [school_id, setSchool_id] = useState<number>();
   const [btnDisable, setBtnDisable] = useState<boolean>(true);
   const [seeModal, setSeeModal] = useState<boolean>(false);
-  const [filteredData, setFilteredData] = useState([]);
   const [inputContent, setInputContent] = useState<string>();
+  const { data, mutate } = useSWR(
+    `https://server.walkhub.co.kr/schools/search?name=`
+  );
 
-  const fetch = (e: any) => {
+  const fetch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputContent(e.target.value);
     if (e.target.value == "") {
       setSeeModal(false);
       setBtnDisable(true);
     } else setSeeModal(true);
-    instance
-      .get(`https://server.walkhub.co.kr/schools/search?name=${e.target.value}`)
-      .then(response => {
-        setFilteredData(response.data.search_school_list);
-      })
-      .catch(error => {
-        console.log("Error getting fake data: " + error);
-      });
+    try {
+      const res = await fetcher(
+        `https://server.walkhub.co.kr/schools/search?name=${e.target.value}`
+      );
+      console.log(res);
+      mutate(res, false);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const modalContent = (name: string, id: number) => {
@@ -42,9 +47,7 @@ const MakeRoot: FC = () => {
       .then(res => {
         console.log(res.data);
         const { account_id, password } = res.data;
-        router.push({
-          pathname: `/su/result?id=${account_id}&pw=${password}&type=생성`,
-        });
+        router.push(`/su/result?id=${account_id}&pw=${password}&type=생성`);
       })
       .catch(err => errorhandler(err));
   };
@@ -86,7 +89,7 @@ const MakeRoot: FC = () => {
           />
           {seeModal ? (
             <ModalBox>
-              {filteredData.map(value => {
+              {data?.search_school_list?.map(value => {
                 return (
                   <ModalLi
                     key={value.schoool_id}
