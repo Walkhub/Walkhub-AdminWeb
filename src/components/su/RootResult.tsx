@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 const RootResult = () => {
   const router = useRouter();
   const { id, pw, type } = router.query;
-  console.log(id, pw, type);
 
   return (
     <>

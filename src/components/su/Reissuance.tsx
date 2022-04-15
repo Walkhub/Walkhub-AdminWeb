@@ -27,11 +27,8 @@ const Reissuance = () => {
       const res = await fetcher(
         `https://server.walkhub.co.kr/schools/search?name=${e.target.value}`
       );
-      console.log(res);
       mutate(res, false);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const modalContent = (name: string, id: number) => {
@@ -45,7 +42,6 @@ const Reissuance = () => {
     instance
       .patch(`/su/accounts/${school_id}`)
       .then(res => {
-        console.log(res.data);
         const { account_id, password } = res.data;
         router.push(`/su/result?id=${account_id}&pw=${password}&type=수정`);
       })
@@ -67,7 +63,6 @@ const Reissuance = () => {
           return ToastError("관리자에게 문의해주세요.");
       }
     } else {
-      console.log(e);
       ToastError("네트워크 연결을 확인해주세요.");
     }
   };
@@ -94,7 +89,6 @@ const Reissuance = () => {
                     key={value.schoool_id}
                     onClick={() => {
                       modalContent(value.school_name, value.school_id);
-                      console.log(value);
                     }}
                   >
                     <ImgBox src={value.logo_image_url} />
