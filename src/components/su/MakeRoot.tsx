@@ -8,34 +8,65 @@ import router from "next/router";
 import fetcher from "@src/utils/function/fetcher";
 import useSWR from "swr";
 
+type Information = {
+  inputContent: string;
+  seeModal: boolean;
+  school_id: number;
+  btnDisable: boolean;
+};
+
 const MakeRoot: FC = () => {
-  const [school_id, setSchool_id] = useState<number>();
-  const [btnDisable, setBtnDisable] = useState<boolean>(true);
-  const [seeModal, setSeeModal] = useState<boolean>(false);
-  const [inputContent, setInputContent] = useState<string>();
+  const [allContent, setAllContent] = useState<Information>({
+    inputContent: "",
+    seeModal: false,
+    school_id: 0,
+    btnDisable: true,
+  });
+
+  const { inputContent, btnDisable, school_id, seeModal } = allContent;
+
   const { data, mutate } = useSWR(
     `https://server.walkhub.co.kr/schools/search?name=`
   );
 
   const fetch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputContent(e.target.value);
-    if (e.target.value == "") {
-      setSeeModal(false);
-      setBtnDisable(true);
-    } else setSeeModal(true);
+    const { value } = e.target;
+
+    setAllContent({
+      ...allContent,
+      seeModal: true,
+      inputContent: value,
+    });
+
+    if (value == "") {
+      setAllContent({
+        ...allContent,
+        inputContent: value,
+        seeModal: false,
+        btnDisable: true,
+      });
+    } else
+      setAllContent({
+        ...allContent,
+        inputContent: value,
+        seeModal: true,
+      });
+
     try {
       const res = await fetcher(
-        `https://server.walkhub.co.kr/schools/search?name=${e.target.value}`
+        `https://server.walkhub.co.kr/schools/search?name=${value}`
       );
       mutate(res, false);
     } catch (e) {}
   };
 
   const modalContent = (name: string, id: number) => {
-    setInputContent(name);
-    setSeeModal(false);
-    setSchool_id(id);
-    setBtnDisable(false);
+    setAllContent({
+      inputContent: name,
+      seeModal: false,
+      school_id: id,
+      btnDisable: false,
+    });
   };
 
   const makeRootBtn = () => {
