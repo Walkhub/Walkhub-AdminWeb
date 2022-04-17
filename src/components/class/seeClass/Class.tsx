@@ -1,6 +1,6 @@
 import React, { FC, useMemo, useState } from "react";
 import styled from "@emotion/styled";
-import { DetailClassType } from "@src/utils/interfaces/detailClass";
+import { DetailClassType } from "@src/utils/interfaces/class";
 import Dropdown from "@src/components/common/dropdown";
 import ClassStudentList from "./ClassStudentList";
 import DeleteBtn from "../../common/DeleteBtn";

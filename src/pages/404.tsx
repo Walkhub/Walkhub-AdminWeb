@@ -13,7 +13,6 @@ const PageNotFound = () => {
 
   return (
     <>
-      <Header />
       <BackgroundBox>
         <FourZeroFour>404</FourZeroFour>
         <TitleEng>Page not found</TitleEng>
