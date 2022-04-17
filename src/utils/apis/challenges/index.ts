@@ -5,10 +5,9 @@ import {
   ChallengeParticipantsType,
 } from "@src/utils/interfaces/challenge";
 import {
-  participantOrderType,
+  participantSortType,
   participantsScopeType,
-  successScopeType,
-} from "@src/components/challengeDetail/search";
+} from "@src/components/common/search/options";
 
 export const createChallenge = async (
   challengesRequest: ChallengeContentType
@@ -45,7 +44,7 @@ export const getChallengeDetails = async (
   challenge_id: number
 ): Promise<ChallengeDetailsType> => {
   try {
-    const response = await instance.get(`/challenges/${challenge_id}`);
+    const response = await instance.get(`/challenges/web/${challenge_id}`);
     return response.data;
   } catch (err) {
     throw err;
@@ -54,15 +53,22 @@ export const getChallengeDetails = async (
 
 export const getChallengeParticipants = async (
   challenge_id: number,
-  successScope: successScopeType,
-  page: number,
-  participantsOrder: participantOrderType,
-  participantsScope: participantsScopeType
+  grade: number | null,
+  classNum: number | null,
+  size: number,
+  name: string | null,
+  sort: participantSortType,
+  userScope: participantsScopeType
 ): Promise<ChallengeParticipantsType> => {
   try {
     const response = await instance.get(
-      `/challenges/${challenge_id}/progress?SuccessScope=${successScope}&page=${page}&participantsOrder=${participantsOrder}&participantsScope=${participantsScope}`
+      `/challenges/${challenge_id}/progress?sort=${sort}&userScope=${userScope}&size=${size}${
+        name ? `&name=${name}` : ""
+      }${grade ? `&grade=${grade}` : ""}${
+        classNum ? `&classNum=${classNum}` : ""
+      }`
     );
+    console.log(response);
     return response.data;
   } catch (err) {
     throw err;

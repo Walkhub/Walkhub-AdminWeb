@@ -1,5 +1,3 @@
-import { AuthorityType } from "@src/utils/interfaces/auth";
-
 export interface ChallengeType {
   id: number;
   name: string;
@@ -39,44 +37,25 @@ export interface ChallengeContentType {
 
 export interface userResponseType {
   user_id: number;
-  user_name: string;
+  name: string;
   grade: number | null;
   class_num: number | null;
   number: number | null;
   school_name: string;
   profile_image_url: string;
-  total_walk_count: number;
+  total_value: number;
   progress: number;
   is_success: boolean;
   success_date: string | null;
 }
 
 export interface ChallengeParticipantsType {
-  name: string;
-  user_id: number;
-  content: string;
-  image_url: string;
-  writer_name: string;
-  writer_profile_image_url: null | string;
-  award: string;
-  start_at: string;
-  end_at: string;
-  goal: number;
-  goal_scope: goalScopeType;
-  user_scope: userScopeType;
-  goal_type: goalType;
-  class_num: number | null;
-  grade: number | null;
-  success_standard: number;
-  participant_count: number;
-  is_mine: boolean;
-  is_participated: boolean;
-  user_response: userResponseType[];
+  participant_list: userResponseType[];
 }
 
 export interface ChallengeDetailsType {
+  school_name: string | null;
   name: string;
-  user_id: number;
   content: string;
   image_url: string;
   award: string;
@@ -84,19 +63,15 @@ export interface ChallengeDetailsType {
   end_at: string;
   goal: number;
   goal_scope: goalScopeType;
-  user_scope: userScopeType;
   goal_type: goalType;
+  user_scope: userScopeType;
+  class_num: number | null;
+  grade: number | null;
   success_standard: number;
-  participant_count: number;
   is_mine: boolean;
-  is_participated: boolean;
   writer: {
     user_id: number;
     name: string;
     profile_image_url: string | null;
-    authority: AuthorityType;
-    school_name: string;
-    grade: number | null;
-    class_num: number | null;
   };
 }
