@@ -1,6 +1,7 @@
 import instance from "@src/utils/axios";
 import { AxiosResponse } from "axios";
 import { TokenType } from "@src/utils/interfaces/auth";
+import { ClassType } from "@src/utils/interfaces/class";
 
 export const certificationTeacherCode = async (code: string) => {
   try {
@@ -20,6 +21,15 @@ export const createClass = async (grade: number, classNum: number) => {
       grade: grade,
       class_num: classNum,
     });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getClass = async (section_id: number) => {
+  try {
+    const response = await instance.get(`/teachers/classes/${section_id}`);
+    return response.data;
   } catch (error) {
     throw error;
   }

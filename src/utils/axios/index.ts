@@ -29,7 +29,6 @@ instance.interceptors.response.use(
   async error => {
     if (axios.isAxiosError(error) && error.response) {
       const { config, response } = error;
-      console.log(response.data.status, getToken().refreshToken);
       if (response.data.status === 401 && getToken().refreshToken) {
         try {
           const res = await axios({
