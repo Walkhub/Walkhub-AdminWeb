@@ -1,28 +1,36 @@
 import { createContext, Dispatch, useCallback, useReducer } from "react";
 import {
-  participantOrderType,
+  participantSortType,
   participantsScopeType,
-  successScopeType,
-} from "@src/components/challengeDetail/search";
+} from "@src/components/common/search/options";
 
 interface ParticipantsOptionStateType {
-  participantOrder: participantOrderType;
-  participantsScope: participantsScopeType;
-  successScope: successScopeType;
+  sort: participantSortType;
+  userScope: participantsScopeType;
   page: number;
+  grade: number;
+  classNum: number;
+  name: string;
 }
 
 type ChangeOptionAction = {
   type: "CHANGE_OPTION";
-  dropdownName: "participantOrder" | "participantsScope" | "successScope";
-  value: participantOrderType | participantsScopeType | successScopeType;
+  dropdownName: "sort" | "userScope" | "grade" | "classNum";
+  value: participantSortType | participantsScopeType | number;
 };
 type ChangePageAction = {
   type: "CHANGE_PAGE";
   changePageValue: number;
 };
 
-type ChangeOptionDispatch = Dispatch<ChangeOptionAction | ChangePageAction>;
+type ChangeInputAction = {
+  type: "CHANGE_INPUT";
+  value: string;
+};
+
+type ActionTypes = ChangeOptionAction | ChangePageAction | ChangeInputAction;
+
+type ChangeOptionDispatch = Dispatch<ActionTypes>;
 
 const ParticipantOptionProvider: React.FC = ({ children }) => {
   const [participantOptionState, changeOptionDispatch] = useReducer(
@@ -38,10 +46,12 @@ const ParticipantOptionProvider: React.FC = ({ children }) => {
   );
 };
 export const participantDefaultValue: ParticipantsOptionStateType = {
-  participantOrder: "USER_NAME",
-  participantsScope: "ALL",
-  successScope: "ALL",
+  sort: "USER_NAME",
+  userScope: "ALL",
   page: 1,
+  grade: null,
+  classNum: null,
+  name: "",
 };
 
 export const ParticipantStateContext =
@@ -53,7 +63,7 @@ export const ParticipantDispatchContext = createContext<ChangeOptionDispatch>(
 
 export const participantReducer = (
   state: ParticipantsOptionStateType,
-  action: ChangeOptionAction | ChangePageAction
+  action: ActionTypes
 ): ParticipantsOptionStateType => {
   switch (action.type) {
     case "CHANGE_OPTION":
@@ -64,7 +74,12 @@ export const participantReducer = (
     case "CHANGE_PAGE":
       return {
         ...state,
-        ["page"]: action.changePageValue,
+        page: action.changePageValue,
+      };
+    case "CHANGE_INPUT":
+      return {
+        ...state,
+        name: action.value,
       };
     default:
       return state;

@@ -38,19 +38,23 @@ const ChallengeDetail: React.FC<PropsType> = ({ challengeId }) => {
   useEffect(() => {
     getChallengeParticipants(
       challengeId,
-      state.successScope,
+      state.grade,
+      state.classNum,
       state.page - 1,
-      state.participantOrder,
-      state.participantsScope
+      state.name,
+      state.sort,
+      state.userScope
     )
-      .then(res => setParticipants(res.user_response))
+      .then(res => setParticipants(res.participant_list))
       .catch(err => errorHandler(err));
   }, [
     challengeId,
-    state.successScope,
+    state.sort,
     state.page,
-    state.participantsScope,
-    state.participantOrder,
+    state.userScope,
+    state.grade,
+    state.classNum,
+    state.name,
   ]);
   const errorHandler = (e: unknown) => {
     if (axios.isAxiosError(e) && e.response) {
@@ -79,13 +83,13 @@ const ChallengeDetail: React.FC<PropsType> = ({ challengeId }) => {
   if (challengeDetail === undefined) return <></>;
   return (
     <Wrapper>
-      <ChallengeInfo id={challengeId} challengeDetail={challengeDetail} />
-      <ChallengeParticipant participants={participants} />
-      <PageNation
-        selectedPage={state.page}
-        onClick={onClick}
-        lastPage={challengeDetail.participant_count / 9}
+      <ChallengeInfo
+        id={challengeId}
+        challengeDetail={challengeDetail}
+        participantsCount={participants.length}
       />
+      <ChallengeParticipant participants={participants} />
+      <PageNation selectedPage={state.page} onClick={onClick} lastPage={5} />
     </Wrapper>
   );
 };
