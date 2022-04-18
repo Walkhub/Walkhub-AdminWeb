@@ -22,9 +22,14 @@ const goalObject: goalObjectType = {
 interface PropsType {
   challengeDetail: ChallengeDetailsType;
   id: number;
+  participantsCount: number;
 }
 
-const ChallengeInfo: React.FC<PropsType> = ({ challengeDetail, id }) => {
+const ChallengeInfo: React.FC<PropsType> = ({
+  challengeDetail,
+  id,
+  participantsCount,
+}) => {
   const [outsideClicked, setOutsideClicked] = useState(false);
   const period = useMemo(() => {
     const startDate = challengeDetail.start_at.replace(/-/g, "/");
@@ -48,12 +53,13 @@ const ChallengeInfo: React.FC<PropsType> = ({ challengeDetail, id }) => {
     deleteChallenge(id).then(() => router.push("/"));
   }, [id, router]);
   const includeIn = useMemo(() => {
-    if (challengeDetail.writer.authority === "SU") return "대전시 교육청";
-    else if (challengeDetail.writer.authority === "TEACHER")
-      return `${challengeDetail.writer.grade}학년 ${challengeDetail.writer.class_num}반`;
-    else if (challengeDetail.writer.authority === "ROOT")
-      return challengeDetail.writer.school_name;
-  }, [challengeDetail.writer]);
+    if (challengeDetail.user_scope === "ALL") return "대전시 교육청";
+    else if (challengeDetail.user_scope === "CLASS")
+      return `${challengeDetail.grade}학년 ${challengeDetail.class_num}반`;
+    else if (challengeDetail.user_scope === "SCHOOL")
+      return challengeDetail.school_name;
+    else return "?";
+  }, [challengeDetail]);
   const seeMoreModal = useMemo(() => {
     if (seeMoreState)
       return (
@@ -110,9 +116,7 @@ const ChallengeInfo: React.FC<PropsType> = ({ challengeDetail, id }) => {
           {challengeDetail.writer?.name}
         </p>
         <p className='writerPeriodFont after'>{includeIn}</p>
-        <p className='writerPeriodFont'>
-          {challengeDetail.participant_count}명
-        </p>
+        <p className='writerPeriodFont'>{participantsCount}명</p>
       </Writer>
       <Goal>
         <img src='https://facebook.com/favicon.ico' alt='대충 아이콘' />

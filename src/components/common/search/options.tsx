@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import Dropdown from "../common/dropdown";
-import { useContext } from "react";
+import Dropdown from "@src/components/common/dropdown";
+import { ChangeEvent, useContext } from "react";
 import { ParticipantStateContext } from "@src/contexts/ChallengeParticipantsOptionContext";
 
-export type participantOrderType =
+export type participantSortType =
   | "SCHOOL_NAME"
   | "USER_NAME"
   | "SUCCESS_DATE"
@@ -11,7 +11,7 @@ export type participantOrderType =
 
 type participantOrderOptionType = {
   optionName: "학교 이름순" | "이름순" | "성공일순" | "진행도순";
-  value: participantOrderType;
+  value: participantSortType;
 };
 
 const participantOrderOptionList: participantOrderOptionType[] = [
@@ -55,25 +55,23 @@ const participantOptionList: participantOptionListType[] = [
   },
 ];
 
-export type successScopeType = "TURE" | "FALSE" | "ALL";
-
 interface successScopeOptionListType {
-  optionName: "성공" | "실패" | "전체";
-  value: successScopeType;
+  optionName: number;
+  value: number;
 }
 
 const successScopeOptionList: successScopeOptionListType[] = [
   {
-    optionName: "전체",
-    value: "ALL",
+    optionName: 1,
+    value: 1,
   },
   {
-    optionName: "성공",
-    value: "TURE",
+    optionName: 2,
+    value: 2,
   },
   {
-    optionName: "실패",
-    value: "FALSE",
+    optionName: 3,
+    value: 3,
   },
 ];
 
@@ -82,21 +80,29 @@ interface PropsType {
     value: string | number,
     name: string | number
   ) => void;
+  onChangeInputValue: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchOptions: React.FC<PropsType> = ({ onChangeDropdownValue }) => {
+const SearchOptions: React.FC<PropsType> = ({
+  onChangeDropdownValue,
+  onChangeInputValue,
+}) => {
   const state = useContext(ParticipantStateContext);
   return (
     <Options>
       <h1 className='header'>검색</h1>
       <Search>
         <label>
-          <input className='searchInput' placeholder='이름으로 검색하기' />
+          <input
+            className='searchInput'
+            placeholder='이름으로 검색하기'
+            onChange={onChangeInputValue}
+          />
         </label>
         <Dropdown
           width={136}
           height={48}
-          selectedValue={state.participantOrder}
+          selectedValue={state.sort}
           setSelectedValue={onChangeDropdownValue}
           optionList={participantOrderOptionList}
           disabled={false}
@@ -104,12 +110,12 @@ const SearchOptions: React.FC<PropsType> = ({ onChangeDropdownValue }) => {
           fontSize={16}
           lineHeight={28}
           fontWeight='normal'
-          name='participantOrder'
+          name='sort'
         />
         <Dropdown
           width={136}
           height={48}
-          selectedValue={state.participantsScope}
+          selectedValue={state.userScope}
           setSelectedValue={onChangeDropdownValue}
           optionList={participantOptionList}
           disabled={false}
@@ -117,20 +123,33 @@ const SearchOptions: React.FC<PropsType> = ({ onChangeDropdownValue }) => {
           fontSize={16}
           lineHeight={28}
           fontWeight='normal'
-          name='participantsScope'
+          name='userScope'
         />
         <Dropdown
           width={136}
           height={48}
-          selectedValue={state.successScope}
+          selectedValue={state.grade || "전체"}
           setSelectedValue={onChangeDropdownValue}
           optionList={successScopeOptionList}
-          disabled={state.participantsScope !== "STUDENT"}
+          disabled={state.userScope !== "STUDENT"}
           padding='12px 16px'
           fontSize={16}
           lineHeight={28}
           fontWeight='normal'
-          name='successScope'
+          name='grade'
+        />
+        <Dropdown
+          width={136}
+          height={48}
+          selectedValue={state.classNum || "전체"}
+          setSelectedValue={onChangeDropdownValue}
+          optionList={successScopeOptionList}
+          disabled={state.userScope !== "STUDENT"}
+          padding='12px 16px'
+          fontSize={16}
+          lineHeight={28}
+          fontWeight='normal'
+          name='classNum'
         />
       </Search>
     </Options>
@@ -152,7 +171,7 @@ const Search = styled.section`
   margin-top: 16px;
   > label {
     display: flex;
-    width: 768px;
+    width: 616px;
     height: 48px;
     border: 1px solid #bdbdbd;
     border-radius: 12px;

@@ -11,14 +11,14 @@ const ParticipantList: React.FC<PropsType> = ({ participants }) => {
     return participants.map((item, index) => (
       <ParticipantBox key={index}>
         <img className='userProfile' src={item.profile_image_url} />
-        <MediumFont className='name'>{item.user_name}</MediumFont>
+        <MediumFont className='name'>{item.name}</MediumFont>
         <NormalFont>{item.school_name}</NormalFont>
         <NormalFont>{item.grade && `${item.grade}학년`}</NormalFont>
         <NormalFont>{item.class_num && `${item.class_num}반`}</NormalFont>
         <NormalFont>{item.number && `${item.number}번`}</NormalFont>
         <UserProgressInfo>
           <MediumFont className='walkCount'>
-            {item.total_walk_count ? `${item.total_walk_count}걸음` : "- -"}
+            {item.total_value ? `${item.total_value}걸음` : "- -"}
           </MediumFont>
           <MediumFont className='progress'>{item.progress}%</MediumFont>
           <IsSuccess isSuccess={item.is_success}>

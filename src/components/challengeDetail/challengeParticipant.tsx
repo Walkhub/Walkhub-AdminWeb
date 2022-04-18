@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
-import React, { useContext } from "react";
+import React, { ChangeEvent, useContext } from "react";
 import SearchOptions, {
   participantsScopeType,
-  participantOrderType,
-  successScopeType,
-} from "./search";
+  participantSortType,
+} from "@src/components/common/search/options";
 import ParticipantList from "@src/components/challengeDetail/participantList";
 import { ParticipantDispatchContext } from "@src/contexts/ChallengeParticipantsOptionContext";
 import { userResponseType } from "@src/utils/interfaces/challenge";
@@ -19,27 +18,36 @@ const ChallengeParticipant: React.FC<PropsType> = ({ participants }) => {
     value: string | number,
     name: string | number
   ) => {
-    if (typeof value === "number" || typeof name === "number") return;
     if (
-      name !== "participantOrder" &&
-      name !== "participantsScope" &&
-      name !== "successScope"
+      name !== "sort" &&
+      name !== "userScope" &&
+      name !== "grade" &&
+      name !== "classNum"
     )
       return;
     const myValue = value as
-      | participantOrderType
+      | participantSortType
       | participantsScopeType
-      | successScopeType;
+      | number;
     dispatch({
       type: "CHANGE_OPTION",
       dropdownName: name,
       value: myValue,
     });
   };
+  const onChangeNameValue = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: "CHANGE_INPUT",
+      value: e.target.value,
+    });
+  };
   const changeToExcel = () => {};
   return (
     <Wrapper>
-      <SearchOptions onChangeDropdownValue={onChangeDropdownValue} />
+      <SearchOptions
+        onChangeDropdownValue={onChangeDropdownValue}
+        onChangeInputValue={onChangeNameValue}
+      />
       <ExelChange>
         <button onClick={changeToExcel}>엑셀로 변환하기</button>
       </ExelChange>
@@ -49,9 +57,7 @@ const ChallengeParticipant: React.FC<PropsType> = ({ participants }) => {
         <strong className='optionName'>완료 여부</strong>
         <strong className='optionName'>완료 날짜</strong>
       </OptionNames>
-      {participants !== undefined && (
-        <ParticipantList participants={participants} />
-      )}
+      {participants && <ParticipantList participants={participants} />}
     </Wrapper>
   );
 };
