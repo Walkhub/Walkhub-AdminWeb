@@ -103,19 +103,9 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
     if (id)
       pageType === "modify" &&
         getChallengeDetails(Number(id)).then(res => {
-          setChallengeContent({
-            ...challengeContent,
-            name: res.name,
-            content: res.content,
-            image_url: res.image_url,
-            award: res.award,
-            user_scope: res.user_scope,
-            goal: res.goal,
-            goal_type: res.goal_type,
-            goal_scope: res.goal_scope,
-            success_standard: res.success_standard,
-          });
+          setChallengeContent(res);
           setSelectedDay({
+            ...selectedDay,
             start_at: new Date(res.start_at),
             end_at: new Date(res.end_at),
           });
@@ -214,47 +204,34 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
       });
     }
   }, [challengeContent.user_scope]);
-  useEffect(() => {
-    if (
-      selectedDay.start_at.toISOString().substring(0, 19) !==
-      standardDate.toISOString().substring(0, 19)
-    ) {
-      const start_utc =
-        selectedDay.start_at.getTime() +
-        selectedDay.start_at.getTimezoneOffset() +
-        1000;
-      const start_kr_curr = new Date(start_utc + KR_TIME_DIFF);
+
+  const onChangeDate = (value: Date) => {
+    const dateToString = new Date(
+      value.getTime() + value.getTimezoneOffset() + 1000 + KR_TIME_DIFF
+    )
+      .toISOString()
+      .substring(0, 10);
+    if (selectedCalnedar === "start_at") {
+      setSelectedDay({
+        ...selectedDay,
+        start_at: value,
+      });
       setChallengeContent({
         ...challengeContent,
-        start_at: start_kr_curr.toISOString().substring(0, 10),
+        start_at: dateToString,
       });
-    }
-    if (
-      selectedDay.end_at.toISOString().substring(0, 19) !==
-      standardDate.toISOString().substring(0, 19)
-    ) {
-      const end_utc =
-        selectedDay.end_at.getTime() +
-        selectedDay.end_at.getTimezoneOffset() +
-        1000;
-      const end_kr_curr = new Date(end_utc + KR_TIME_DIFF);
+    } else {
+      setSelectedDay({
+        ...selectedDay,
+        end_at: value,
+      });
       setChallengeContent({
         ...challengeContent,
-        end_at: end_kr_curr.toISOString().substring(0, 10),
+        end_at: dateToString,
       });
     }
-  }, [selectedDay]);
-  const onChangeDate = (value: Date, evnet: any) => {
-    selectedCalnedar === "start_at"
-      ? setSelectedDay({
-          ...selectedDay,
-          start_at: value,
-        })
-      : setSelectedDay({
-          ...selectedDay,
-          end_at: value,
-        });
   };
+
   const calendar = useMemo(() => {
     return (
       <OutsideClickHandler onOutsideClick={() => setSelectedCalnedar("")}>
@@ -271,8 +248,7 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
         />
       </OutsideClickHandler>
     );
-  }, [selectedCalnedar, setSelectedCalnedar, onChangeDate]);
-
+  }, [selectedCalnedar, setSelectedCalnedar, onChangeDate, selectedDay]);
   return (
     <Wrapper>
       <ChallengeBox>
