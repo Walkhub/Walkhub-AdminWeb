@@ -13,4 +13,4 @@ const ModifyChallenge: React.FC = () => {
     </>
   );
 };
-export default withAuth(ModifyChallenge, ["ROOT", "SU"]);
+export default withAuth(ModifyChallenge, ["ROOT", "SU", "TEACHER"]);

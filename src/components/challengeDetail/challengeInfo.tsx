@@ -50,7 +50,7 @@ const ChallengeInfo: React.FC<PropsType> = ({
   const router = useRouter();
   const [seeMoreState, setSeeMoreState] = useState(false);
   const removeChallenge = useCallback(() => {
-    deleteChallenge(id).then(() => router.push("/"));
+    deleteChallenge(id).then(() => router.push("/challenge"));
   }, [id, router]);
   const includeIn = useMemo(() => {
     if (challengeDetail.user_scope === "ALL") return "대전시 교육청";
