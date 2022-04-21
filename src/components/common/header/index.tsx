@@ -1,14 +1,23 @@
 /* eslint-disable @next/next/link-passhref */
 import styled from "@emotion/styled";
 import { getToken, removeToken } from "@src/utils/function/tokenManager";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useAuthCheck from "@src/hooks/useAuthCheck";
+import useSWR from "swr";
+import fetcher from "@src/utils/function/fetcher";
 
 const Header = () => {
+  const [section_id, setSection_Id] = useState<number>();
+  const { data } = useSWR("/teachers/my-class", fetcher);
+
   const router = useRouter();
   const { isAuth } = useAuthCheck(["TEACHER", "ROOT"]);
+
+  useEffect(() => {
+    setSection_Id(data.section.section_id);
+  }, []);
 
   const logHandler = () => {
     removeToken();
@@ -19,7 +28,7 @@ const Header = () => {
     return (
       <>
         {isAuth ? (
-          <Link href='/class/1'>
+          <Link href={`/class/${section_id}`}>
             {/* 이부분은 나중에 선생님 자신의 클래스로 이동*/}
             <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
           </Link>
