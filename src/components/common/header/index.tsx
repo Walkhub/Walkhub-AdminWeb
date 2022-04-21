@@ -5,19 +5,23 @@ import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useAuthCheck from "@src/hooks/useAuthCheck";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import fetcher from "@src/utils/function/fetcher";
 
 const Header = () => {
   const [section_id, setSection_Id] = useState<number>();
-  const { data } = useSWR("/teachers/my-class", fetcher);
+  const { data, mutate } = useSWR("/teachers/my-class", fetcher);
 
   const router = useRouter();
   const { isAuth } = useAuthCheck(["TEACHER", "ROOT"]);
 
   useEffect(() => {
-    setSection_Id(data.section.section_id);
-  }, []);
+    try {
+      const res = fetcher(`/teachers/my-class`);
+      mutate(res, false);
+      setSection_Id(data.section.section_id);
+    } catch (error) {}
+  }, [data]);
 
   const logHandler = () => {
     removeToken();
