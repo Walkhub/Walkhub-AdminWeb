@@ -1,7 +1,6 @@
 import instance from "@src/utils/axios";
 import { AxiosResponse } from "axios";
 import { TokenType } from "@src/utils/interfaces/auth";
-import { ClassType } from "@src/utils/interfaces/class";
 
 export const certificationTeacherCode = async (code: string) => {
   try {
@@ -26,10 +25,9 @@ export const createClass = async (grade: number, classNum: number) => {
   }
 };
 
-export const getClass = async (section_id: number) => {
+export const deleteClass = async (section_id: string | string[]) => {
   try {
-    const response = await instance.get(`/teachers/classes/${section_id}`);
-    return response.data;
+    await instance.delete(`/classes/${section_id}`);
   } catch (error) {
     throw error;
   }
