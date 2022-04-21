@@ -6,17 +6,21 @@ import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
 import DropDown from "../common/dropdown";
 import { KeyedMutator } from "swr";
+import useAuthCheck from "@src/hooks/useAuthCheck";
 
 interface optionListType {
   value: string;
   optionName: string;
 }
 
-const sortList: optionListType[] = [
+const allSortList: optionListType[] = [
   {
     value: "ALL",
     optionName: "전체",
   },
+];
+
+const schoolSortList: optionListType[] = [
   {
     value: "SCHOOL",
     optionName: "학교",
@@ -40,7 +44,7 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
   const [noticePost, setNoticePost] = useState<NoticePostType>({
     title: "",
     content: "",
-    scope: "SCHOOL",
+    scope: "",
   });
 
   const noticeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -52,6 +56,12 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
         noticePost.scope
       );
       mutate("/notices");
+      setNoticePost({
+        ...noticePost,
+        title: "",
+        content: "",
+      });
+      setMakeState(true);
     } catch (e) {
       errorhandler(e);
     }
@@ -95,48 +105,96 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
     setMakeState(true);
   };
 
+  const { isAuth } = useAuthCheck(["ROOT"]);
+
   return (
-    <Wrapper onSubmit={noticeSubmit}>
-      <HeadDiv>
-        <DropDown
-          width={85}
-          height={40}
-          name='scope'
-          selectedValue={noticePost.scope}
-          setSelectedValue={noticeSortChange}
-          optionList={sortList}
-          disabled={false}
-          fontSize={16}
-          lineHeight={24}
-          fontWeight='400'
-          padding='8px 10px'
-        />
-      </HeadDiv>
-      <ContentDiv>
-        <TitleInput
-          type='text'
-          name='title'
-          value={noticePost.title}
-          onChange={noticeInfoChange}
-          placeholder='제목을 입력하세요'
-        />
-        <ContentInput
-          name='content'
-          value={noticePost.content}
-          onChange={noticeInfoChange}
-          placeholder='내용을 입력하세요'
-        />
-      </ContentDiv>
-      <PostDiv>
-        <DefaultBtn
-          onClick={deleteClick}
-          width={106}
-          defaultColor={false}
-          value='취소'
-        />
-        <DefaultBtn type='submit' width={106} value='작성' />
-      </PostDiv>
-    </Wrapper>
+    <>
+      {isAuth ? (
+        <Wrapper onSubmit={noticeSubmit}>
+          <HeadDiv>
+            <DropDown
+              width={85}
+              height={40}
+              name='scope'
+              selectedValue={noticePost.scope}
+              setSelectedValue={noticeSortChange}
+              optionList={schoolSortList}
+              disabled={false}
+              fontSize={16}
+              lineHeight={24}
+              fontWeight='400'
+              padding='8px 10px'
+            />
+          </HeadDiv>
+          <ContentDiv>
+            <TitleInput
+              type='text'
+              name='title'
+              value={noticePost.title}
+              onChange={noticeInfoChange}
+              placeholder='제목을 입력하세요'
+            />
+            <ContentInput
+              name='content'
+              value={noticePost.content}
+              onChange={noticeInfoChange}
+              placeholder='내용을 입력하세요'
+            />
+          </ContentDiv>
+          <PostDiv>
+            <DefaultBtn
+              onClick={deleteClick}
+              width={106}
+              defaultColor={false}
+              value='취소'
+            />
+            <DefaultBtn type='submit' width={106} value='작성' />
+          </PostDiv>
+        </Wrapper>
+      ) : (
+        <Wrapper onSubmit={noticeSubmit}>
+          <HeadDiv>
+            <DropDown
+              width={85}
+              height={40}
+              name='scope'
+              selectedValue={noticePost.scope}
+              setSelectedValue={noticeSortChange}
+              optionList={allSortList}
+              disabled={false}
+              fontSize={16}
+              lineHeight={24}
+              fontWeight='400'
+              padding='8px 10px'
+            />
+          </HeadDiv>
+          <ContentDiv>
+            <TitleInput
+              type='text'
+              name='title'
+              value={noticePost.title}
+              onChange={noticeInfoChange}
+              placeholder='제목을 입력하세요'
+            />
+            <ContentInput
+              name='content'
+              value={noticePost.content}
+              onChange={noticeInfoChange}
+              placeholder='내용을 입력하세요'
+            />
+          </ContentDiv>
+          <PostDiv>
+            <DefaultBtn
+              onClick={deleteClick}
+              width={106}
+              defaultColor={false}
+              value='취소'
+            />
+            <DefaultBtn type='submit' width={106} value='작성' />
+          </PostDiv>
+        </Wrapper>
+      )}
+    </>
   );
 };
 
