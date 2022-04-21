@@ -1,101 +1,109 @@
-import React, { FC, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { DetailClassType } from "@src/utils/interfaces/class";
-import Dropdown from "@src/components/common/dropdown";
 import ClassStudentList from "./ClassStudentList";
 import DeleteBtn from "../../common/DeleteBtn";
+import useSWR from "swr";
+import fetcher from "@src/utils/function/fetcher";
+import { useRouter } from "next/router";
+import { deleteClass } from "@src/utils/apis/teachers";
+import axios from "axios";
+import ToastError from "@src/utils/function/errorMessage";
 
-interface optionListType {
-  value: string;
-  optionName: string;
-}
+type classInfo = {
+  grade: number;
+  class_num: number;
+};
 
-const scopeList: optionListType[] = [
-  {
-    value: "NAME",
-    optionName: "이름순",
-  },
-  {
-    value: "DISTANCE",
-    optionName: "거리순",
-  },
-  {
-    value: "WALK_COUNT",
-    optionName: "걸음순",
-  },
-  {
-    value: "GCN",
-    optionName: "학번순",
-  },
-];
-
-const ClassBanner: FC = () => {
+const ClassBanner = () => {
   const [modalStatus, setModalStatus] = useState(false);
+  const [classInfo, setClassInfo] = useState<classInfo>({
+    class_num: 0,
+    grade: 0,
+  });
 
-  const [type, setType] = useState("NAME");
+  const router = useRouter();
+  const { id } = router.query;
 
-  const changeType = (value: string | number, name: string | number) => {
-    setType(value as string);
+  const { data, mutate } = useSWR(`teachers/classes/${id}`, fetcher);
+
+  useEffect(() => {
+    try {
+      const res = fetcher(`teachers/classes/${id}`);
+      mutate(res, false);
+      setClassInfo({
+        class_num: data.class_num,
+        grade: data.grade,
+      });
+    } catch (error) {}
+  }, [data]);
+
+  const classDelete = async (e: any) => {
+    e.preventDefault();
+    try {
+      await deleteClass(id);
+      mutate();
+    } catch (error) {
+      errorhandler(e);
+    }
+  };
+
+  const errorhandler = (e: unknown) => {
+    if (axios.isAxiosError(e) && e.response) {
+      switch (e.response.status) {
+        case 401:
+          return ToastError("인증에 실패하였습니다.");
+        case 403:
+          return ToastError("권한이 존재하지 않습니다.");
+        case 404:
+          return ToastError("삭제할 게시물을 찾지 못했습니다.");
+        default:
+          return ToastError("관리자에게 문의해주세요.");
+      }
+    } else {
+      ToastError("네트워크 연결을 확인해주세요.");
+    }
   };
 
   return (
     <Wrapper>
-      <Banner>
-        <DetailBtnDiv>
-          <DetailBtn onClick={() => setModalStatus(true)}>
-            {modalStatus && (
-              <DeleteBtn
-                width={50}
-                setModalStatus={setModalStatus}
-                value='삭제'
-              />
-            )}
-          </DetailBtn>
-        </DetailBtnDiv>
-        <BannerDiv1>
-          <ClassName>n학년 n반</ClassName>
-          <ClassPeopleDiv>
-            <p>소속인원</p>
-            <p>명</p>
-          </ClassPeopleDiv>
-        </BannerDiv1>
-        <BannerDiv2>
-          <TeacherDiv>
-            {/* <img src={teacher.profile_image_url} alt='' /> */}
-            <TeacherName>{}</TeacherName>
-            <p>선생님</p>
-          </TeacherDiv>
-          <ClassCodeDiv>
-            <p>가입코드</p>
-            <ClassCode>{}</ClassCode>
-          </ClassCodeDiv>
-        </BannerDiv2>
-      </Banner>
-      <Title>
-        <p>학생 확인</p>
-        <Dropdown
-          width={102}
-          height={16}
-          selectedValue={type}
-          name='value'
-          optionList={scopeList}
-          setSelectedValue={changeType}
-          disabled={false}
-          lineHeight={24}
-          fontSize={16}
-          fontWeight='normal'
-          padding='10px 16px'
-          isBoard={false}
-        />
-      </Title>
-      <TypeMenuDiv>
-        <p style={{ gridColumn: "4/5" }}>평균 걸음 수</p>
-        <p>종합 걸음 수</p>
-        <p>평균 거리</p>
-        <p>종합 거리</p>
-      </TypeMenuDiv>
+      {data && (
+        <Banner>
+          <DetailBtnDiv>
+            <DetailBtn onClick={() => setModalStatus(true)}>
+              {modalStatus && (
+                <DeleteBtn
+                  width={50}
+                  onClick={classDelete}
+                  setModalStatus={setModalStatus}
+                  value='삭제'
+                />
+              )}
+            </DetailBtn>
+          </DetailBtnDiv>
+          <BannerDiv1>
+            <ClassName>
+              {data.grade}학년 {data.class_num}반
+            </ClassName>
+            <ClassPeopleDiv>
+              <p>소속인원</p>
+              <p>{}명</p> {/*length 처리?*/}
+            </ClassPeopleDiv>
+          </BannerDiv1>
+          <BannerDiv2>
+            <TeacherDiv>
+              <img src={data.teacher.profile_image_url} alt='' />
+              <TeacherName>{data.teacher.name}</TeacherName>
+              <p>선생님</p>
+            </TeacherDiv>
+            <ClassCodeDiv>
+              <p>가입코드</p>
+              <ClassCode>{data.class_code}</ClassCode>
+            </ClassCodeDiv>
+          </BannerDiv2>
+        </Banner>
+      )}
       <StudentListDiv>
-        <ClassStudentList />
+        <ClassStudentList setClassInfo={classInfo} />
       </StudentListDiv>
     </Wrapper>
   );
@@ -199,32 +207,6 @@ const ClassCode = styled.p`
   color: ${({ theme }) => theme.color.white};
   font-weight: medium;
   font-size: 16px;
-`;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 48px;
-
-  > p {
-    font-size: 28px;
-    font-style: normal;
-    font-weight: medium;
-    margin-right: 16px;
-  }
-`;
-
-const TypeMenuDiv = styled.div`
-  width: 1224px;
-  padding: 16px 18px;
-  display: grid;
-  align-items: center;
-  grid-template-columns: repeat(8, 1fr);
-  place-items: center;
-  > p {
-    font-size: 16px;
-    color: ${({ theme }) => theme.color.dark_gray};
-  }
 `;
 
 const StudentListDiv = styled.div`
