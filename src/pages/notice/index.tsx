@@ -1,6 +1,5 @@
 import Notice from "@src/components/notice";
 import React, { FC } from "react";
-import Header from "@src/components/common/header";
 import { NoticeType } from "@src/utils/interfaces/notice";
 import fetcher from "@src/utils/function/fetcher";
 import { SWRConfig } from "swr";
