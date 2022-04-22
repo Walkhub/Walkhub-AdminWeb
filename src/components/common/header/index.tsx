@@ -5,11 +5,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useAuthCheck from "@src/hooks/useAuthCheck";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import fetcher from "@src/utils/function/fetcher";
+import ToastError from "@src/utils/function/errorMessage";
 
 const Header = () => {
-  const [section_id, setSection_Id] = useState<number>();
+  const [sectionId, setSectionId] = useState<number>();
+  const [errorCatch, setErrorCatch] = useState<boolean>();
   const { data, mutate } = useSWR("/teachers/my-class", fetcher);
 
   const router = useRouter();
@@ -19,23 +21,41 @@ const Header = () => {
     try {
       const res = fetcher(`/teachers/my-class`);
       mutate(res, false);
-      setSection_Id(data.section.section_id);
-    } catch (error) {}
+      setSectionId(data.section.section_id);
+      setErrorCatch(false);
+    } catch (error) {
+      setErrorCatch(true);
+    }
   }, [data]);
+
+  const myClassErrorHandle = () => {
+    ToastError("ROOT 권한은 자신의 클래스가 없습니다.");
+    router.push("/");
+  };
 
   const logHandler = () => {
     removeToken();
     router.push("/login");
+    router.reload();
   };
 
   const ClassOrSchoolManagement = useMemo(() => {
     return (
       <>
         {isAuth ? (
-          <Link href={`/class/${section_id}`}>
-            {/* 이부분은 나중에 선생님 자신의 클래스로 이동*/}
-            <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
-          </Link>
+          <>
+            {errorCatch ? (
+              <div onClick={myClassErrorHandle}>
+                <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
+              </div>
+            ) : (
+              <>
+                <Link href={`/class/${sectionId}`}>
+                  <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
+                </Link>
+              </>
+            )}
+          </>
         ) : (
           <Link href='/su'>
             <Text style={{ gridColumn: "4 / 5" }}>학교관리</Text>
@@ -43,7 +63,7 @@ const Header = () => {
         )}
       </>
     );
-  }, [isAuth]);
+  }, [isAuth, sectionId]);
 
   return (
     <>
