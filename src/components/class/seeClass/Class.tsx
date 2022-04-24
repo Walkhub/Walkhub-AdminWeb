@@ -86,7 +86,7 @@ const ClassBanner = () => {
             </ClassName>
             <ClassPeopleDiv>
               <p>소속인원</p>
-              <p>{}명</p> {/*length 처리?*/}
+              <p>{data.user_count}명</p>
             </ClassPeopleDiv>
           </BannerDiv1>
           <BannerDiv2>
