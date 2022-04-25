@@ -3,6 +3,7 @@ export interface NoticeType {
   title: string;
   content: string;
   created_at: string;
+  scope: string;
   writer: {
     id: string;
     name: string;
