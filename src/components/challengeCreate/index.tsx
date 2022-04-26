@@ -1,64 +1,23 @@
-import React, {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import TextField from "@src/components/challengeCreate/textField";
-import { ChallengeContentType } from "@src/utils/interfaces/challenge";
 import UserScope from "@src/components/challengeCreate/userScope";
 import ImageUpload from "@src/components/challengeCreate/imageUpload";
 import Goal from "@src/components/challengeCreate/goal";
 import DefaultBtn from "@src/components/common/defaultBtn/DefaultBtn";
-import {
-  changeChallenge,
-  createChallenge,
-  getChallengeDetails,
-} from "@src/utils/apis/challenges";
-import { createImage } from "@src/utils/apis/default";
-import ToastError from "@src/utils/function/errorMessage";
-import axios from "axios";
-import { useRouter } from "next/dist/client/router";
 import { PageType } from "@src/pages/challenge/create";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import InputHeader from "./inputHeader";
 import OutsideClickHandler from "react-outside-click-handler";
-import { AuthorityType } from "@src/utils/interfaces/auth";
-import { getAuthority } from "@src/utils/function/localstorgeAuthority";
-import { getUser } from "@src/utils/apis/users";
+import useChallengeContent from "@src/hooks/challenge/useChallenge";
+import useCalendar from "@src/hooks/challenge/useCalendar";
+import { ChallengeContentType } from "@src/utils/interfaces/challenge";
 
 interface PropsType {
   pageType: PageType;
   id?: string;
 }
-
-type CalendarType = "start_at" | "end_at" | "";
-
-const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
-const standardDate = new Date();
-const errorHandler = (e: unknown) => {
-  if (axios.isAxiosError(e) && e.response) {
-    switch (e.response.status) {
-      case 400:
-        ToastError("모든 빈칸을 채워주세요.");
-        break;
-      case 401:
-        ToastError("로그인 상태를 다시 확인해 주세요.");
-        break;
-      case 403:
-        ToastError("챌린지를 생성할 수 있는 권한이 없습니다.");
-        break;
-      case 500:
-        ToastError("관리자에게 문의해주세요");
-        break;
-    }
-  } else {
-    ToastError("네트워크 연결을 확인해주세요.");
-  }
-};
 
 const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
   const [challengeContent, setChallengeContent] =
@@ -76,161 +35,28 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
       success_standard: null,
       grade: null,
     });
-  const [user, setUser] = useState<{
-    type: AuthorityType | null;
-    grade: number | null;
-    class_num: number | null;
-  }>({
-    type: null,
-    grade: null,
-    class_num: null,
+  const {
+    onChangeDate,
+    selectedCalnedar,
+    setSelectedCalnedar,
+    selectedDay,
+    setSelectedDay,
+  } = useCalendar({ setChallengeContent, challengeContent });
+  const {
+    onChangeInputValue,
+    onChangeDropdownValue,
+    user,
+    file,
+    onClickSubmit,
+  } = useChallengeContent({
+    pageType,
+    id,
+    setSelectedDay,
+    selectedDay,
+    setChallengeContent,
+    challengeContent,
   });
-  useEffect(() => {
-    const authority = getAuthority();
-    getUser().then(res => {
-      setUser({
-        type: authority,
-        grade: res.grade,
-        class_num: res.class_num,
-      });
-    });
-  }, []);
-  useEffect(() => {
-    if (user.type === "TEACHER") onChangeDropdownValue("CLASS", "user_scope");
-    else if (user.type === "SU") onChangeDropdownValue("ALL", "user_scope");
-  }, [user]);
-  useEffect(() => {
-    if (id)
-      pageType === "modify" &&
-        getChallengeDetails(Number(id)).then(res => {
-          setChallengeContent(res);
-          setSelectedDay({
-            ...selectedDay,
-            start_at: new Date(res.start_at),
-            end_at: new Date(res.end_at),
-          });
-        });
-  }, [pageType]);
-  const [file, setFile] = useState<File | null>(null);
   const { name, content, start_at, end_at, award } = challengeContent;
-  const router = useRouter();
-  const onChangeInputValue = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        setFile(e.target.files[0]);
-        return;
-      }
-      if (e.target.name == "goal" || e.target.name === "success_standard") {
-        setChallengeContent({
-          ...challengeContent,
-          [e.target.name]: Number(e.target.value),
-        });
-        return;
-      }
-      setChallengeContent({
-        ...challengeContent,
-        [e.target.name]: e.target.value,
-      });
-    },
-    [challengeContent]
-  );
-  const onChangeDropdownValue = useCallback(
-    (value: string | number, name: string | number) => {
-      setChallengeContent({
-        ...challengeContent,
-        [name]: value,
-      });
-    },
-    [challengeContent, setChallengeContent]
-  );
-  const judgeRequestAPI = (img: string) => {
-    if (pageType === "create") {
-      createChallenge({
-        ...challengeContent,
-        image_url: img,
-        grade: challengeContent.grade as number,
-        start_at,
-        end_at,
-      });
-    } else {
-      if (id)
-        changeChallenge({
-          ...challengeContent,
-          grade: challengeContent.grade as number,
-          start_at,
-          end_at,
-          challenge_id: Number(id),
-        });
-    }
-  };
-  const [selectedCalnedar, setSelectedCalnedar] = useState<CalendarType>("");
-  const onClickSubmit = useCallback(async () => {
-    try {
-      if (file) {
-        const formData = new FormData();
-        formData.append("images", file);
-        const image = await createImage(formData).then(res => {
-          return res.data.image_url[0];
-        });
-        await judgeRequestAPI(image);
-        return;
-      }
-      judgeRequestAPI("");
-      router.push("/challenge");
-    } catch (err) {
-      errorHandler(err);
-    }
-  }, [challengeContent, file]);
-  const [selectedDay, setSelectedDay] = useState<{
-    start_at: Date;
-    end_at: Date;
-  }>({
-    start_at: new Date(),
-    end_at: new Date(),
-  });
-  useEffect(() => {
-    if (challengeContent.goal_scope === "ALL") {
-      setChallengeContent({
-        ...challengeContent,
-        success_standard: 1,
-      });
-    }
-  }, [challengeContent.goal_scope]);
-  useEffect(() => {
-    if (challengeContent.user_scope === "SCHOOL") {
-      setChallengeContent({
-        ...challengeContent,
-        grade: null,
-      });
-    }
-  }, [challengeContent.user_scope]);
-
-  const onChangeDate = (value: Date) => {
-    const dateToString = new Date(
-      value.getTime() + value.getTimezoneOffset() + 1000 + KR_TIME_DIFF
-    )
-      .toISOString()
-      .substring(0, 10);
-    if (selectedCalnedar === "start_at") {
-      setSelectedDay({
-        ...selectedDay,
-        start_at: value,
-      });
-      setChallengeContent({
-        ...challengeContent,
-        start_at: dateToString,
-      });
-    } else {
-      setSelectedDay({
-        ...selectedDay,
-        end_at: value,
-      });
-      setChallengeContent({
-        ...challengeContent,
-        end_at: dateToString,
-      });
-    }
-  };
 
   const calendar = useMemo(() => {
     return (
