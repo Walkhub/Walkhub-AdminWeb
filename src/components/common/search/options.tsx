@@ -59,21 +59,21 @@ const participantOptionList: participantOptionListType[] = [
 ];
 
 interface successScopeOptionListType {
-  optionName: number;
+  optionName: string;
   value: number;
 }
 
 const successScopeOptionList: successScopeOptionListType[] = [
   {
-    optionName: 1,
+    optionName: "1학년",
     value: 1,
   },
   {
-    optionName: 2,
+    optionName: "2학년",
     value: 2,
   },
   {
-    optionName: 3,
+    optionName: "3학년",
     value: 3,
   },
 ];
