@@ -113,7 +113,7 @@ const Wrapper = styled.section`
 `;
 const InputArea = styled.div`
   display: flex;
-  > div:nth-child(2),
+  > div:nth-of-type(2),
   section {
     margin-left: 24px;
   }

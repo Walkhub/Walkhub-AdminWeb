@@ -9,11 +9,16 @@ import {
   participantsScopeType,
 } from "@src/components/common/search/options";
 
+interface CreateResponse {
+  id: number;
+}
+
 export const createChallenge = async (
   challengesRequest: ChallengeContentType
-) => {
+): Promise<CreateResponse> => {
   try {
-    await instance.post("/challenges", challengesRequest);
+    const response = await instance.post("/challenges", challengesRequest);
+    return response.data;
   } catch (error) {
     throw error;
   }

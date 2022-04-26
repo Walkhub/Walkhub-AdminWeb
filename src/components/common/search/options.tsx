@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
 import Dropdown from "@src/components/common/dropdown";
-import { ChangeEvent, useContext } from "react";
-import { ParticipantStateContext } from "@src/contexts/ChallengeParticipantsOptionContext";
+import { ChangeEvent, useContext, useEffect } from "react";
+import {
+  ParticipantDispatchContext,
+  ParticipantStateContext,
+} from "@src/contexts/ChallengeParticipantsOptionContext";
 
 export type participantSortType =
   | "SCHOOL_NAME"
@@ -56,21 +59,21 @@ const participantOptionList: participantOptionListType[] = [
 ];
 
 interface successScopeOptionListType {
-  optionName: number;
+  optionName: string;
   value: number;
 }
 
 const successScopeOptionList: successScopeOptionListType[] = [
   {
-    optionName: 1,
+    optionName: "1학년",
     value: 1,
   },
   {
-    optionName: 2,
+    optionName: "2학년",
     value: 2,
   },
   {
-    optionName: 3,
+    optionName: "3학년",
     value: 3,
   },
 ];
@@ -87,7 +90,18 @@ const SearchOptions: React.FC<PropsType> = ({
   onChangeDropdownValue,
   onChangeInputValue,
 }) => {
+  const dispatch = useContext(ParticipantDispatchContext);
   const state = useContext(ParticipantStateContext);
+  useEffect(() => {
+    if (state.userScope !== "STUDENT") {
+      dispatch({ type: "CHANGE_OPTION", dropdownName: "grade", value: null });
+      dispatch({
+        type: "CHANGE_OPTION",
+        dropdownName: "classNum",
+        value: null,
+      });
+    }
+  }, [state.userScope]);
   return (
     <Options>
       <h1 className='header'>검색</h1>
