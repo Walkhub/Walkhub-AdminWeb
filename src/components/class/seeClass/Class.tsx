@@ -34,14 +34,15 @@ const ClassBanner = () => {
         class_num: data.class_num,
         grade: data.grade,
       });
-    } catch (error) {}
+    } catch (error) {
+      router.push("/404");
+    }
   }, [data]);
 
   const classDelete = async (e: any) => {
     e.preventDefault();
     try {
       await deleteClass(id);
-      mutate();
     } catch (error) {
       errorhandler(e);
     }

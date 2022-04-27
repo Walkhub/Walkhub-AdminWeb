@@ -36,7 +36,6 @@ const Header = () => {
   const logHandler = () => {
     removeToken();
     router.push("/login");
-    router.reload();
   };
 
   const ClassOrSchoolManagement = useMemo(() => {
