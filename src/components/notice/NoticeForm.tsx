@@ -13,6 +13,7 @@ const NoticeForm: FC<NoticeType & { mutate: KeyedMutator<any> }> = ({
   created_at,
   writer,
   id,
+  scope,
   mutate,
 }) => {
   const [modalStatus, setModalStatus] = useState(false);
@@ -47,7 +48,9 @@ const NoticeForm: FC<NoticeType & { mutate: KeyedMutator<any> }> = ({
     if (axios.isAxiosError(e) && e.response) {
       switch (e.response.status) {
         case 401:
-          return ToastError("인증에 실패하였습니다.");
+          return ToastError(
+            "인증에 실패하였습니다 또는 권한이 존재하지 않습니다."
+          );
         case 403:
           return ToastError("권한이 존재하지 않습니다.");
         case 404:
@@ -83,7 +86,7 @@ const NoticeForm: FC<NoticeType & { mutate: KeyedMutator<any> }> = ({
               <p>{writer.name}</p>
             </UserDiv>
             <EtcDiv>
-              <Kindmsg>학교</Kindmsg>
+              <Kindmsg>{scope}</Kindmsg>
               <div>
                 <Datemsg>{timeText}</Datemsg>
               </div>

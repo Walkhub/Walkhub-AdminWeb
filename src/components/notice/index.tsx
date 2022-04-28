@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import NoticeForm from "./NoticeForm";
 import MakeNotice from "./MakeNotice";
 import useSWR from "swr";
 import fetcher from "@src/utils/function/fetcher";
 import { NoticeType } from "@src/utils/interfaces/notice";
-import withAuth from "@src/hocs/withAuth";
 
 const Notice = () => {
   const [makeState, setMakeState] = useState<boolean>(true);
@@ -14,7 +13,7 @@ const Notice = () => {
   };
 
   const { data, error, mutate } = useSWR(
-    `/notices/list?scope=SCHOOL&page=0`,
+    `/notices/list?scope=ALL&page=0`,
     fetcher
   );
 
@@ -35,7 +34,6 @@ const Notice = () => {
         </NoticeTitleDiv>
         <NoticeListDiv>
           {data.notice_list?.map((i: NoticeType) => {
-            console.log(i);
             return (
               <div style={{ marginBottom: "16px" }} key={i.id}>
                 <NoticeForm {...i} mutate={mutate} />
