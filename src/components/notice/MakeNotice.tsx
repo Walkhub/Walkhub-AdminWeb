@@ -73,11 +73,11 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
         case 400:
           return ToastError("모든 빈칸을 채워주세요");
         case 401:
-          return ToastError(
-            "인증에 실패하였습니다. 공지사항 작성은 ROOT 권한과 SU권한만 사용 가능합니다."
-          );
+          return ToastError("인증에 실패하였습니다. ");
         case 403:
-          return ToastError("권한이 존재하지 않습니다.");
+          return ToastError(
+            "권한이 존재하지 않습니다. 공지사항 작성은 ROOT 권한과 SU권한만 사용 가능합니다."
+          );
         default:
           return ToastError("관리자에게 문의해주세요.");
       }
