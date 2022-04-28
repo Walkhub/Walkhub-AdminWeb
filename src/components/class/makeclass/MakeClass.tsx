@@ -46,8 +46,8 @@ const gradeList: optionListType[] = [
 
 const MakeClass: FC = () => {
   const [classInfo, setClassInfo] = useState<inputType>({
-    grade: 0,
-    class: 0,
+    grade: 1,
+    class: 1,
   });
 
   const router = useRouter();
@@ -89,6 +89,7 @@ const MakeClass: FC = () => {
       ...classInfo,
       [name]: value,
     });
+    console.log(classInfo);
   };
 
   const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -123,6 +124,7 @@ const MakeClass: FC = () => {
             type='number'
             onChange={onChange}
             value={classInfo.class}
+            min='1'
           />
           <p style={{ margin: "20px 0 0 0 " }}>반</p>
         </InputDiv>
@@ -172,6 +174,11 @@ const ClassNumInput = styled.input`
   margin-right: 12px;
   border: 1px solid ${({ theme }) => theme.color.normal_gray};
   border-radius: 12px;
+  ::-webkit-inner-spin-button {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
 `;
 
 export default MakeClass;
