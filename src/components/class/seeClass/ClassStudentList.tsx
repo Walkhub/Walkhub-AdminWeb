@@ -7,6 +7,8 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import Dropdown from "@src/components/common/dropdown";
 import { useRouter } from "next/router";
+import getExcel from "@src/utils/function/getExcel";
+import instance from "@src/utils/axios";
 
 interface Props {
   setClassInfo: {
@@ -60,12 +62,32 @@ const ClassStudentList: FC<Props> = ({ setClassInfo }) => {
   };
 
   const changeFilter = async () => {
-    const { sort } = type;
     const updateData = await fetcher(
-      `/teachers/users/search?sort=${sort}&grade=${setClassInfo.grade}&class=${setClassInfo.class_num}`
+      `/teachers/users/search?sort=${type.sort}&grade=${setClassInfo.grade}&class=${setClassInfo.class_num}`
     );
 
     mutate(updateData, false);
+  };
+
+  const excelDownload = async () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const date = today.getDate();
+
+    const startAt = `${year}-${month >= 10 ? month : "0" + month}-${
+      date - 7 >= 10 ? date - 7 : "0" + (date - 7)
+    }`;
+
+    const endAt = `${year}-${month >= 10 ? month : "0" + month}-${
+      date >= 10 ? date : "0" + date
+    }`;
+
+    const excelData = await instance(
+      `/excel?startAt=${startAt}&endAt=${endAt}&userType=STUDENT&grade=${setClassInfo.grade}&classNum=${setClassInfo.class_num}`
+    ).then(res => res.data);
+
+    getExcel(excelData);
   };
 
   useEffect(() => {
@@ -90,6 +112,7 @@ const ClassStudentList: FC<Props> = ({ setClassInfo }) => {
           padding='10px 16px'
           isBoard={false}
         />
+        <ExcelDonwload onClick={excelDownload}>엑셀로 변환</ExcelDonwload>
       </Title>
       <TypeMenuDiv>
         <p style={{ gridColumn: "4/5" }}>평균 걸음 수</p>
@@ -139,6 +162,15 @@ const TypeMenuDiv = styled.div`
     font-size: 16px;
     color: ${({ theme }) => theme.color.dark_gray};
   }
+`;
+
+const ExcelDonwload = styled.h6`
+  margin-left: 900px;
+  text-decoration: underline;
+  color: ${({ theme }) => theme.color.main};
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
 `;
 
 export default ClassStudentList;
