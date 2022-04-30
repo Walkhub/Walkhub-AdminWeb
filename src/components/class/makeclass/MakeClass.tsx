@@ -52,7 +52,7 @@ const MakeClass: FC = () => {
 
   const router = useRouter();
 
-  const classSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const classSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       await createClass(classInfo.grade, classInfo.class);
@@ -81,19 +81,15 @@ const MakeClass: FC = () => {
     }
   };
 
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setClassInfo({
       ...classInfo,
       [name]: value,
     });
-    console.log(classInfo);
   };
 
-  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value, name } = e.target;
+  const onSelectChange = (value: string | number, name: string | number) => {
     setClassInfo({
       ...classInfo,
       [name]: value,
@@ -101,7 +97,7 @@ const MakeClass: FC = () => {
   };
 
   return (
-    <Wrapper onSubmit={classSubmit}>
+    <Wrapper>
       <PostBox>
         <p>반 개설하기</p>
         <InputDiv>
@@ -110,7 +106,7 @@ const MakeClass: FC = () => {
             height={48}
             name='grade'
             selectedValue={classInfo.grade}
-            setSelectedValue={() => onSelectChange}
+            setSelectedValue={onSelectChange}
             optionList={gradeList}
             disabled={false}
             fontSize={16}
@@ -128,13 +124,13 @@ const MakeClass: FC = () => {
           />
           <p style={{ margin: "20px 0 0 0 " }}>반</p>
         </InputDiv>
-        <DefaultBtn value='개설' />
+        <DefaultBtn value='개설' onClick={classSubmit} />
       </PostBox>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
   background-color: ${({ theme }) => theme.color.light_gray};
