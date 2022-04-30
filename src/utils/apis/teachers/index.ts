@@ -27,7 +27,7 @@ export const createClass = async (grade: number, classNum: number) => {
 
 export const deleteClass = async (section_id: string | string[]) => {
   try {
-    await instance.delete(`/classes/${section_id}`);
+    await instance.delete(`/teachers/classes/${section_id}`);
   } catch (error) {
     throw error;
   }
