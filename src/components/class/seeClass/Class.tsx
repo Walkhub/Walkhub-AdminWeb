@@ -34,15 +34,14 @@ const ClassBanner = () => {
         class_num: data.class_num,
         grade: data.grade,
       });
-    } catch (error) {
-      router.push("/404");
-    }
+    } catch (error) {}
   }, [data]);
 
   const classDelete = async (e: any) => {
     e.preventDefault();
     try {
       await deleteClass(id);
+      router.push("/");
     } catch (error) {
       errorhandler(e);
     }
@@ -174,11 +173,13 @@ const TeacherDiv = styled.div`
   align-items: center;
   margin-left: 54px;
   > p {
+    width: 100%;
     color: ${({ theme }) => theme.color.white};
   }
   > img {
     width: 35px;
     height: 35px;
+    margin-right: 8px;
   }
 `;
 
