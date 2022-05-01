@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import ChallengeInfo from "@src/components/challengeDetail/challengeInfo";
 import {
   ChallengeDetailsType,
+  ChallengeParticipantsType,
   userResponseType,
 } from "@src/utils/interfaces/challenge";
 import ChallengeParticipant from "@src/components/challengeDetail/challengeParticipant";
@@ -22,12 +23,20 @@ import withAuth from "@src/hocs/withAuth";
 
 interface PropsType {
   challengeId: number;
+  challengeDetails: ChallengeDetailsType;
+  challengeParticipants: ChallengeParticipantsType;
 }
 
-const ChallengeDetail: React.FC<PropsType> = ({ challengeId }) => {
+const ChallengeDetail: React.FC<PropsType> = ({
+  challengeId,
+  challengeDetails,
+  challengeParticipants,
+}) => {
   const [challengeDetail, setChallengeDetail] =
-    useState<ChallengeDetailsType>();
-  const [participants, setParticipants] = useState<userResponseType[]>([]);
+    useState<ChallengeDetailsType>(challengeDetails);
+  const [participants, setParticipants] = useState<userResponseType[]>(
+    challengeParticipants.participant_list
+  );
   const router = useRouter();
   const state = useContext(ParticipantStateContext);
   useEffect(() => {
