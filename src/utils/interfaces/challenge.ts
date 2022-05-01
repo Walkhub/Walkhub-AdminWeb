@@ -31,7 +31,6 @@ export interface ChallengeContentType {
   goal_type: goalType | null;
   goal_scope: goalScopeType | null;
   success_standard: number | null;
-  grade: number | null;
   challenge_id?: number;
 }
 

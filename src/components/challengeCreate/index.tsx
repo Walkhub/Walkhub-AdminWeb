@@ -33,7 +33,6 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
       goal_type: null,
       goal_scope: null,
       success_standard: null,
-      grade: null,
     });
   const {
     onChangeDate,
