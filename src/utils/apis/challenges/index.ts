@@ -74,7 +74,6 @@ export const getChallengeParticipants = async (
         classNum ? `&classNum=${classNum}` : ""
       }`
     );
-    console.log(response);
     return response.data;
   } catch (err) {
     throw err;
