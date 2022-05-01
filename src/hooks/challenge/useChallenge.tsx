@@ -5,8 +5,8 @@ import {
   getChallengeDetails,
 } from "@src/utils/apis/challenges";
 import { createImage } from "@src/utils/apis/default";
-import { getUser } from "@src/utils/apis/users";
 import ToastError from "@src/utils/function/errorMessage";
+import fetcher from "@src/utils/function/fetcher";
 import { getAuthority } from "@src/utils/function/localstorgeAuthority";
 import { AuthorityType } from "@src/utils/interfaces/auth";
 import { ChallengeContentType } from "@src/utils/interfaces/challenge";
@@ -20,6 +20,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import useSWR from "swr";
 
 const errorHandler = (e: unknown) => {
   if (axios.isAxiosError(e) && e.response) {
@@ -71,23 +72,34 @@ const useChallengeContent = ({
     type: AuthorityType | null;
     grade: number | null;
     class_num: number | null;
+    school_name: string;
   }>({
     type: null,
     grade: null,
     class_num: null,
+    school_name: "",
   });
   const [file, setFile] = useState<File | null>(null);
   const { start_at, end_at } = challengeContent;
+  const { data } = useSWR<{
+    name: string;
+    profile_image_url: string;
+    grade: number | null;
+    class_num: number | null;
+    school_name: string;
+  }>(`${process.env.NEXT_PUBLIC_BASE_URL}/users/info`, fetcher);
   useEffect(() => {
     const authority = getAuthority();
-    getUser().then(res => {
+    data &&
+      authority &&
       setUser({
+        ...user,
         type: authority,
-        grade: res.grade,
-        class_num: res.class_num,
+        grade: data.grade,
+        class_num: data.class_num,
+        school_name: data.school_name,
       });
-    });
-  }, []);
+  }, [data]);
   useEffect(() => {
     if (user.type === "TEACHER") onChangeDropdownValue("CLASS", "user_scope");
     else if (user.type === "SU") onChangeDropdownValue("ALL", "user_scope");
@@ -130,14 +142,6 @@ const useChallengeContent = ({
       });
     }
   }, [challengeContent.goal_scope]);
-  useEffect(() => {
-    if (challengeContent.user_scope === "SCHOOL") {
-      setChallengeContent({
-        ...challengeContent,
-        grade: null,
-      });
-    }
-  }, [challengeContent.user_scope]);
 
   const router = useRouter();
   const onClickSubmit = useCallback(async () => {
@@ -162,19 +166,17 @@ const useChallengeContent = ({
       createChallenge({
         ...challengeContent,
         image_url: img,
-        grade: challengeContent.grade as number,
         start_at,
         end_at,
-      }).then(res => router.push(`challenge/${res.id}`));
+      }).then(res => router.push(`/challenge/${res.challenge_id}`));
     } else {
       if (id)
         changeChallenge({
           ...challengeContent,
-          grade: challengeContent.grade as number,
           start_at,
           end_at,
           challenge_id: Number(id),
-        });
+        }).then(res => console.log(res));
     }
   };
 
