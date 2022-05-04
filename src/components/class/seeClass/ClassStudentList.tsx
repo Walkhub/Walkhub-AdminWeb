@@ -63,7 +63,7 @@ const ClassStudentList: FC<Props> = ({ setClassInfo }) => {
 
   const changeFilter = async () => {
     const updateData = await fetcher(
-      `/teachers/users/search?sort=${type.sort}&grade=${setClassInfo.grade}&class=${setClassInfo.class_num}`
+      `/teachers/users/search?page=0&scope=STUDENT&sort=${type.sort}&grade=${setClassInfo.grade}&class=${setClassInfo.class_num}`
     );
 
     mutate(updateData, false);
