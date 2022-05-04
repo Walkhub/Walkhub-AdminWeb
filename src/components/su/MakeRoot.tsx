@@ -25,9 +25,7 @@ const MakeRoot: FC = () => {
 
   const { inputContent, btnDisable, school_id, seeModal } = allContent;
 
-  const { data, mutate } = useSWR(
-    `https://server.walkhub.co.kr/schools/search?name=`
-  );
+  const { data, mutate } = useSWR(`/schools/search?name=`);
 
   const fetch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -53,9 +51,7 @@ const MakeRoot: FC = () => {
       });
 
     try {
-      const res = await fetcher(
-        `https://server.walkhub.co.kr/schools/search?name=${value}`
-      );
+      const res = await fetcher(`/schools/search?name=${value}`);
       mutate(res, false);
     } catch (e) {}
   };
