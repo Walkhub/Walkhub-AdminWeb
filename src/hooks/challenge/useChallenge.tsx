@@ -87,7 +87,7 @@ const useChallengeContent = ({
     grade: number | null;
     class_num: number | null;
     school_name: string;
-  }>(`${process.env.NEXT_PUBLIC_BASE_URL}/users/info`, fetcher);
+  }>(`/users/info`, fetcher);
   useEffect(() => {
     const authority = getAuthority();
     data &&
