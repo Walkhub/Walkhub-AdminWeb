@@ -5,7 +5,7 @@ import useSWR from "swr";
 import fetcher from "@src/utils/function/fetcher";
 
 const ChallengeList = () => {
-  const { data } = useSWR("/challenges/lists", fetcher);
+  const { data } = useSWR("/challenges/web/lists?isProgress=true", fetcher);
 
   return (
     <>
