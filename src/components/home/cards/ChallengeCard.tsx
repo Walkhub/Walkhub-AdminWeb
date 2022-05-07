@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import DefaultBox from "@src/components/common/defaultBox";
 import { ChallengeType } from "@src/utils/interfaces/challenge";
 import { FC } from "react";
+import Link from "next/link";
 
 const ChallengeCard: FC<ChallengeType> = ({
   id,
@@ -9,23 +10,26 @@ const ChallengeCard: FC<ChallengeType> = ({
   writer,
   start_at,
   end_at,
+  participant_count,
 }) => {
   return (
     <>
-      <DefaultBox width={288} height={164}>
-        <Title>{name}</Title>
-        <ChallengeWriter>
-          <img src={writer.profile_image_url} alt='' />
-          <p>{writer.name}</p>
-        </ChallengeWriter>
-        <ChallengeGoal>{name}</ChallengeGoal>
-        <ChallengeSubInfo className='subInfo'>
-          <p>
-            {start_at} ~ {end_at}
-          </p>
-          <p>211명</p>
-        </ChallengeSubInfo>
-      </DefaultBox>
+      <Link href={`/challenge/${id}`}>
+        <DefaultBox width={288} height={164}>
+          <Title>{name}</Title>
+          <ChallengeWriter>
+            <img src={writer.profile_image_url} alt='' />
+            <p>{writer.name}</p>
+          </ChallengeWriter>
+          <ChallengeGoal>{name}</ChallengeGoal>
+          <ChallengeSubInfo className='subInfo'>
+            <p>
+              {start_at} ~ {end_at}
+            </p>
+            <p>{participant_count} 명</p>
+          </ChallengeSubInfo>
+        </DefaultBox>
+      </Link>
     </>
   );
 };
