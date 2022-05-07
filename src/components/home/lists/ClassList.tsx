@@ -9,10 +9,13 @@ const ClassList = () => {
 
   return (
     <>
-      {data.class_list?.map(
+      {data.teacher_list?.map(
         (i: ClassType) =>
           i.section.section_id && (
-            <div style={{ marginRight: "22px" }} key={i.section.section_id}>
+            <div
+              style={{ marginRight: "22px" }}
+              key={`class-${i.section.section_id}`}
+            >
               <ClassCard {...i} />
             </div>
           )
