@@ -83,8 +83,8 @@ const StudentFilter = () => {
     grade: "",
     name: "",
   });
-  const { mutate } = useSWR(
-    "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class=",
+  const { data, mutate } = useSWR(
+    "/teachers/users/search?userScope=STUDENT&sort=NAME&grade=&class=&name=",
     fetcher
   );
 
@@ -202,7 +202,7 @@ const StudentFilter = () => {
       </Category>
 
       <div>
-        <StudentList />
+        <StudentList data={data} />
       </div>
     </>
   );
