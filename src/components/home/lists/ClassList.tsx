@@ -15,7 +15,6 @@ const ClassList = () => {
 
   const moveClass = () => {
     router.push(`/teachers/classes/${section_id}`);
-    console.log(section_id);
   };
 
   return (
