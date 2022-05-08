@@ -47,7 +47,7 @@ const ClassStudentList: FC<Props> = ({ setClassInfo }) => {
   });
 
   const { data } = useSWR(
-    `/teachers/users/search?page=0&scope=STUDENT&sort=${type.sort}&grade=${setClassInfo.grade}&class=${setClassInfo.class_num}`,
+    `/teachers/users/search?page=0&scope=STUDENT&sort=${type.sort}&grade=${setClassInfo.grade}&class=${setClassInfo.class_num}&name=`,
     fetcher
   );
 
@@ -70,22 +70,9 @@ const ClassStudentList: FC<Props> = ({ setClassInfo }) => {
   };
 
   const excelDownload = async () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const date = today.getDate();
-
-    const startAt = `${year}-${month >= 10 ? month : "0" + month}-${
-      date - 7 >= 10 ? date - 7 : "0" + (date - 7)
-    }`;
-
-    const endAt = `${year}-${month >= 10 ? month : "0" + month}-${
-      date >= 10 ? date : "0" + date
-    }`;
-
     const excelData = await instance(
-      `/excel?startAt=${startAt}&endAt=${endAt}&userType=STUDENT&grade=${setClassInfo.grade}&classNum=${setClassInfo.class_num}`
-    ).then(res => res.data);
+      `/teachers/users/search?&scope=STUDENT&sort=${type.sort}&grade=${setClassInfo.grade}&class=${setClassInfo.class_num}`
+    ).then(res => res.data.user_list);
 
     getExcel(excelData);
   };
