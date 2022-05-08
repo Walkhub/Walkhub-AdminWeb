@@ -4,7 +4,7 @@ import {
   participantsScopeType,
 } from "@src/components/common/search/options";
 
-interface ParticipantsOptionStateType {
+export interface ParticipantsOptionStateType {
   sort: participantSortType;
   userScope: participantsScopeType;
   page: number;
@@ -15,7 +15,7 @@ interface ParticipantsOptionStateType {
 
 type ChangeOptionAction = {
   type: "CHANGE_OPTION";
-  dropdownName: "sort" | "userScope" | "grade" | "classNum";
+  dropdownName: "sort" | "userScope" | "grade";
   value: participantSortType | participantsScopeType | number;
 };
 type ChangePageAction = {
@@ -25,6 +25,7 @@ type ChangePageAction = {
 
 type ChangeInputAction = {
   type: "CHANGE_INPUT";
+  name: "name" | "classNum";
   value: string;
 };
 
@@ -79,7 +80,7 @@ export const participantReducer = (
     case "CHANGE_INPUT":
       return {
         ...state,
-        name: action.value,
+        [action.name]: action.value,
       };
     default:
       return state;

@@ -3,8 +3,10 @@ import Dropdown from "@src/components/common/dropdown";
 import { ChangeEvent, useContext, useEffect } from "react";
 import {
   ParticipantDispatchContext,
+  ParticipantsOptionStateType,
   ParticipantStateContext,
 } from "@src/contexts/ChallengeParticipantsOptionContext";
+import InputHeader from "@src/components/challengeCreate/inputHeader";
 
 export type participantSortType =
   | "SCHOOL_NAME"
@@ -84,32 +86,23 @@ interface PropsType {
     name: string | number
   ) => void;
   onChangeInputValue: (e: ChangeEvent<HTMLInputElement>) => void;
+  state: ParticipantsOptionStateType;
 }
 
 const SearchOptions: React.FC<PropsType> = ({
   onChangeDropdownValue,
   onChangeInputValue,
+  state,
 }) => {
-  const dispatch = useContext(ParticipantDispatchContext);
-  const state = useContext(ParticipantStateContext);
-  useEffect(() => {
-    if (state.userScope !== "STUDENT") {
-      dispatch({ type: "CHANGE_OPTION", dropdownName: "grade", value: null });
-      dispatch({
-        type: "CHANGE_OPTION",
-        dropdownName: "classNum",
-        value: null,
-      });
-    }
-  }, [state.userScope]);
   return (
     <Options>
       <h1 className='header'>검색</h1>
       <Search>
         <label>
           <input
-            className='searchInput'
+            className='name'
             placeholder='이름으로 검색하기'
+            name='name'
             onChange={onChangeInputValue}
           />
         </label>
@@ -152,18 +145,14 @@ const SearchOptions: React.FC<PropsType> = ({
           fontWeight='normal'
           name='grade'
         />
-        <Dropdown
-          width={136}
-          height={48}
-          selectedValue={state.classNum || "전체"}
-          setSelectedValue={onChangeDropdownValue}
-          optionList={successScopeOptionList}
-          disabled={state.userScope !== "STUDENT"}
-          padding='12px 16px'
-          fontSize={16}
-          lineHeight={28}
-          fontWeight='normal'
+        <input
+          className='classNumInput'
           name='classNum'
+          onChange={onChangeInputValue}
+          value={state.classNum}
+          readOnly={state.userScope !== "STUDENT" || state.grade === null}
+          placeholder='반'
+          type='number'
         />
       </Search>
     </Options>
@@ -192,7 +181,7 @@ const Search = styled.section`
     background-color: #ffffff;
     box-sizing: border-box;
     padding: 12px 20px;
-    > .searchInput {
+    > .name {
       width: calc(100% - 43px);
       font-size: 16px;
       line-height: 24px;
@@ -206,5 +195,28 @@ const Search = styled.section`
   }
   > div {
     margin-left: 16px;
+  }
+  > .classNumInput {
+    width: 136px;
+    height: 48px;
+    font-size: 16px;
+    line-height: 24px;
+    font-style: normal;
+    font-weight: normal;
+    height: 100%;
+    border: 1px solid #bdbdbd;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    padding: 12px 12px;
+    margin-left: 16px;
+    ::placeholder {
+      color: #bdbdbd;
+    }
+    ::-webkit-inner-spin-button,
+    ::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
 `;
