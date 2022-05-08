@@ -18,7 +18,8 @@ const PageNation: React.FC<PropsType> = ({
       .fill(void 0)
       .map(
         (item, index) =>
-          startNum + index < lastPage && (
+          startNum + index < lastPage &&
+          startNum + index > 0 && (
             <PageNationButton
               className={selectedPage === startNum + index ? "selected" : ""}
               onClick={() => onClick(startNum + index)}
@@ -30,7 +31,8 @@ const PageNation: React.FC<PropsType> = ({
       );
   }, [selectedPage, onClick, startNum, lastPage]);
   useEffect(() => {
-    if (startNum + 3 >= lastPage) setStartNum(lastPage - 2);
+    if (lastPage === 4) setStartNum(lastPage - 3);
+    else if (startNum + 3 >= lastPage) setStartNum(lastPage - 2);
     else if (startNum - 3 < 1) setStartNum(1);
   }, [startNum, lastPage]);
   const onClickSeeMoreButton = (type: SeeMoreType) => {
