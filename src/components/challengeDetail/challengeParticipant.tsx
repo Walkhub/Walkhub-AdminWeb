@@ -59,7 +59,7 @@ const ChallengeParticipant: React.FC<PropsType> = ({ participants }) => {
       };
     });
     console.log(exelData);
-    getExcel(exelData, "TEACHER");
+    getExcel(exelData, "CHALLENGE");
   };
   useEffect(() => {
     if (state.userScope !== "STUDENT") {
