@@ -68,7 +68,7 @@ export const getChallengeParticipants = async (
 ): Promise<ChallengeParticipantsType> => {
   try {
     const response = await instance.get(
-      `/challenges/${challenge_id}/progress?sort=${sort}&userScope=${userScope}&size=${size}${
+      `/challenges/${challenge_id}/progress?sort=${sort}&userScope=${userScope}&page=${size}${
         name ? `&name=${name}` : ""
       }${grade ? `&grade=${grade}` : ""}${
         classNum ? `&classNum=${classNum}` : ""

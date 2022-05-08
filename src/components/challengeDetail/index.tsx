@@ -34,8 +34,8 @@ const ChallengeDetail: React.FC<PropsType> = ({
 }) => {
   const [challengeDetail, setChallengeDetail] =
     useState<ChallengeDetailsType>(challengeDetails);
-  const [participants, setParticipants] = useState<userResponseType[]>(
-    challengeParticipants.participant_list
+  const [participants, setParticipants] = useState<ChallengeParticipantsType>(
+    challengeParticipants
   );
   const router = useRouter();
   const state = useContext(ParticipantStateContext);
@@ -54,7 +54,7 @@ const ChallengeDetail: React.FC<PropsType> = ({
       state.sort,
       state.userScope
     )
-      .then(res => setParticipants(res.participant_list))
+      .then(res => setParticipants(res))
       .catch(err => errorHandler(err));
   }, [
     challengeId,
@@ -95,10 +95,10 @@ const ChallengeDetail: React.FC<PropsType> = ({
       <ChallengeInfo
         id={challengeId}
         challengeDetail={challengeDetail}
-        participantsCount={participants.length}
+        participantsCount={participants.total_page}
       />
-      <ChallengeParticipant participants={participants} />
-      <PageNation selectedPage={state.page} onClick={onClick} lastPage={5} />
+      <ChallengeParticipant participants={participants.participant_list} />
+      <PageNation selectedPage={state.page} onClick={onClick} lastPage={4} />
     </Wrapper>
   );
 };
