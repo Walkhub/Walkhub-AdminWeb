@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
 import Dropdown from "@src/components/common/dropdown";
-import { ChangeEvent, useContext, useEffect, useMemo } from "react";
+import { ChangeEvent, useMemo } from "react";
 import { ParticipantsOptionStateType } from "@src/contexts/ChallengeParticipantsOptionContext";
+import SearchIcon from "@src/assets/search.svg";
+import Image from "next/image";
 
 export type participantSortType =
   | "SCHOOL_NAME"
@@ -97,6 +99,7 @@ const SearchOptions: React.FC<PropsType> = ({
             name='name'
             onChange={onChangeInputValue}
           />
+          <Image src={SearchIcon} className='searchIcon' />
         </label>
         <Dropdown
           width={136}
@@ -143,7 +146,7 @@ const SearchOptions: React.FC<PropsType> = ({
           onChange={onChangeInputValue}
           value={state.classNum}
           readOnly={state.userScope !== "STUDENT" || state.grade === null}
-          placeholder='반'
+          placeholder='반 입력'
           type='number'
         />
       </Search>
@@ -165,6 +168,7 @@ const Search = styled.section`
   display: flex;
   margin-top: 16px;
   > label {
+    justify-content: space-between;
     display: flex;
     width: 616px;
     height: 48px;

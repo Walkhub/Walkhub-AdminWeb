@@ -13,6 +13,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import useChallengeContent from "@src/hooks/challenge/useChallenge";
 import useCalendar from "@src/hooks/challenge/useCalendar";
 import { ChallengeContentType } from "@src/utils/interfaces/challenge";
+import CalendarIcon from "@src/assets/calendarIcon";
 
 interface PropsType {
   pageType: PageType;
@@ -117,7 +118,9 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
                 onFocus={() => setSelectedCalnedar("start_at")}
                 placeholder='시작일을 선택해주세요'
               />
-              <img className='calendarImg' />
+              <CalendarIcon
+                color={selectedCalnedar === "start_at" ? "#57B4F1" : "#bdbdbd"}
+              />
             </CalendarInput>
             {selectedCalnedar === "start_at" && calendar}
           </section>
@@ -131,7 +134,9 @@ const Challenge: React.FC<PropsType> = ({ pageType, id }) => {
                 onFocus={() => setSelectedCalnedar("end_at")}
                 placeholder='종료일을 선택해주세요'
               />
-              <img className='calendarImg' />
+              <CalendarIcon
+                color={selectedCalnedar === "end_at" ? "#57B4F1" : "#bdbdbd"}
+              />
             </CalendarInput>
             {selectedCalnedar === "end_at" && calendar}
           </section>
@@ -281,7 +286,7 @@ const CalendarInput = styled.label<{
           : props.theme.color.normal_gray};
     }
   }
-  > .calendarImg {
+  > .calendarIcon {
     width: 20px;
     height: 20px;
     margin-left: auto;
