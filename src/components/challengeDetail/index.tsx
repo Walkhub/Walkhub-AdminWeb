@@ -97,8 +97,15 @@ const ChallengeDetail: React.FC<PropsType> = ({
         challengeDetail={challengeDetail}
         participantsCount={participants.total_page}
       />
-      <ChallengeParticipant participants={participants.participant_list} />
-      <PageNation selectedPage={state.page} onClick={onClick} lastPage={4} />
+      <ChallengeParticipant
+        participants={participants.participant_list}
+        challengeName={challengeDetail.name}
+      />
+      <PageNation
+        selectedPage={state.page}
+        onClick={onClick}
+        lastPage={participants.total_page}
+      />
     </Wrapper>
   );
 };

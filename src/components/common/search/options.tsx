@@ -1,12 +1,7 @@
 import styled from "@emotion/styled";
 import Dropdown from "@src/components/common/dropdown";
-import { ChangeEvent, useContext, useEffect } from "react";
-import {
-  ParticipantDispatchContext,
-  ParticipantsOptionStateType,
-  ParticipantStateContext,
-} from "@src/contexts/ChallengeParticipantsOptionContext";
-import InputHeader from "@src/components/challengeCreate/inputHeader";
+import { ChangeEvent, useContext, useEffect, useMemo } from "react";
+import { ParticipantsOptionStateType } from "@src/contexts/ChallengeParticipantsOptionContext";
 
 export type participantSortType =
   | "SCHOOL_NAME"
@@ -65,21 +60,6 @@ interface successScopeOptionListType {
   value: number;
 }
 
-const successScopeOptionList: successScopeOptionListType[] = [
-  {
-    optionName: "1학년",
-    value: 1,
-  },
-  {
-    optionName: "2학년",
-    value: 2,
-  },
-  {
-    optionName: "3학년",
-    value: 3,
-  },
-];
-
 interface PropsType {
   onChangeDropdownValue: (
     value: string | number,
@@ -87,13 +67,25 @@ interface PropsType {
   ) => void;
   onChangeInputValue: (e: ChangeEvent<HTMLInputElement>) => void;
   state: ParticipantsOptionStateType;
+  isElementsSchool: boolean;
 }
 
 const SearchOptions: React.FC<PropsType> = ({
   onChangeDropdownValue,
   onChangeInputValue,
   state,
+  isElementsSchool,
 }) => {
+  const gradeScopeArray: successScopeOptionListType[] = useMemo(() => {
+    return Array(isElementsSchool ? 6 : 3)
+      .fill(void 0)
+      .map((item, index) => {
+        return {
+          optionName: `${index + 1}학년`,
+          value: index + 1,
+        };
+      });
+  }, [isElementsSchool]);
   return (
     <Options>
       <h1 className='header'>검색</h1>
@@ -137,7 +129,7 @@ const SearchOptions: React.FC<PropsType> = ({
           height={48}
           selectedValue={state.grade || "전체"}
           setSelectedValue={onChangeDropdownValue}
-          optionList={successScopeOptionList}
+          optionList={gradeScopeArray}
           disabled={state.userScope !== "STUDENT"}
           padding='12px 16px'
           fontSize={16}

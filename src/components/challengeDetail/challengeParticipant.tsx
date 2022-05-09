@@ -10,14 +10,20 @@ import {
   ParticipantStateContext,
 } from "@src/contexts/ChallengeParticipantsOptionContext";
 import { userResponseType } from "@src/utils/interfaces/challenge";
-import { changeToExcel } from "@src/utils/apis/default";
 import getExcel, { ChallengeExelData } from "@src/utils/function/getExcel";
+import useSWR from "swr";
+import fetcher from "@src/utils/function/fetcher";
+import { UserInfoType } from "@src/utils/interfaces/user";
 
 interface PropsType {
   participants: userResponseType[];
+  challengeName: string;
 }
 
-const ChallengeParticipant: React.FC<PropsType> = ({ participants }) => {
+const ChallengeParticipant: React.FC<PropsType> = ({
+  participants,
+  challengeName,
+}) => {
   const dispatch = useContext(ParticipantDispatchContext);
   const state = useContext(ParticipantStateContext);
   const onChangeDropdownValue = (
@@ -43,9 +49,8 @@ const ChallengeParticipant: React.FC<PropsType> = ({ participants }) => {
       value: e.target.value,
     });
   };
-  const downloadExel = async () => {
+  const downloadExcel = async () => {
     const exelData: ChallengeExelData[] = participants.map(item => {
-      console.log(item);
       return {
         name: item.name,
         school_name: item.school_name,
@@ -58,9 +63,15 @@ const ChallengeParticipant: React.FC<PropsType> = ({ participants }) => {
         success_date: item.success_date,
       };
     });
-    console.log(exelData);
-    getExcel(exelData, "CHALLENGE");
+    getExcel(
+      exelData,
+      "CHALLENGE",
+      `${challengeName}${state.grade && `_${state.grade}학년`}${
+        state.classNum && `_${state.classNum}반`
+      }`
+    );
   };
+  const { data } = useSWR<UserInfoType>("/users/info", fetcher);
   useEffect(() => {
     if (state.userScope !== "STUDENT") {
       dispatch({ type: "CHANGE_OPTION", dropdownName: "grade", value: null });
@@ -71,16 +82,16 @@ const ChallengeParticipant: React.FC<PropsType> = ({ participants }) => {
       });
     }
   }, [state.userScope]);
-  console.log(participants);
   return (
     <Wrapper>
       <SearchOptions
         onChangeDropdownValue={onChangeDropdownValue}
         onChangeInputValue={onChangeNameValue}
         state={state}
+        isElementsSchool={data && data.school_name.includes("초등학교")}
       />
       <ExelChange>
-        <button onClick={downloadExel}>엑셀로 변환하기</button>
+        <button onClick={downloadExcel}>엑셀로 변환하기</button>
       </ExelChange>
       <OptionNames>
         <strong className='optionName'>달성량</strong>

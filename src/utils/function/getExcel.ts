@@ -26,16 +26,17 @@ export interface ChallengeExelData {
   success_date: string;
 }
 
-type ExelType = "CLASS" | "CHALLENGE";
+type ExcelType = "CLASS" | "CHALLENGE";
 
 const getExcel = (
   jsonData: excelData[] | ChallengeExelData[],
-  exelType: ExelType
+  excelType: ExcelType,
+  excelName: string
 ) => {
   const ws = xlsx.utils.json_to_sheet(jsonData);
   const wb = xlsx.utils.book_new();
   const firstCell =
-    exelType === "CHALLENGE" ? challengeFirstCell : classFirstCell;
+    excelType === "CHALLENGE" ? challengeFirstCell : classFirstCell;
   firstCell.forEach((x, idx) => {
     const cellAdd = xlsx.utils.encode_cell({ c: idx, r: 0 });
     ws[cellAdd].v = x;
@@ -43,7 +44,7 @@ const getExcel = (
 
   xlsx.utils.book_append_sheet(wb, ws, "Sheet1");
 
-  xlsx.writeFile(wb, "Test.xlsx");
+  xlsx.writeFile(wb, `${excelName}.xlsx`);
 };
 
 export default getExcel;
