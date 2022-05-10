@@ -25,9 +25,7 @@ export async function getStaticProps() {
     fetcher(
       "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL"
     ),
-    fetcher(
-      "/teachers/users/search?userScope=STUDENT&sort=NAME&grade=&class=&name="
-    ),
+    fetcher("/teachers/users/search?name=&scope=ALL&sort=NAME&grade=&class="),
   ]);
 
   return {
@@ -35,7 +33,7 @@ export async function getStaticProps() {
       fallback: {
         "/challenges/web/lists?isProgress=true": challenges,
         "/teachers/classes/lists": classes,
-        "/teachers/users/search?userScope=STUDENT&sort=NAME&grade=&class=&name=":
+        "/teachers/users/search?name=&scope=ALL&sort=NAME&grade=&class=":
           students,
         "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL":
           schools,
