@@ -84,7 +84,7 @@ const StudentFilter = () => {
     name: "",
   });
   const { data, mutate } = useSWR(
-    "/teachers/users/search?userScope=STUDENT&sort=NAME&grade=&class=&name=",
+    `/teachers/users/search?name=&scope=ALL&sort=NAME&grade=&class=`,
     fetcher
   );
 
