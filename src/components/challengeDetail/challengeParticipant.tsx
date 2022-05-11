@@ -66,8 +66,8 @@ const ChallengeParticipant: React.FC<PropsType> = ({
     getExcel(
       exelData,
       "CHALLENGE",
-      `${challengeName}${state.grade && `_${state.grade}학년`}${
-        state.classNum && `_${state.classNum}반`
+      `${challengeName}${state.grade ? `_${state.grade}학년` : ""}${
+        state.classNum ? `_${state.classNum}반` : ""
       }`
     );
   };

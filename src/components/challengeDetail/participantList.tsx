@@ -40,11 +40,13 @@ const Wrapper = styled.ul`
 `;
 const ParticipantBox = styled.li`
   display: flex;
+  align-items: center;
   box-sizing: border-box;
   padding: 12px 29px 12px 20px;
   border: 1px solid ${({ theme }) => theme.color.normal_gray};
   border-radius: 12px;
   margin-bottom: 8px;
+  height: 60px;
   :last-child {
     margin-bottom: 0;
   }
@@ -64,7 +66,8 @@ const NormalFont = styled.p`
   margin-left: 20px;
   font-weight: normal;
   text-align: center;
-  line-height: 36px;
+  line-height: 16px;
+  margin-top: 3px;
 `;
 
 const MediumFont = styled.p`
@@ -73,7 +76,8 @@ const MediumFont = styled.p`
   font-weight: bold;
   color: #424242;
   text-align: center;
-  line-height: 36px;
+  line-height: 16px;
+  margin-top: 3px;
 `;
 const IsSuccess = styled(MediumFont)<{
   isSuccess?: boolean;

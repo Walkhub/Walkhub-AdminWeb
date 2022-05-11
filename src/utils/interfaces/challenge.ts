@@ -49,6 +49,7 @@ export interface userResponseType {
 }
 
 export interface ChallengeParticipantsType {
+  participant_count: number;
   total_page: number;
   participant_list: userResponseType[];
 }

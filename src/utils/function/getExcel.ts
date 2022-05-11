@@ -31,7 +31,7 @@ type ExcelType = "CLASS" | "CHALLENGE";
 const getExcel = (
   jsonData: excelData[] | ChallengeExelData[],
   excelType: ExcelType,
-  excelName: string = ""
+  excelName: string = "excel"
 ) => {
   const ws = xlsx.utils.json_to_sheet(jsonData);
   const wb = xlsx.utils.book_new();
