@@ -22,27 +22,6 @@ import {
 } from "react";
 import useSWR from "swr";
 
-const errorHandler = (e: unknown) => {
-  if (axios.isAxiosError(e) && e.response) {
-    switch (e.response.status) {
-      case 400:
-        ToastError("모든 빈칸을 채워주세요.");
-        break;
-      case 401:
-        ToastError("로그인 상태를 다시 확인해 주세요.");
-        break;
-      case 403:
-        ToastError("챌린지를 생성할 수 있는 권한이 없습니다.");
-        break;
-      case 500:
-        ToastError("관리자에게 문의해주세요");
-        break;
-    }
-  } else {
-    ToastError("네트워크 연결을 확인해주세요.");
-  }
-};
-
 interface PropsType {
   pageType: PageType;
   id?: string;
@@ -88,6 +67,33 @@ const useChallengeContent = ({
     class_num: number | null;
     school_name: string;
   }>(`/users/info`, fetcher);
+  const router = useRouter();
+  const errorHandler = useCallback(
+    (e: unknown) => {
+      if (axios.isAxiosError(e) && e.response) {
+        switch (e.response.status) {
+          case 400:
+            ToastError("모든 빈칸을 채워주세요.");
+            break;
+          case 401:
+            ToastError("로그인 상태를 다시 확인해 주세요.");
+            break;
+          case 403:
+            ToastError("챌린지를 생성 할 수 있는 권한이 없습니다.");
+            router.push("/login/certification");
+            break;
+          case 404:
+            ToastError("존재하지 않는 챌린지입니다.");
+            break;
+          case 500:
+            return ToastError("관리자에게 문의해주세요");
+        }
+      } else {
+        ToastError("네트워크 연결을 확인해주세요.");
+      }
+    },
+    [axios.isAxiosError]
+  );
   useEffect(() => {
     const authority = getAuthority();
     data &&
@@ -142,8 +148,6 @@ const useChallengeContent = ({
       });
     }
   }, [challengeContent.goal_scope]);
-
-  const router = useRouter();
   const onClickSubmit = useCallback(async () => {
     try {
       if (file) {
@@ -156,7 +160,6 @@ const useChallengeContent = ({
         return;
       }
       judgeRequestAPI("");
-      router.push("/challenge");
     } catch (err) {
       errorHandler(err);
     }
@@ -168,7 +171,9 @@ const useChallengeContent = ({
         image_url: img,
         start_at,
         end_at,
-      }).then(res => router.push(`/challenge/${res.challenge_id}`));
+      })
+        .then(res => router.push(`/challenge/${res.challenge_id}`))
+        .catch(err => errorHandler(err));
     } else {
       if (id)
         changeChallenge({
@@ -176,7 +181,7 @@ const useChallengeContent = ({
           start_at,
           end_at,
           challenge_id: Number(id),
-        }).then(res => console.log(res));
+        }).then(res => router.push(`/challenge/${res.challenge_id}`));
     }
   };
 

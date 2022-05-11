@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   getChallengeDetails,
   getChallengeParticipants,
@@ -8,7 +8,6 @@ import ChallengeInfo from "@src/components/challengeDetail/challengeInfo";
 import {
   ChallengeDetailsType,
   ChallengeParticipantsType,
-  userResponseType,
 } from "@src/utils/interfaces/challenge";
 import ChallengeParticipant from "@src/components/challengeDetail/challengeParticipant";
 import {
@@ -65,37 +64,40 @@ const ChallengeDetail: React.FC<PropsType> = ({
     state.classNum,
     state.name,
   ]);
-  const errorHandler = (e: unknown) => {
-    if (axios.isAxiosError(e) && e.response) {
-      switch (e.response.status) {
-        case 401:
-          ToastError("로그인 상태를 다시 확인해 주세요.");
-          break;
-        case 403:
-          ToastError("챌린지를 확인 할 수 있는 권한이 없습니다.");
-          router.push("/login/certification");
-          break;
-        case 404:
-          router.push("/404");
-          break;
-        case 500:
-          return ToastError("관리자에게 문의해주세요");
+  const errorHandler = useCallback(
+    (e: unknown) => {
+      if (axios.isAxiosError(e) && e.response) {
+        switch (e.response.status) {
+          case 401:
+            ToastError("로그인 상태를 다시 확인해 주세요.");
+            break;
+          case 403:
+            ToastError("챌린지를 확인 할 수 있는 권한이 없습니다.");
+            router.push("/login/certification");
+            break;
+          case 404:
+            router.push("/challenge");
+            break;
+          case 500:
+            return ToastError("관리자에게 문의해주세요");
+        }
+      } else {
+        ToastError("네트워크 연결을 확인해주세요.");
       }
-    } else {
-      ToastError("네트워크 연결을 확인해주세요.");
-    }
-  };
+    },
+    [axios.isAxiosError]
+  );
   const dispatch = useContext(ParticipantDispatchContext);
   const onClick = (page: number) => {
     dispatch({ type: "CHANGE_PAGE", changePageValue: page });
   };
-  if (challengeDetail === undefined) return <></>;
+  if (challengeDetail === undefined) router.push("/challenge");
   return (
     <Wrapper>
       <ChallengeInfo
         id={challengeId}
         challengeDetail={challengeDetail}
-        participantsCount={participants.total_page}
+        participantsCount={participants.participant_count}
       />
       <ChallengeParticipant
         participants={participants.participant_list}
