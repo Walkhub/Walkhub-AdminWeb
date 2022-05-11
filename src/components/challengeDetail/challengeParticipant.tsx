@@ -1,30 +1,36 @@
 import styled from "@emotion/styled";
-import React, { ChangeEvent, useContext } from "react";
+import React, { ChangeEvent, useContext, useEffect } from "react";
 import SearchOptions, {
   participantsScopeType,
   participantSortType,
 } from "@src/components/common/search/options";
 import ParticipantList from "@src/components/challengeDetail/participantList";
-import { ParticipantDispatchContext } from "@src/contexts/ChallengeParticipantsOptionContext";
+import {
+  ParticipantDispatchContext,
+  ParticipantStateContext,
+} from "@src/contexts/ChallengeParticipantsOptionContext";
 import { userResponseType } from "@src/utils/interfaces/challenge";
+import getExcel, { ChallengeExelData } from "@src/utils/function/getExcel";
+import useSWR from "swr";
+import fetcher from "@src/utils/function/fetcher";
+import { UserInfoType } from "@src/utils/interfaces/user";
 
 interface PropsType {
   participants: userResponseType[];
+  challengeName: string;
 }
 
-const ChallengeParticipant: React.FC<PropsType> = ({ participants }) => {
+const ChallengeParticipant: React.FC<PropsType> = ({
+  participants,
+  challengeName,
+}) => {
   const dispatch = useContext(ParticipantDispatchContext);
+  const state = useContext(ParticipantStateContext);
   const onChangeDropdownValue = (
     value: string | number,
     name: string | number
   ) => {
-    if (
-      name !== "sort" &&
-      name !== "userScope" &&
-      name !== "grade" &&
-      name !== "classNum"
-    )
-      return;
+    if (name !== "sort" && name !== "userScope" && name !== "grade") return;
     const myValue = value as
       | participantSortType
       | participantsScopeType
@@ -36,20 +42,56 @@ const ChallengeParticipant: React.FC<PropsType> = ({ participants }) => {
     });
   };
   const onChangeNameValue = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name !== "name" && e.target.name !== "classNum") return;
     dispatch({
       type: "CHANGE_INPUT",
+      name: e.target.name,
       value: e.target.value,
     });
   };
-  const changeToExcel = () => {};
+  const downloadExcel = async () => {
+    const exelData: ChallengeExelData[] = participants.map(item => {
+      return {
+        name: item.name,
+        school_name: item.school_name,
+        grade: item.grade,
+        class_num: item.class_num,
+        number: item.number,
+        total_value: item.total_value,
+        progress: item.progress,
+        is_success: item.is_success,
+        success_date: item.success_date,
+      };
+    });
+    getExcel(
+      exelData,
+      "CHALLENGE",
+      `${challengeName}${state.grade ? `_${state.grade}학년` : ""}${
+        state.classNum ? `_${state.classNum}반` : ""
+      }`
+    );
+  };
+  const { data } = useSWR<UserInfoType>("/users/info", fetcher);
+  useEffect(() => {
+    if (state.userScope !== "STUDENT") {
+      dispatch({ type: "CHANGE_OPTION", dropdownName: "grade", value: null });
+      dispatch({
+        type: "CHANGE_INPUT",
+        name: "classNum",
+        value: "",
+      });
+    }
+  }, [state.userScope]);
   return (
     <Wrapper>
       <SearchOptions
         onChangeDropdownValue={onChangeDropdownValue}
         onChangeInputValue={onChangeNameValue}
+        state={state}
+        isElementsSchool={data && data.school_name.includes("초등학교")}
       />
       <ExelChange>
-        <button onClick={changeToExcel}>엑셀로 변환하기</button>
+        <button onClick={downloadExcel}>엑셀로 변환하기</button>
       </ExelChange>
       <OptionNames>
         <strong className='optionName'>달성량</strong>

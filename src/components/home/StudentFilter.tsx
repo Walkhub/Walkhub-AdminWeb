@@ -139,7 +139,7 @@ const StudentFilter = () => {
       `/excel?startAt=${startAt}&endAt=${endAt}&userType=${scope}&grade=${grade}&classNum=`
     ).then(res => res.data);
 
-    getExcel(excelData);
+    getExcel(excelData, "CLASS");
   };
 
   return (

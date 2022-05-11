@@ -5,8 +5,8 @@ import {
   getChallengeDetails,
 } from "@src/utils/apis/challenges";
 import { createImage } from "@src/utils/apis/default";
-import { getUser } from "@src/utils/apis/users";
 import ToastError from "@src/utils/function/errorMessage";
+import fetcher from "@src/utils/function/fetcher";
 import { getAuthority } from "@src/utils/function/localstorgeAuthority";
 import { AuthorityType } from "@src/utils/interfaces/auth";
 import { ChallengeContentType } from "@src/utils/interfaces/challenge";
@@ -20,27 +20,7 @@ import {
   useEffect,
   useState,
 } from "react";
-
-const errorHandler = (e: unknown) => {
-  if (axios.isAxiosError(e) && e.response) {
-    switch (e.response.status) {
-      case 400:
-        ToastError("모든 빈칸을 채워주세요.");
-        break;
-      case 401:
-        ToastError("로그인 상태를 다시 확인해 주세요.");
-        break;
-      case 403:
-        ToastError("챌린지를 생성할 수 있는 권한이 없습니다.");
-        break;
-      case 500:
-        ToastError("관리자에게 문의해주세요");
-        break;
-    }
-  } else {
-    ToastError("네트워크 연결을 확인해주세요.");
-  }
-};
+import useSWR from "swr";
 
 interface PropsType {
   pageType: PageType;
@@ -71,23 +51,61 @@ const useChallengeContent = ({
     type: AuthorityType | null;
     grade: number | null;
     class_num: number | null;
+    school_name: string;
   }>({
     type: null,
     grade: null,
     class_num: null,
+    school_name: "",
   });
   const [file, setFile] = useState<File | null>(null);
   const { start_at, end_at } = challengeContent;
+  const { data } = useSWR<{
+    name: string;
+    profile_image_url: string;
+    grade: number | null;
+    class_num: number | null;
+    school_name: string;
+  }>(`/users/info`, fetcher);
+  const router = useRouter();
+  const errorHandler = useCallback(
+    (e: unknown) => {
+      if (axios.isAxiosError(e) && e.response) {
+        switch (e.response.status) {
+          case 400:
+            ToastError("모든 빈칸을 채워주세요.");
+            break;
+          case 401:
+            ToastError("로그인 상태를 다시 확인해 주세요.");
+            break;
+          case 403:
+            ToastError("챌린지를 생성 할 수 있는 권한이 없습니다.");
+            router.push("/login/certification");
+            break;
+          case 404:
+            ToastError("존재하지 않는 챌린지입니다.");
+            break;
+          case 500:
+            return ToastError("관리자에게 문의해주세요");
+        }
+      } else {
+        ToastError("네트워크 연결을 확인해주세요.");
+      }
+    },
+    [axios.isAxiosError]
+  );
   useEffect(() => {
     const authority = getAuthority();
-    getUser().then(res => {
+    data &&
+      authority &&
       setUser({
+        ...user,
         type: authority,
-        grade: res.grade,
-        class_num: res.class_num,
+        grade: data.grade,
+        class_num: data.class_num,
+        school_name: data.school_name,
       });
-    });
-  }, []);
+  }, [data]);
   useEffect(() => {
     if (user.type === "TEACHER") onChangeDropdownValue("CLASS", "user_scope");
     else if (user.type === "SU") onChangeDropdownValue("ALL", "user_scope");
@@ -130,16 +148,6 @@ const useChallengeContent = ({
       });
     }
   }, [challengeContent.goal_scope]);
-  useEffect(() => {
-    if (challengeContent.user_scope === "SCHOOL") {
-      setChallengeContent({
-        ...challengeContent,
-        grade: null,
-      });
-    }
-  }, [challengeContent.user_scope]);
-
-  const router = useRouter();
   const onClickSubmit = useCallback(async () => {
     try {
       if (file) {
@@ -152,7 +160,6 @@ const useChallengeContent = ({
         return;
       }
       judgeRequestAPI("");
-      router.push("/challenge");
     } catch (err) {
       errorHandler(err);
     }
@@ -162,19 +169,19 @@ const useChallengeContent = ({
       createChallenge({
         ...challengeContent,
         image_url: img,
-        grade: challengeContent.grade as number,
         start_at,
         end_at,
-      }).then(res => router.push(`challenge/${res.id}`));
+      })
+        .then(res => router.push(`/challenge/${res.challenge_id}`))
+        .catch(err => errorHandler(err));
     } else {
       if (id)
         changeChallenge({
           ...challengeContent,
-          grade: challengeContent.grade as number,
           start_at,
           end_at,
           challenge_id: Number(id),
-        });
+        }).then(res => router.push(`/challenge/${res.challenge_id}`));
     }
   };
 
