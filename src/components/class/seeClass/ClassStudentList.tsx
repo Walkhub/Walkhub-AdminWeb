@@ -74,7 +74,13 @@ const ClassStudentList: FC<Props> = ({ setClassInfo }) => {
       `/teachers/users/search?&scope=STUDENT&sort=${type.sort}&grade=${setClassInfo.grade}&class=${setClassInfo.class_num}`
     ).then(res => res.data.user_list);
 
-    getExcel(excelData);
+    getExcel(
+      excelData,
+      "CLASS",
+      `${setClassInfo.grade ? `${setClassInfo.grade}학년` : ""}${
+        setClassInfo.class_num ? `_${setClassInfo.class_num}반` : ""
+      }`
+    );
   };
 
   useEffect(() => {
