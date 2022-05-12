@@ -10,7 +10,7 @@ import {
 } from "@src/components/common/search/options";
 
 interface CreateResponse {
-  id: number;
+  challenge_id: number;
 }
 
 export const createChallenge = async (
@@ -26,12 +26,13 @@ export const createChallenge = async (
 
 export const changeChallenge = async (
   challengesRequest: ChallengeContentType
-) => {
+): Promise<CreateResponse> => {
   try {
-    await instance.patch(
+    const response = await instance.patch(
       `/challenges/${challengesRequest.challenge_id}`,
       challengesRequest
     );
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -67,13 +68,12 @@ export const getChallengeParticipants = async (
 ): Promise<ChallengeParticipantsType> => {
   try {
     const response = await instance.get(
-      `/challenges/${challenge_id}/progress?sort=${sort}&userScope=${userScope}&size=${size}${
+      `/challenges/${challenge_id}/progress?sort=${sort}&userScope=${userScope}&page=${size}${
         name ? `&name=${name}` : ""
       }${grade ? `&grade=${grade}` : ""}${
         classNum ? `&classNum=${classNum}` : ""
       }`
     );
-    console.log(response);
     return response.data;
   } catch (err) {
     throw err;
