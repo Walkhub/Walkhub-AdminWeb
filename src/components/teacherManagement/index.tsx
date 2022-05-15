@@ -3,6 +3,7 @@ import fetcher from "@src/utils/function/fetcher";
 import { TeacherType } from "@src/utils/interfaces/teacher";
 import React from "react";
 import useSWR from "swr";
+import SchoolInfo from "./SchoolInfo";
 import TeacherCard from "./TeacherCard";
 
 const TeacherManagement = () => {
@@ -11,6 +12,8 @@ const TeacherManagement = () => {
   return (
     <>
       <WrapperBox>
+        <SchoolInfo />
+
         <Certification>
           인증코드 <p>#{data.auth_code}</p>
         </Certification>
