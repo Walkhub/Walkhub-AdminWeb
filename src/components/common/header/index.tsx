@@ -8,29 +8,13 @@ import useAuthCheck from "@src/hooks/useAuthCheck";
 
 const Header = () => {
   const router = useRouter();
-  const { isAuth } = useAuthCheck(["TEACHER", "ROOT"]);
+  const { isAuth: isTeacher } = useAuthCheck(["TEACHER"]);
+  const { isAuth: isRoot } = useAuthCheck(["ROOT"]);
 
   const logHandler = () => {
     removeToken();
     router.push("/login");
   };
-
-  const ClassOrSchoolManagement = useMemo(() => {
-    return (
-      <>
-        {isAuth ? (
-          <Link href='/class/1'>
-            {/* 이부분은 나중에 선생님 자신의 클래스로 이동*/}
-            <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
-          </Link>
-        ) : (
-          <Link href='/su'>
-            <Text style={{ gridColumn: "4 / 5" }}>학교관리</Text>
-          </Link>
-        )}
-      </>
-    );
-  }, [isAuth]);
 
   return (
     <>
@@ -44,7 +28,20 @@ const Header = () => {
             <Text style={{ gridColumn: "3 / 4" }}>공지</Text>
           </Link>
 
-          {ClassOrSchoolManagement}
+          {isTeacher ? (
+            <Link href='/class/1'>
+              {/* 이부분은 나중에 선생님 자신의 클래스로 이동*/}
+              <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
+            </Link>
+          ) : isRoot ? (
+            <Link href='/teacher-management'>
+              <Text style={{ gridColumn: "4 / 5" }}>학교관리</Text>
+            </Link>
+          ) : (
+            <Link href='/su'>
+              <Text style={{ gridColumn: "4 / 5" }}>학교관리</Text>
+            </Link>
+          )}
 
           <Link href='/challenge'>
             <Text style={{ gridColumn: "5 / 6" }}>챌린지</Text>
