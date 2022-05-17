@@ -1,9 +1,9 @@
 import instance from "@src/utils/axios";
 
-export const changeSchoolLogo = async (image_url: string) => {
+export const changeSchoolLogo = async (image_url: string[]) => {
   try {
     await instance.patch("/schools/logos", {
-      image_url,
+      image_url: image_url[0],
     });
   } catch (error) {
     throw error;
