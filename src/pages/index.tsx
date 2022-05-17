@@ -11,28 +11,32 @@ import { SchoolListType } from "@src/utils/interfaces/school";
 
 interface FallbackType {
   fallback: {
-    "/challenges/lists": ChallengeType[];
+    "/challenges/web/lists?isProgress=true": ChallengeType[];
     "/teachers/classes/lists": ClassType[];
-    "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class=": StudentType[];
-    "/ranks/schools/search?name=&schoolDateType=WEEK": SchoolListType;
+    "/teachers/users/search?userScope=STUDENT&sort=NAME&grade=&class=&name=": StudentType[];
+    "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL": SchoolListType;
   };
 }
 
 export async function getStaticProps() {
   const [challenges, classes, schools, students] = await Promise.all([
-    fetcher(`/challenges/lists`),
+    fetcher(`/challenges/web/lists?isProgress=true`),
     fetcher(`/teachers/classes/lists`),
-    fetcher("/ranks/schools/search?name=&schoolDateType=WEEK"),
-    fetcher("/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class="),
+    fetcher(
+      "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL"
+    ),
+    fetcher("/teachers/users/search?name=&scope=ALL&sort=NAME&grade=&class="),
   ]);
 
   return {
     props: {
       fallback: {
-        "/challenges/lists": challenges,
+        "/challenges/web/lists?isProgress=true": challenges,
         "/teachers/classes/lists": classes,
-        "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class=": students,
-        "/ranks/schools/search?name=&schoolDateType=WEEK": schools,
+        "/teachers/users/search?name=&scope=ALL&sort=NAME&grade=&class=":
+          students,
+        "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL":
+          schools,
       },
     },
   };
