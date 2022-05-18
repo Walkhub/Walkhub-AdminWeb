@@ -7,7 +7,7 @@ import SchoolInfo from "./SchoolInfo";
 import TeacherCard from "./TeacherCard";
 
 const TeacherManagement = () => {
-  const { data } = useSWR("/teachers/classes/lists", fetcher);
+  const { data } = useSWR("/teachers/lists", fetcher);
 
   return (
     <>
@@ -19,9 +19,9 @@ const TeacherManagement = () => {
         </Certification>
 
         <Box>
-          <Title>선생님 관리</Title>
+          <Title>선생님 리스트</Title>
           <List>
-            {data.class_list?.map((i: TeacherType) => (
+            {data.teacher_list?.map((i: TeacherType) => (
               <TeacherCard key={i.teacher.user_id} {...i} />
             ))}
           </List>
