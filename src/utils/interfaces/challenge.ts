@@ -7,6 +7,7 @@ export interface ChallengeType {
   user_scope: string;
   goal_scope: string;
   goal_type: string;
+  participant_count: number;
   writer: {
     user_id: number;
     name: string;

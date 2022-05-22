@@ -29,14 +29,14 @@ const SchoolManagement = () => {
     scope: "WEEK",
     name: "",
   });
-  const { mutate } = useSWR(
-    "/ranks/schools/search?name=&schoolDateType=WEEK",
+  const { data, mutate } = useSWR(
+    "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL",
     fetcher
   );
 
   useEffect(() => {
     changeFilter();
-  }, [type]);
+  }, [type.name, type.scope]);
 
   const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -57,8 +57,9 @@ const SchoolManagement = () => {
   const changeFilter = async () => {
     const { name, scope } = type;
     const updateData = await fetcher(
-      `/rank/schooks/search?name=${name}&schoolDateType=${scope}`
+      `/ranks/schools/search?name=${name}&schoolDateType=${scope}&sort=RANK&scope=ALL`
     );
+    console.log(updateData);
     mutate(updateData, false);
   };
 
@@ -87,12 +88,14 @@ const SchoolManagement = () => {
           fontWeight='normal'
           padding='12px 16px'
         />
-        <DefaultBtn width={184} onClick={onRootCreate}>
-          루트 선생님 생성
-        </DefaultBtn>
+        <DefaultBtn
+          width={184}
+          onClick={onRootCreate}
+          value='루트 선생님 생성'
+        />
       </SchoolSearchBox>
 
-      <SchoolList />
+      <SchoolList data={data} />
     </SchoolManagementBox>
   );
 };

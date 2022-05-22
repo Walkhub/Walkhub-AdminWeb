@@ -19,7 +19,7 @@ const ClassList = () => {
 
   return (
     <>
-      {data.class_list?.map(
+      {data.teacher_list?.map(
         (i: ClassType) =>
           i.section.section_id && (
             <div

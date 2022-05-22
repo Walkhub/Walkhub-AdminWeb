@@ -30,10 +30,10 @@ const SchoolFilter = () => {
     scope: "ALL",
     name: "",
   });
-  // const { mutate } = useSWR(
-  //   "/teachers/users?page=0&scope=ALL&sort=NAME&grade=&class=",
-  //   fetcher
-  // );
+  const { data, mutate } = useSWR(
+    "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL",
+    fetcher
+  );
 
   useEffect(() => {
     changeFilter();
@@ -55,7 +55,7 @@ const SchoolFilter = () => {
   };
 
   const changeFilter = async () => {
-    // mutate("", false);
+    mutate("", false);
   };
 
   return (
@@ -94,7 +94,7 @@ const SchoolFilter = () => {
           padding='12px 16px'
         />
       </SchoolSearchBox>
-      <SchoolList />
+      <SchoolList data={data} />
     </>
   );
 };
