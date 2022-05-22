@@ -24,6 +24,7 @@ const Reissuance = () => {
 
   const { inputContent, btnDisable, school_id, seeModal } = allContent;
 
+  let timer;
   const fetch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setAllContent({
@@ -44,15 +45,21 @@ const Reissuance = () => {
         inputContent: value,
         seeModal: true,
       });
-    instance
-      .get(`/schools/search?name=${value}`)
-      .then(response => {
-        console.log(value);
-        setFilteredData(response.data.search_school_list);
-      })
-      .catch(error => {
-        errorhandler(error);
-      });
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      instance
+        .get(`/schools/search?name=${value}`)
+        .then(response => {
+          console.log(value);
+          setFilteredData(response.data.search_school_list);
+        })
+        .catch(error => {
+          errorhandler(error);
+        });
+    }, 200);
   };
 
   const modalContent = (name: string, id: number) => {
