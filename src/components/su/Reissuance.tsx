@@ -5,8 +5,6 @@ import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
 import instance from "@src/utils/axios";
 import router from "next/router";
-import useSWR from "swr";
-import fetcher from "@src/utils/function/fetcher";
 
 type Information = {
   inputContent: string;
@@ -22,22 +20,18 @@ const Reissuance = () => {
     school_id: 0,
     btnDisable: true,
   });
+  const [filteredData, setFilteredData] = useState([]);
 
   const { inputContent, btnDisable, school_id, seeModal } = allContent;
 
-  const { data, mutate } = useSWR(
-    `https://server.walkhub.co.kr/schools/search?name=`
-  );
-
+  let timer;
   const fetch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-
     setAllContent({
       ...allContent,
       seeModal: true,
       inputContent: value,
     });
-
     if (value == "") {
       setAllContent({
         ...allContent,
@@ -51,12 +45,20 @@ const Reissuance = () => {
         inputContent: value,
         seeModal: true,
       });
-    try {
-      const res = await fetcher(
-        `https://server.walkhub.co.kr/schools/search?name=${e.target.value}`
-      );
-      mutate(res, false);
-    } catch (e) {}
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      instance
+        .get(`/schools/search?name=${value}`)
+        .then(response => {
+          setFilteredData(response.data.search_school_list);
+        })
+        .catch(error => {
+          errorhandler(error);
+        });
+    }, 200);
   };
 
   const modalContent = (name: string, id: number) => {
@@ -87,8 +89,6 @@ const Reissuance = () => {
           return ToastError("권한이 존재하지 않습니다.");
         case 404:
           return ToastError("요청 대상을 찾을 수 없습니다.");
-        case 409:
-          return ToastError("이미 존재합니다.");
         default:
           return ToastError("관리자에게 문의해주세요.");
       }
@@ -113,7 +113,7 @@ const Reissuance = () => {
           />
           {seeModal ? (
             <ModalBox>
-              {data?.search_school_list?.map(value => {
+              {filteredData?.map(value => {
                 return (
                   <ModalLi
                     key={value.schoool_id}
