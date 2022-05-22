@@ -53,7 +53,6 @@ const MakeRoot: FC = () => {
       instance
         .get(`/schools/search?name=${value}`)
         .then(response => {
-          console.log(value);
           setFilteredData(response.data.search_school_list);
         })
         .catch(error => {
