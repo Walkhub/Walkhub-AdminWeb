@@ -77,4 +77,7 @@ const SchoolInfoBox = styled.div`
   input {
     display: none;
   }
+  span {
+    cursor: pointer;
+  }
 `;
