@@ -52,7 +52,7 @@ const MakeClass: FC = () => {
 
   const router = useRouter();
 
-  const classSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const classSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       await createClass(classInfo.grade, classInfo.class);
@@ -81,9 +81,7 @@ const MakeClass: FC = () => {
     }
   };
 
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setClassInfo({
       ...classInfo,
@@ -91,8 +89,7 @@ const MakeClass: FC = () => {
     });
   };
 
-  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value, name } = e.target;
+  const onSelectChange = (value: string | number, name: string | number) => {
     setClassInfo({
       ...classInfo,
       [name]: value,
@@ -100,7 +97,7 @@ const MakeClass: FC = () => {
   };
 
   return (
-    <Wrapper onSubmit={classSubmit}>
+    <Wrapper>
       <PostBox>
         <p>반 개설하기</p>
         <InputDiv>
@@ -109,7 +106,7 @@ const MakeClass: FC = () => {
             height={48}
             name='grade'
             selectedValue={classInfo.grade}
-            setSelectedValue={() => onSelectChange}
+            setSelectedValue={onSelectChange}
             optionList={gradeList}
             disabled={false}
             fontSize={16}
@@ -118,21 +115,22 @@ const MakeClass: FC = () => {
             padding='12px 10px 0 18px'
           />
           <p style={{ margin: "20px 28px 0 10px" }}>학년</p>
-          <input
+          <ClassNumInput
             name='class'
             type='number'
             onChange={onChange}
             value={classInfo.class}
+            min='1'
           />
           <p style={{ margin: "20px 0 0 0 " }}>반</p>
         </InputDiv>
-        <DefaultBtn>개설</DefaultBtn>
+        <DefaultBtn value='개설' onClick={classSubmit} />
       </PostBox>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
   background-color: ${({ theme }) => theme.color.light_gray};
@@ -163,13 +161,19 @@ const InputDiv = styled.div`
   margin-bottom: 78px;
   display: flex;
   justify-content: center;
-  > input {
-    width: 83px;
-    height: 48px;
-    padding: 0 0 0 20px;
-    margin-right: 12px;
-    border: 1px solid ${({ theme }) => theme.color.normal_gray};
-    border-radius: 12px;
+`;
+
+const ClassNumInput = styled.input`
+  width: 83px;
+  height: 48px;
+  padding: 0 0 0 20px;
+  margin-right: 12px;
+  border: 1px solid ${({ theme }) => theme.color.normal_gray};
+  border-radius: 12px;
+  ::-webkit-inner-spin-button {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
   }
 `;
 

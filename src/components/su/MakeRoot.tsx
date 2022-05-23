@@ -5,8 +5,6 @@ import instance from "@src/utils/axios";
 import axios from "axios";
 import ToastError from "@src/utils/function/errorMessage";
 import router from "next/router";
-import fetcher from "@src/utils/function/fetcher";
-import useSWR from "swr";
 
 type Information = {
   inputContent: string;
@@ -22,22 +20,18 @@ const MakeRoot: FC = () => {
     school_id: 0,
     btnDisable: true,
   });
+  const [filteredData, setFilteredData] = useState([]);
 
   const { inputContent, btnDisable, school_id, seeModal } = allContent;
 
-  const { data, mutate } = useSWR(
-    `https://server.walkhub.co.kr/schools/search?name=`
-  );
-
+  let timer;
   const fetch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-
     setAllContent({
       ...allContent,
       seeModal: true,
       inputContent: value,
     });
-
     if (value == "") {
       setAllContent({
         ...allContent,
@@ -52,12 +46,19 @@ const MakeRoot: FC = () => {
         seeModal: true,
       });
 
-    try {
-      const res = await fetcher(
-        `https://server.walkhub.co.kr/schools/search?name=${value}`
-      );
-      mutate(res, false);
-    } catch (e) {}
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      instance
+        .get(`/schools/search?name=${value}`)
+        .then(response => {
+          setFilteredData(response.data.search_school_list);
+        })
+        .catch(error => {
+          errorhandler(error);
+        });
+    }, 200);
   };
 
   const modalContent = (name: string, id: number) => {
@@ -115,7 +116,7 @@ const MakeRoot: FC = () => {
           />
           {seeModal ? (
             <ModalBox>
-              {data?.search_school_list?.map(value => {
+              {filteredData?.map(value => {
                 return (
                   <ModalLi
                     key={value.schoool_id}

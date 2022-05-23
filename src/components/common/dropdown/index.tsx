@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import styled from "@emotion/styled";
+import DropdownArrow from "@src/assets/dropdown_arrow.svg";
+import Image from "next/image";
 
 interface optionListType {
   value: string | number;
@@ -89,7 +91,7 @@ const Dropdown: React.FC<PropsType> = ({
           className='arrowButton'
           onClick={() => !disabled && reverseDropdownStatus()}
         >
-          y
+          <Image src={DropdownArrow} alt='y' />
         </button>
       </Wrapper>
       {isFold && (
@@ -142,8 +144,9 @@ const Selected = styled.div<{
   isDefaultValue: boolean;
 }>`
   width: calc(100% - 28px);
-  height: 100%;
   display: flex;
+  line-height: 16px;
+  margin-top: 4px;
   align-items: center;
   color: ${props =>
     props.isDefaultValue

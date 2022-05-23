@@ -1,20 +1,68 @@
 /* eslint-disable @next/next/link-passhref */
 import styled from "@emotion/styled";
 import { getToken, removeToken } from "@src/utils/function/tokenManager";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useAuthCheck from "@src/hooks/useAuthCheck";
+import useSWR from "swr";
+import fetcher from "@src/utils/function/fetcher";
+import ToastError from "@src/utils/function/errorMessage";
 
 const Header = () => {
+  const [sectionId, setSectionId] = useState<number>();
+  const [errorCatch, setErrorCatch] = useState<boolean>();
+  const { data, mutate } = useSWR("/teachers/my-class", fetcher);
+
   const router = useRouter();
-  const { isAuth: isTeacher } = useAuthCheck(["TEACHER"]);
-  const { isAuth: isRoot } = useAuthCheck(["ROOT"]);
+  const { isAuth } = useAuthCheck(["TEACHER", "ROOT"]);
+
+  useEffect(() => {
+    try {
+      const res = fetcher(`/teachers/my-class`);
+      mutate(res, false);
+      setSectionId(data.section.section_id);
+      setErrorCatch(false);
+    } catch (error) {
+      setErrorCatch(true);
+    }
+  }, [data]);
+
+  const myClassErrorHandle = () => {
+    ToastError("ROOT 권한은 자신의 클래스가 없습니다.");
+    router.push("/");
+  };
 
   const logHandler = () => {
     removeToken();
     router.push("/login");
   };
+
+  const ClassOrSchoolManagement = useMemo(() => {
+    return (
+      <>
+        {isAuth ? (
+          <>
+            {errorCatch ? (
+              <div onClick={myClassErrorHandle}>
+                <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
+              </div>
+            ) : (
+              <>
+                <Link href={`/class/${sectionId}`}>
+                  <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
+                </Link>
+              </>
+            )}
+          </>
+        ) : (
+          <Link href='/su'>
+            <Text style={{ gridColumn: "4 / 5" }}>학교관리</Text>
+          </Link>
+        )}
+      </>
+    );
+  }, [isAuth, sectionId]);
 
   return (
     <>
@@ -28,20 +76,7 @@ const Header = () => {
             <Text style={{ gridColumn: "3 / 4" }}>공지</Text>
           </Link>
 
-          {isTeacher ? (
-            <Link href='/class/1'>
-              {/* 이부분은 나중에 선생님 자신의 클래스로 이동*/}
-              <Text style={{ gridColumn: "4 / 5" }}>클래스</Text>
-            </Link>
-          ) : isRoot ? (
-            <Link href='/teacher-management'>
-              <Text style={{ gridColumn: "4 / 5" }}>학교관리</Text>
-            </Link>
-          ) : (
-            <Link href='/su'>
-              <Text style={{ gridColumn: "4 / 5" }}>학교관리</Text>
-            </Link>
-          )}
+          {ClassOrSchoolManagement}
 
           <Link href='/challenge'>
             <Text style={{ gridColumn: "5 / 6" }}>챌린지</Text>

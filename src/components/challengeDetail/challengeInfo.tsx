@@ -8,6 +8,10 @@ import {
 import { useRouter } from "next/dist/client/router";
 import { deleteChallenge } from "@src/utils/apis/challenges";
 import OutsideClickHandler from "react-outside-click-handler";
+import GoalIcon from "@src/assets/goal.svg";
+import AwardIcon from "@src/assets/award.svg";
+import Image from "next/image";
+
 type goalObjectType = {
   [key in goalScopeType | goalType]: string;
 };
@@ -110,7 +114,7 @@ const ChallengeInfo: React.FC<PropsType> = ({
         <img
           className='userProfile'
           src={challengeDetail.writer?.profile_image_url || "asd"}
-          alt='유저 프로필'
+          // alt='유저 프로필'
         />
         <p className='userName writerPeriodFont after'>
           {challengeDetail.writer?.name}
@@ -119,9 +123,9 @@ const ChallengeInfo: React.FC<PropsType> = ({
         <p className='writerPeriodFont'>{participantsCount}명</p>
       </Writer>
       <Goal>
-        <img src='https://facebook.com/favicon.ico' alt='대충 아이콘' />
+        <Image src={GoalIcon} alt='대충 아이콘' />
         <p className='goalFont'>{goal}</p>
-        <img src='https://facebook.com/favicon.ico' alt='대충 아이콘' />
+        <Image src={AwardIcon} alt='대충 아이콘' />
         <p className='goalFont'>{challengeDetail.award}</p>
       </Goal>
       <ChallengeContent>{challengeDetail.content}</ChallengeContent>

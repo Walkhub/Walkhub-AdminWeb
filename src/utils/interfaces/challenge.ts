@@ -32,7 +32,6 @@ export interface ChallengeContentType {
   goal_type: goalType | null;
   goal_scope: goalScopeType | null;
   success_standard: number | null;
-  grade: number | null;
   challenge_id?: number;
 }
 
@@ -51,6 +50,8 @@ export interface userResponseType {
 }
 
 export interface ChallengeParticipantsType {
+  participant_count: number;
+  total_page: number;
   participant_list: userResponseType[];
 }
 

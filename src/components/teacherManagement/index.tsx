@@ -13,7 +13,7 @@ const TeacherManagement = () => {
     <>
       <WrapperBox>
         <MySchoolInfo />
-
+        
         <Certification>
           인증코드 <p>#{data.auth_code}</p>
         </Certification>

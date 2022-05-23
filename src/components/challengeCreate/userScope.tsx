@@ -16,6 +16,7 @@ interface PropsType {
     type: AuthorityType;
     grade: number;
     class_num: number;
+    school_name: string;
   };
 }
 const UserScope: React.FC<PropsType> = ({
@@ -31,12 +32,7 @@ const UserScope: React.FC<PropsType> = ({
         </DisabledInputBox>
       );
     } else if (userInfo.type === "ROOT")
-      return (
-        <UserScopeDropdown
-          changeUserScopeValue={changeUserScopeValue}
-          challengeContent={challengeContent}
-        />
-      );
+      return <DisabledInputBox>{userInfo.school_name}</DisabledInputBox>;
     else if (userInfo.type === "SU") {
       return <DisabledInputBox>대전 전체</DisabledInputBox>;
     }
@@ -53,95 +49,6 @@ const DisabledInputBox: React.FC = ({ children }) => {
   return <div className='teacher'>{children}</div>;
 };
 
-type userScopeOptionType = {
-  optionName: "학교 전체" | "학년 전체";
-  value: userScopeType;
-};
-
-type gradeOptionType = {
-  optionName: "1학년" | "2학년" | "3학년" | "4학년" | "5학년" | "6학년";
-  value: gradeType | "선택";
-};
-const userScopeOptionList: userScopeOptionType[] = [
-  {
-    optionName: "학교 전체",
-    value: "SCHOOL",
-  },
-  {
-    optionName: "학년 전체",
-    value: "GRADE",
-  },
-];
-const graderOptionList: gradeOptionType[] = [
-  {
-    optionName: "1학년",
-    value: "1",
-  },
-  {
-    optionName: "2학년",
-    value: "2",
-  },
-  {
-    optionName: "3학년",
-    value: "3",
-  },
-  {
-    optionName: "4학년",
-    value: "4",
-  },
-  {
-    optionName: "5학년",
-    value: "5",
-  },
-  {
-    optionName: "6학년",
-    value: "6",
-  },
-];
-
-const UserScopeDropdown: React.FC<{
-  changeUserScopeValue: (value: string, name: string) => void;
-  challengeContent: ChallengeContentType;
-}> = ({ changeUserScopeValue, challengeContent }) => {
-  const changeDropdownValue = useCallback(
-    (value: string | number, name: string | number) => {
-      const stringValue = String(value);
-      const stringName = String(name);
-      changeUserScopeValue(stringValue, stringName);
-    },
-    [changeUserScopeValue]
-  );
-  return (
-    <DropdownWrapper>
-      <Dropdown
-        width={184}
-        height={48}
-        selectedValue={challengeContent.user_scope}
-        setSelectedValue={changeDropdownValue}
-        optionList={userScopeOptionList}
-        disabled={false}
-        padding={"12px 16px"}
-        fontWeight={"normal"}
-        fontSize={16}
-        lineHeight={24}
-        name='user_scope'
-      />
-      <Dropdown
-        width={184}
-        height={48}
-        selectedValue={challengeContent.grade || "선택"}
-        setSelectedValue={changeDropdownValue}
-        optionList={graderOptionList}
-        disabled={challengeContent.user_scope === "SCHOOL"}
-        padding={"12px 16px"}
-        fontWeight={"normal"}
-        fontSize={16}
-        lineHeight={24}
-        name='grade'
-      />
-    </DropdownWrapper>
-  );
-};
 export default UserScope;
 
 const Wrapper = styled.section`
