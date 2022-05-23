@@ -19,14 +19,16 @@ interface FallbackType {
 }
 
 export async function getStaticProps() {
-  const [challenges, classes, schools, students] = await Promise.all([
-    fetcher(`/challenges/web/lists?isProgress=true`),
-    fetcher(`/teachers/classes/lists`),
-    fetcher(
-      "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL"
-    ),
-    fetcher("/teachers/users/search?name=&scope=ALL&sort=NAME&grade=&class="),
-  ]);
+  const [challenges, classes, schools, students, schoolInfo] =
+    await Promise.all([
+      fetcher(`/challenges/web/lists?isProgress=true`),
+      fetcher(`/teachers/classes/lists`),
+      fetcher(
+        "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL"
+      ),
+      fetcher("/teachers/users/search?name=&scope=ALL&sort=NAME&grade=&class="),
+      fetcher("/ranks/schools"),
+    ]);
 
   return {
     props: {
@@ -37,6 +39,7 @@ export async function getStaticProps() {
           students,
         "/ranks/schools/search?name=&schoolDateType=WEEK&sort=RANK&scope=ALL":
           schools,
+        "/ranks/schools": schoolInfo,
       },
     },
   };

@@ -3,22 +3,25 @@ import fetcher from "@src/utils/function/fetcher";
 import { TeacherType } from "@src/utils/interfaces/teacher";
 import React from "react";
 import useSWR from "swr";
+import MySchoolInfo from "./MySchoolInfo";
 import TeacherCard from "./TeacherCard";
 
 const TeacherManagement = () => {
-  const { data } = useSWR("/teachers/classes/lists", fetcher);
+  const { data } = useSWR("/teachers/lists", fetcher);
 
   return (
     <>
       <WrapperBox>
+        <MySchoolInfo />
+        
         <Certification>
           인증코드 <p>#{data.auth_code}</p>
         </Certification>
 
         <Box>
-          <Title>선생님 관리</Title>
+          <Title>선생님 리스트</Title>
           <List>
-            {data.class_list?.map((i: TeacherType) => (
+            {data.teacher_list?.map((i: TeacherType) => (
               <TeacherCard key={i.teacher.user_id} {...i} />
             ))}
           </List>

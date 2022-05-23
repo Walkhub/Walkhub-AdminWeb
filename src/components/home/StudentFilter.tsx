@@ -192,8 +192,6 @@ const StudentFilter = () => {
         />
       </StudetnSearchBox>
 
-      <div onClick={excelDownload}>액셀로 변환</div>
-
       <Category>
         <div style={{ gridColumn: "4 / 5" }}>평균 걸음 수</div>
         <div>총합 걸음 수</div>
