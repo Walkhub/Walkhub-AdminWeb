@@ -7,7 +7,7 @@ import { createImage } from "@src/utils/apis/default";
 import useSWR from "swr";
 import fetcher from "@src/utils/function/fetcher";
 
-const SchoolInfo = () => {
+const MySchoolInfo = () => {
   const [schoolLogo, setSchoolLogo] = useState<string[]>([]);
   const { data } = useSWR("/ranks/schools", fetcher);
 
@@ -53,7 +53,7 @@ const SchoolInfo = () => {
   );
 };
 
-export default SchoolInfo;
+export default MySchoolInfo;
 
 const SchoolInfoBox = styled.div`
   display: flex;
