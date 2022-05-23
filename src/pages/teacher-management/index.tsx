@@ -1,4 +1,3 @@
-import Header from "@src/components/common/header";
 import TeacherManagement from "@src/components/teacherManagement";
 import withAuth from "@src/hocs/withAuth";
 import fetcher from "@src/utils/function/fetcher";
