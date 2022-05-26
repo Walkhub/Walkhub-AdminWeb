@@ -41,8 +41,8 @@ const ChallengeList = () => {
         <Title>
           <div>진행 중인 챌린지</div>
           <Dropdown
-            width={136}
-            height={48}
+            width={102}
+            height={16}
             selectedValue={option === "true" ? "진행중" : "완료"}
             name='name'
             optionList={optionList}
@@ -52,6 +52,7 @@ const ChallengeList = () => {
             fontSize={16}
             fontWeight='normal'
             padding='12px 16px'
+            isBoard={false}
           />
         </Title>
         <ListBox>
