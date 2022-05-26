@@ -1,10 +1,10 @@
 import React from "react";
-import MakeRoot from "@src/components/su/MakeRoot";
+import CreateRoot from "@src/components/su/CreateRoot";
 
 const RootMakePage = () => {
   return (
     <>
-      <MakeRoot />
+      <CreateRoot />
     </>
   );
 };
