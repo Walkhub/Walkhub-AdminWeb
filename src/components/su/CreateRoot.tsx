@@ -13,7 +13,7 @@ type Information = {
   btnDisable: boolean;
 };
 
-const MakeRoot: FC = () => {
+const CreateRoot: FC = () => {
   const [allContent, setAllContent] = useState<Information>({
     inputContent: "",
     seeModal: false,
@@ -251,4 +251,4 @@ const SchoolName = styled.p`
   color: ${({ theme }) => theme.color.black};
 `;
 
-export default MakeRoot;
+export default CreateRoot;
