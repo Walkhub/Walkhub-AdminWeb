@@ -5,14 +5,15 @@ import React, { FC } from "react";
 interface Props {
   width?: string;
   height?: string;
+  close: () => void;
 }
 
-const DefaultModal: FC<Props> = ({ width, height, children }) => {
+const DefaultModal: FC<Props> = ({ width, close, height, children }) => {
   return (
     <>
       <DefaultModalBackground>
         <DefaultModalWrapper width={width || ""} height={height || ""}>
-          <CloseBtn>&times;</CloseBtn>
+          <CloseBtn onClick={close}>&times;</CloseBtn>
           <div>{children}</div>
         </DefaultModalWrapper>
       </DefaultModalBackground>
@@ -29,9 +30,10 @@ const DefaultModalBackground = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  z-index: 4;
 `;
 
 const fadeIn = keyframes`
