@@ -10,6 +10,8 @@ import StyleProvider from "@src/styles";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "@src/components/common/header";
+import { ModalsProvider } from "@src/contexts/ModalContext";
+import Modals from "@src/components/modals";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -19,8 +21,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         StyleProvider,
         LoginContextProvider,
         ParticipantOptionContextProvider,
+        ModalsProvider,
       ]}
     >
+      <Modals></Modals>
       <Header></Header>
       <Component {...pageProps} />
       <ToastContainer theme='colored' />
