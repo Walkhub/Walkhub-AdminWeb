@@ -1,19 +1,27 @@
+import UserDetail from "@src/components/userDetail";
+import { ModalsDispatchContext } from "@src/contexts/ModalContext";
 import fetcher from "@src/utils/function/fetcher";
 import { StudentType } from "@src/utils/interfaces/student";
-import React, { FC } from "react";
+import React, { useContext } from "react";
 import useSWR from "swr";
 import StudentCard from "../cards/StudentCard";
 
-interface Props {
-  data: StudentType[];
-}
-
-const StudentList = ({ data }) => {
+const StudentList = () => {
+  const { data } = useSWR(
+    "/teachers/users/search?page=0&scope=ALL&sort=NAME&grade=&class=",
+    fetcher
+  );
+  const { open } = useContext(ModalsDispatchContext);
+  console.log(data?.user_list);
   return (
     <>
-      {data.user_list?.map((i: StudentType) => {
+      {(data?.user_list || []).map((i: StudentType) => {
         return (
-          <div style={{ marginBottom: "16px" }} key={`${i.name}-${i.user_id}`}>
+          <div
+            style={{ marginBottom: "16px" }}
+            key={i.user_id}
+            onClick={() => open(UserDetail, { userId: i.user_id })}
+          >
             <StudentCard {...i} />
           </div>
         );
