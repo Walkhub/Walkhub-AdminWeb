@@ -200,7 +200,7 @@ const StudentFilter = () => {
       </Category>
 
       <div>
-        <StudentList data={data} />
+        <StudentList />
       </div>
     </>
   );
