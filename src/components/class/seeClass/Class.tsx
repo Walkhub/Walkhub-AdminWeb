@@ -92,7 +92,9 @@ const ClassBanner = () => {
           <BannerDiv2>
             <TeacherDiv>
               <img src={data.teacher.profile_image_url} alt='' />
-              <TeacherName>{data.teacher.name}</TeacherName>
+              <div>
+                <TeacherName>{data.teacher.name}</TeacherName>
+              </div>
               <p>선생님</p>
             </TeacherDiv>
             <ClassCodeDiv>
@@ -168,12 +170,13 @@ const BannerDiv2 = styled.div`
 `;
 
 const TeacherDiv = styled.div`
+  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   margin-left: 54px;
   > p {
-    width: 100%;
+    margin-right: 10px;
+    width: 50px;
     color: ${({ theme }) => theme.color.white};
   }
   > img {
@@ -183,11 +186,13 @@ const TeacherDiv = styled.div`
   }
 `;
 
-const TeacherName = styled.p`
-  width: 60px;
-  height: 30px;
+const TeacherName = styled.h6`
+  width: 100%;
   margin-right: 4px;
+  height: 30px;
   font-size: 20px;
+  font-weight: normal;
+  color: ${({ theme }) => theme.color.white};
 `;
 
 const ClassCodeDiv = styled.div`
