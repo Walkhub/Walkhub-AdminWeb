@@ -41,7 +41,7 @@ const ChallengeList = () => {
         <Title>
           <div>진행 중인 챌린지</div>
           <Dropdown
-            width={102}
+            width={108}
             height={16}
             selectedValue={option === "true" ? "진행중" : "완료"}
             name='name'
