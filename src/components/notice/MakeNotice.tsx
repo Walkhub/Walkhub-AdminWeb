@@ -47,7 +47,7 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
     scope: "",
   });
 
-  const noticeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const noticeSubmit = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     try {
       await createNotice(
@@ -111,7 +111,7 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
 
   return (
     <>
-      <Wrapper onSubmit={noticeSubmit}>
+      <Wrapper>
         <HeadDiv>
           {isAuth ? (
             <DropDown
@@ -165,14 +165,19 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
             defaultColor={false}
             value='취소'
           />
-          <DefaultBtn type='submit' width={106} value='작성' />
+          <DefaultBtn
+            type='submit'
+            width={106}
+            value='작성'
+            onClick={noticeSubmit}
+          />
         </PostDiv>
       </Wrapper>
     </>
   );
 };
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   width: 100%;
   padding: 40px 27px 40px 27px;
   border-radius: 12px;
