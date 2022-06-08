@@ -25,17 +25,14 @@ const Notice = () => {
   } else
     return (
       <Wrapper>
-        {isAuth ? (
-          makeState ? (
+        {isAuth &&
+          (makeState ? (
             <WriteDiv onClick={MakeOnClick}>
               <em>공지사항 작성하기...</em>
             </WriteDiv>
           ) : (
             <MakeNotice setMakeState={setMakeState} mutate={mutate} />
-          )
-        ) : (
-          <></>
-        )}
+          ))}
         <NoticeTitleDiv>
           <p>공지</p>
         </NoticeTitleDiv>
