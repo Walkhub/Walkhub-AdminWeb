@@ -43,6 +43,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:17.0.18"],
             ["@types/prop-types", "npm:15.7.4"],
             ["@types/react", "npm:17.0.39"],
+            ["@types/react-calendar", "npm:3.5.0"],
             ["@types/react-cookies", "npm:0.1.0"],
             ["@types/react-dom", "npm:17.0.11"],
             ["@types/react-is", "npm:17.0.3"],
@@ -58,6 +59,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postinstall-postinstall", "npm:2.1.0"],
             ["prop-types", "npm:15.8.1"],
             ["react", "npm:17.0.2"],
+            ["react-calendar", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:3.7.0"],
             ["react-cookies", "npm:0.1.1"],
             ["react-dom", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:17.0.2"],
             ["react-is", "npm:17.0.2"],
@@ -1015,6 +1017,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/react-calendar", [
+        ["npm:3.5.0", {
+          "packageLocation": "./.yarn/cache/@types-react-calendar-npm-3.5.0-2cd1b01015-0dc7eadd0b.zip/node_modules/@types/react-calendar/",
+          "packageDependencies": [
+            ["@types/react-calendar", "npm:3.5.0"],
+            ["@types/react", "npm:17.0.39"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/react-cookies", [
         ["npm:0.1.0", {
           "packageLocation": "./.yarn/cache/@types-react-cookies-npm-0.1.0-b56bf6191f-a7d18ad17e.zip/node_modules/@types/react-cookies/",
@@ -1222,6 +1234,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@types/react",
             "react-dom",
             "react"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@wojtekmaj/date-utils", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/@wojtekmaj-date-utils-npm-1.0.3-66943d4ae0-70b7152160.zip/node_modules/@wojtekmaj/date-utils/",
+          "packageDependencies": [
+            ["@wojtekmaj/date-utils", "npm:1.0.3"]
           ],
           "linkType": "HARD",
         }]
@@ -3564,6 +3585,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["get-user-locale", [
+        ["npm:1.4.0", {
+          "packageLocation": "./.yarn/cache/get-user-locale-npm-1.4.0-5b0d4b8a21-d27a6cf7b1.zip/node_modules/get-user-locale/",
+          "packageDependencies": [
+            ["get-user-locale", "npm:1.4.0"],
+            ["lodash.once", "npm:4.1.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["glob", [
         ["npm:7.1.7", {
           "packageLocation": "./.yarn/cache/glob-npm-7.1.7-5698ad9c48-b61f48973b.zip/node_modules/glob/",
@@ -4453,6 +4484,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["lodash.once", [
+        ["npm:4.1.1", {
+          "packageLocation": "./.yarn/cache/lodash.once-npm-4.1.1-d8ba329ead-d768fa9f9b.zip/node_modules/lodash.once/",
+          "packageDependencies": [
+            ["lodash.once", "npm:4.1.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["lodash.sortby", [
         ["npm:4.7.0", {
           "packageLocation": "./.yarn/cache/lodash.sortby-npm-4.7.0-fda8ab950d-db170c9396.zip/node_modules/lodash.sortby/",
@@ -4525,6 +4565,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["hash-base", "npm:3.1.0"],
             ["inherits", "npm:2.0.4"],
             ["safe-buffer", "npm:5.1.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["merge-class-names", [
+        ["npm:1.4.2", {
+          "packageLocation": "./.yarn/cache/merge-class-names-npm-1.4.2-aa575a4fce-569c333ab0.zip/node_modules/merge-class-names/",
+          "packageDependencies": [
+            ["merge-class-names", "npm:1.4.2"]
           ],
           "linkType": "HARD",
         }]
@@ -5609,6 +5658,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["react-calendar", [
+        ["npm:3.7.0", {
+          "packageLocation": "./.yarn/cache/react-calendar-npm-3.7.0-1b9ffc08c6-368084515b.zip/node_modules/react-calendar/",
+          "packageDependencies": [
+            ["react-calendar", "npm:3.7.0"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:3.7.0", {
+          "packageLocation": "./.yarn/__virtual__/react-calendar-virtual-76f272f28c/0/cache/react-calendar-npm-3.7.0-1b9ffc08c6-368084515b.zip/node_modules/react-calendar/",
+          "packageDependencies": [
+            ["react-calendar", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:3.7.0"],
+            ["@types/react", "npm:17.0.39"],
+            ["@types/react-dom", "npm:17.0.11"],
+            ["@wojtekmaj/date-utils", "npm:1.0.3"],
+            ["get-user-locale", "npm:1.4.0"],
+            ["merge-class-names", "npm:1.4.2"],
+            ["prop-types", "npm:15.8.1"],
+            ["react", "npm:17.0.2"],
+            ["react-dom", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:17.0.2"]
+          ],
+          "packagePeers": [
+            "@types/react-dom",
+            "@types/react",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["react-cookies", [
         ["npm:0.1.1", {
           "packageLocation": "./.yarn/cache/react-cookies-npm-0.1.1-f9d7099eb7-a31a7f5e43.zip/node_modules/react-cookies/",
@@ -6606,6 +6685,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:17.0.18"],
             ["@types/prop-types", "npm:15.7.4"],
             ["@types/react", "npm:17.0.39"],
+            ["@types/react-calendar", "npm:3.5.0"],
             ["@types/react-cookies", "npm:0.1.0"],
             ["@types/react-dom", "npm:17.0.11"],
             ["@types/react-is", "npm:17.0.3"],
@@ -6621,6 +6701,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postinstall-postinstall", "npm:2.1.0"],
             ["prop-types", "npm:15.8.1"],
             ["react", "npm:17.0.2"],
+            ["react-calendar", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:3.7.0"],
             ["react-cookies", "npm:0.1.1"],
             ["react-dom", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:17.0.2"],
             ["react-is", "npm:17.0.2"],

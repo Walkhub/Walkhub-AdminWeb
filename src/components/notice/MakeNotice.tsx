@@ -47,7 +47,7 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
     scope: "",
   });
 
-  const noticeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const noticeSubmit = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     try {
       await createNotice(
@@ -73,11 +73,9 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
         case 400:
           return ToastError("모든 빈칸을 채워주세요");
         case 401:
-          return ToastError("인증에 실패하였습니다. ");
+          return ToastError("인증에 실패하였습니다.");
         case 403:
-          return ToastError(
-            "권한이 존재하지 않습니다. 공지사항 작성은 ROOT 권한과 SU권한만 사용 가능합니다."
-          );
+          return ToastError("권한이 존재하지 않습니다.");
         default:
           return ToastError("관리자에게 문의해주세요.");
       }
@@ -113,7 +111,7 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
 
   return (
     <>
-      <Wrapper onSubmit={noticeSubmit}>
+      <Wrapper>
         <HeadDiv>
           {isAuth ? (
             <DropDown
@@ -167,14 +165,19 @@ const MakeNotice: FC<Props & { mutate: KeyedMutator<any> }> = ({
             defaultColor={false}
             value='취소'
           />
-          <DefaultBtn type='submit' width={106} value='작성' />
+          <DefaultBtn
+            type='submit'
+            width={106}
+            value='작성'
+            onClick={noticeSubmit}
+          />
         </PostDiv>
       </Wrapper>
     </>
   );
 };
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   width: 100%;
   padding: 40px 27px 40px 27px;
   border-radius: 12px;

@@ -3,10 +3,10 @@ import fetcher from "@src/utils/function/fetcher";
 import { ChallengeType } from "@src/utils/interfaces/challenge";
 import React, { useState } from "react";
 import useSWR from "swr";
-import DefaultBox from "../common/defaultBox";
 import Dropdown from "../common/dropdown";
 import ChallengeCard from "./ChallengeCard";
 import Link from "next/link";
+import CreateBox from "../common/createBox";
 
 const optionList = [
   {
@@ -21,6 +21,8 @@ const optionList = [
 
 const ChallengeList = () => {
   const [option, setOption] = useState("true");
+  const [isHover, setIsHover] = useState<boolean>(false);
+
   const { data, mutate } = useSWR(
     "/challenges/web/lists?isProgress=true",
     fetcher
@@ -41,7 +43,7 @@ const ChallengeList = () => {
         <Title>
           <div>진행 중인 챌린지</div>
           <Dropdown
-            width={102}
+            width={108}
             height={16}
             selectedValue={option === "true" ? "진행중" : "완료"}
             name='name'
@@ -57,9 +59,7 @@ const ChallengeList = () => {
         </Title>
         <ListBox>
           <Link href='/challenge/create'>
-            <DefaultBox width={288} height={288}>
-              <PlusBtn>+</PlusBtn>
-            </DefaultBox>
+            <CreateBox width={288} height={288} />
           </Link>
           {data.challenge_list?.map((i: ChallengeType) => (
             <ChallengeCard type={""} key={i.id} {...i} />

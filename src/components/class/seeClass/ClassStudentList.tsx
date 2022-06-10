@@ -105,7 +105,7 @@ const ClassStudentList: FC<Props> = ({ setClassInfo }) => {
           padding='10px 16px'
           isBoard={false}
         />
-        <ExcelDonwload onClick={excelDownload}>엑셀로 변환</ExcelDonwload>
+        <ExcelDonwload onClick={excelDownload}>엑셀로 변환하기</ExcelDonwload>
       </Title>
       <TypeMenuDiv>
         <p style={{ gridColumn: "4/5" }}>평균 걸음 수</p>
@@ -158,7 +158,7 @@ const TypeMenuDiv = styled.div`
 `;
 
 const ExcelDonwload = styled.h6`
-  margin-left: 900px;
+  margin-left: 880px;
   text-decoration: underline;
   color: ${({ theme }) => theme.color.main};
   font-size: 14px;
