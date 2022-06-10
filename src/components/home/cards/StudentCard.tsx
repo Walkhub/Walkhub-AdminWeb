@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import DefaultBox from "@src/components/common/defaultBox";
 import { StudentType } from "@src/utils/interfaces/student";
 import React, { FC } from "react";
-
+import Image from "next/image";
 const StudentCard: FC<StudentType> = ({
   user_id,
   name,
@@ -19,7 +19,7 @@ const StudentCard: FC<StudentType> = ({
     <>
       <DefaultBox width={1224} height={100}>
         <StudentBox>
-          <img src={profile_image_url} alt='' />
+          <img width={60} height={60} src={profile_image_url} alt='' />
           <User>
             <p>{name}</p>
             <p>

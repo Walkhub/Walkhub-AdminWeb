@@ -1,55 +1,95 @@
 import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { ExerciseList } from ".";
 import Map from "./Map";
-interface Props {
+interface Props extends ExerciseList {
   isRight?: boolean;
-  id: number;
 }
 
-const MeasurementCard: React.FC<Props> = ({ isRight = false, id }) => {
+const MeasurementCard: React.FC<Props> = ({
+  isRight = false,
+  calorie,
+  certifying_shot,
+  end_at,
+  exercise_id,
+  latitude,
+  longitude,
+  speed,
+  time,
+  walk_count,
+}) => {
   const [mapOpen, setMapOpen] = useState<boolean>(false);
+  const [address, setAddress] = useState<string>("");
+
+  useEffect(() => {
+    const { kakao } = window;
+    console.log(kakao);
+    function getAddr(lat: number, lng: number) {
+      kakao.maps.load(function () {
+        let geocoder = new kakao.maps.services.Geocoder();
+        let coord = new kakao.maps.LatLng(latitude, longitude);
+        let callback = function (result, status) {
+          console.log(status);
+          if (status === kakao.maps.services.Status.OK) {
+            setAddress(
+              `${result[0].address.region_2depth_name} ${result[0].address.region_3depth_name}`
+            );
+          }
+        };
+        geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+      });
+    }
+    getAddr(latitude, longitude);
+  }, [latitude, longitude]);
+
   return (
     <CardContainer
       onMouseEnter={() => setMapOpen(true)}
       onMouseLeave={() => setMapOpen(false)}
     >
-      <CardBox isRight={isRight}>
-        {isRight && <Map id={id} isOpen={mapOpen} />}
+      <CardBox certifying_shot={certifying_shot} isRight={isRight}>
+        {isRight && <Map id={exercise_id} isOpen={mapOpen} />}
         <div id='discription'>
           <BeforeHoverDiscription>
-            <h2>2022.02.02</h2>
-            <h3>대전 장동</h3>
+            <h2>{dayjs(end_at).format("YYYY-MM-DD")}</h2>
+            <h3>{address}</h3>
           </BeforeHoverDiscription>
           <AfterHoverDiscription>
             <tbody>
               <tr>
                 <th>걸음수</th>
-                <td>3827</td>
+                <td>{walk_count}</td>
               </tr>
               <tr>
                 <th>속도</th>
                 <td>
-                  0.9<i>m/s</i>
+                  {Math.ceil(speed / 1) || 0}
+                  <i>m/s</i>
                 </td>
               </tr>
               <tr>
                 <th>칼로리</th>
                 <td>
-                  0.9<i>kcal</i>
+                  {calorie}
+                  <i>kcal</i>
                 </td>
               </tr>
               <tr>
                 <th>시간</th>
                 <td>
-                  0<em>h</em>
-                  47<em>m</em>
+                  {Math.ceil(time / 60)}
+                  <em>h</em>
+                  {time % 60}
+                  <em>m</em>
                 </td>
               </tr>
             </tbody>
           </AfterHoverDiscription>
         </div>
-        {isRight === false && <Map id={id} isOpen={mapOpen} />}
+        {isRight === false && <Map id={exercise_id} isOpen={mapOpen} />}
       </CardBox>
     </CardContainer>
   );
@@ -70,7 +110,7 @@ const hoverIn = keyframes`
   }
 `;
 
-const CardBox = styled.div<{ isRight: boolean }>`
+const CardBox = styled.div<{ isRight: boolean; certifying_shot: string }>`
   position: relative;
   width: 184px;
   height: 100%;
@@ -79,6 +119,9 @@ const CardBox = styled.div<{ isRight: boolean }>`
   display: flex;
   overflow: hidden;
   align-items: flex-end;
+  background-image: ${({ certifying_shot }) => `url(${certifying_shot})`};
+  background-position: ${({ isRight }) => (isRight ? "right" : "left")};
+  background-size: 184px 100%;
   transition: all 0.5s;
   cursor: pointer;
   right: 0;
@@ -98,7 +141,7 @@ const CardBox = styled.div<{ isRight: boolean }>`
       width: 184px;
       transition: all 0.5s;
       > div {
-        :first-child {
+        :first-of-type {
           display: none;
         }
         :last-child {

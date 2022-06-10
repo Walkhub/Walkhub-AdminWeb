@@ -51,6 +51,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/recharts", "npm:1.8.23"],
             ["@walkhub/recharts", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:2.1.13"],
             ["axios", "npm:0.25.0"],
+            ["dayjs", "npm:1.11.2"],
             ["eslint", "npm:8.5.0"],
             ["eslint-config-next", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:12.0.7"],
             ["next", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:12.0.4"],
@@ -2472,6 +2473,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/data-uri-to-buffer-npm-3.0.1-830646f9ee-c59c300968.zip/node_modules/data-uri-to-buffer/",
           "packageDependencies": [
             ["data-uri-to-buffer", "npm:3.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["dayjs", [
+        ["npm:1.11.2", {
+          "packageLocation": "./.yarn/cache/dayjs-npm-1.11.2-644b12fe04-78f8bd04a9.zip/node_modules/dayjs/",
+          "packageDependencies": [
+            ["dayjs", "npm:1.11.2"]
           ],
           "linkType": "HARD",
         }]
@@ -6693,6 +6703,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/recharts", "npm:1.8.23"],
             ["@walkhub/recharts", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:2.1.13"],
             ["axios", "npm:0.25.0"],
+            ["dayjs", "npm:1.11.2"],
             ["eslint", "npm:8.5.0"],
             ["eslint-config-next", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:12.0.7"],
             ["next", "virtual:e55f5d8a64d261101d4ce49052d1b4e178c551e22c9d001620c4808dceb69acff3dc375e5436e3048d50cf62bcfeb3a8c2631e92fab243033d7734adf684bf67#npm:12.0.4"],

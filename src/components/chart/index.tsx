@@ -16,9 +16,12 @@ import {
   NameType,
 } from "@walkhub/recharts/src/component/DefaultTooltipContent";
 import getChartData from "../../utils/function/getChartData";
+import { cp } from "fs/promises";
+import dayjs from "dayjs";
 
 interface Props {
   countList: number[];
+  endAt: dayjs.Dayjs;
 }
 
 const colors: string[] = [
@@ -29,9 +32,8 @@ const colors: string[] = [
   "#57B4F1",
 ];
 
-const chart: FC<Props> = ({ countList }) => {
-  const chartData = getChartData(countList);
-
+const chart: FC<Props> = ({ countList, endAt }) => {
+  const chartData = getChartData(countList, endAt).reverse();
   const CustomTooltip = ({ payload }: TooltipProps<ValueType, NameType>) => {
     if (payload && payload.length) {
       return (
