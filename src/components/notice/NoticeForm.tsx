@@ -196,6 +196,7 @@ const Datemsg = styled.p`
 
 const TextDiv = styled.div`
   width: 100%;
+  white-space: pre-wrap;
   > p {
     font-size: 16px;
     font-weight: 400;
