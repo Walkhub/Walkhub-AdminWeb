@@ -1,48 +1,134 @@
 import styled from "@emotion/styled";
+import { ModalsDispatchContext } from "@src/contexts/ModalContext";
+import fetcher from "@src/utils/function/fetcher";
+import { useContext, useState } from "react";
+import useSWR from "swr";
 import Chart from "../chart";
 import DefaultModal from "../common/DefaultModal";
 import ProfileBox from "../common/ProfileBox";
+import MeasurementResult from "./measurement";
+import useDays from "@src/hooks/useDays";
+import Image from "next/image";
+import simpleLeftArrow from "../../assets/simple_left_arrow.svg";
+import simpleRightArrow from "../../assets/simple_right_arrow.svg";
+interface Props {
+  userId: number;
+}
 
-const UserDetail = () => {
+interface UserData {
+  average_distance: number;
+  average_walk_count: number;
+  class_num: number | null;
+  grade: number | null;
+  name: string;
+  number: null | number;
+  profile_image_url: string;
+  total_distance: number;
+  total_walk_count: number;
+  user_id: number;
+  walk_count_list: number[];
+}
+
+const UserDetail = (props: Props) => {
+  const {
+    addMonth,
+    addWeek,
+    days,
+    resetMonthDays,
+    resetWeekDays,
+    subMonth,
+    subWeek,
+  } = useDays();
+
+  const [isWeek, setIsWeek] = useState<boolean>(true);
+  const { close, open } = useContext(ModalsDispatchContext);
+
+  const { data } = useSWR<UserData>(
+    `/teachers/users/${props.userId}?startAt=${days.startAt.format(
+      "YYYY-MM-DD"
+    )}&endAt=${days.endAt.format("YYYY-MM-DD")}`,
+    fetcher
+  );
+
   return (
-    <DefaultModal>
+    <DefaultModal close={() => close(UserDetail)}>
       <Container>
         <UserTextInfo>
-          <ProfileBox class_num={1} grade={1} name='김의찬' />
+          <ProfileBox userId={props.userId} />
           <UserStepInfo>
             <tbody>
               <tr>
                 <th>평균 걸음수</th>
-                <td>2000</td>
+                <td>{data?.average_walk_count}</td>
               </tr>
               <tr>
-                <th>평균 걸음수</th>
-                <td>2000</td>
+                <th>총합 걸음수</th>
+                <td>{data?.total_walk_count}</td>
               </tr>
               <tr>
-                <th>평균 걸음수</th>
-                <td>2000</td>
+                <th>평균 거리(km)</th>
+                <td>{data?.average_distance}</td>
               </tr>
               <tr>
-                <th>평균 걸음수</th>
-                <td>2000</td>
+                <th>총합 거리(km)</th>
+                <td>{data?.total_distance}</td>
               </tr>
             </tbody>
           </UserStepInfo>
         </UserTextInfo>
         <ChartBox>
           <WeekMonthChange>
-            <WeekMonthButton isClick={true}>주간</WeekMonthButton>
-            <WeekMonthButton isClick={false}>월간</WeekMonthButton>
+            <WeekMonthButton
+              isClick={isWeek}
+              onClick={() => {
+                setIsWeek(true);
+                resetWeekDays();
+              }}
+            >
+              주간
+            </WeekMonthButton>
+            <WeekMonthButton
+              isClick={!isWeek}
+              onClick={() => {
+                setIsWeek(false);
+                resetMonthDays();
+              }}
+            >
+              월간
+            </WeekMonthButton>
           </WeekMonthChange>
           <TimeSetBox>
-            <img></img>
-            <p>2월 2주차</p>
-            <img></img>
+            <Image
+              alt=''
+              src={simpleLeftArrow}
+              onClick={() => (isWeek ? subWeek() : subMonth())}
+            ></Image>
+            <p>{`${days.startAt.format("YYYY-MM-DD")} ~ ${days.endAt.format(
+              "YYYY-MM-DD"
+            )}`}</p>
+            <Image
+              alt=''
+              src={simpleRightArrow}
+              onClick={() => (isWeek ? addWeek() : addMonth())}
+            ></Image>
           </TimeSetBox>
-          <Chart countList={[1000, 3000, 2000, 5000, 4000, 5000, 2220]}></Chart>
+          <Chart
+            endAt={days.endAt}
+            countList={data?.walk_count_list || []}
+          ></Chart>
           <CheckRecord>
-            <p>기록 확인하기</p>
+            <p
+              onClick={() => {
+                close(UserDetail);
+                open(MeasurementResult, {
+                  userId: props.userId,
+                  startAt: days.startAt,
+                  endAt: days.endAt,
+                });
+              }}
+            >
+              기록 확인하기
+            </p>
           </CheckRecord>
         </ChartBox>
       </Container>
@@ -129,6 +215,7 @@ const WeekMonthButton = styled.button<{ isClick: boolean }>`
     isClick ? theme.color.white : theme.color.dark_gray};
   background-color: ${({ isClick, theme }) =>
     isClick ? theme.color.main : theme.color.white};
+  transition: all 0.3s;
 `;
 
 const TimeSetBox = styled.div`
@@ -152,6 +239,7 @@ const CheckRecord = styled.div`
   justify-content: flex-end;
   > p {
     font-size: 14px;
+    cursor: pointer;
     color: ${({ theme }) => theme.color.main};
     border-bottom: 1px solid ${({ theme }) => theme.color.main};
   }
